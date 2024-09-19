@@ -6,8 +6,8 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
-;; (setq user-full-name "John Doe"
-;;       user-mail-address "john@doe.com")
+(setq user-full-name "Brayden Moon"
+      user-mail-address "brayden.moon@cba.com.au")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
@@ -33,6 +33,9 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-tomorrow-night)
+
+;; Change font
+(setq doom-font (font-spec :family "MonoLisaVariable Nerd Font" :size 18))
 
 ;; (add-to-list 'deafult-frame-alist '(alpha . 90))
 
@@ -82,7 +85,14 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
+;; Enable auto save and backups
+(setq auto-save-default t
+      make-backup-files t)
 
+;; Disable exit confirmation
+(setq confirm-kill-emacs nil)
+
+;; Copilot setup
 (use-package! copilot
   :hook (prog-mode . copilot-mode)
   :bind (:map copilot-completion-map
@@ -92,6 +102,7 @@
               ("C-<tab>" . 'copilot-accept-completion-by-word)))
 
 
+;; Custom splash screen
 (defun angel-art ()
   (let* ((banner '("         .m.                                   ,_"
                    "         ' ;M;                                ,;m `"
@@ -115,7 +126,7 @@
                    "     ;;;. ;P  `q; qMM.                 ';MMMMSSSSSMp' ';;;;;;;"
                    "     ;;;; ',    ; .mm!     \\.   `.   /  ;MMM' `qSS'    ';;;;;;;"
                    "     ';;;       ' mmS';     ;     ,  `. ;'M'   `S       ';;;;;"
-                   "      `;;.        mS;;`;    ;     ;    ;M,!     '  luk   ';;;;"
+                   "      `;;.        mS;;`;    ;     ;    ;M,!     '        ';;;;"
                    "       ';;       .mS;;, ;   '.    ;    MM;                ;;;;"
                    "        ';;      MMmS;; `,   ;._.' -_.'MM;                 ;;;"
                    "         `;;     MMmS;;; ;   ;      ;  MM;                 ;;;"
@@ -145,4 +156,138 @@
                "\n"))
      'face 'doom-dashboard-banner)))
 
+;; Setting the splash screen
 (setq +doom-dashboard-ascii-banner-fn #'angel-art)
+
+;; Adding the vi '%' mode.
+(after! smartparens
+  (defun zz/goto-match-paren (arg)
+    "Go to the matching paren/bracket, otherwise (or if ARG is not
+    nil) insert %.  vi style of % jumping to matching brace."
+    (interactive "p")
+    (if (not (memq last-command '(set-mark
+                                  cua-set-mark
+                                  zz/goto-match-paren
+                                  down-list
+                                  up-list
+                                  end-of-defun
+                                  beginning-of-defun
+                                  backward-sexp
+                                  forward-sexp
+                                  backward-up-list
+                                  forward-paragraph
+                                  backward-paragraph
+                                  end-of-buffer
+                                  beginning-of-buffer
+                                  backward-word
+                                  forward-word
+                                  mwheel-scroll
+                                  backward-word
+                                  forward-word
+                                  mouse-start-secondary
+                                  mouse-yank-secondary
+                                  mouse-secondary-save-then-kill
+                                  move-end-of-line
+                                  move-beginning-of-line
+                                  backward-char
+                                  forward-char
+                                  scroll-up
+                                  scroll-down
+                                  scroll-left
+                                  scroll-right
+                                  mouse-set-point
+                                  next-buffer
+                                  previous-buffer
+                                  previous-line
+                                  next-line
+                                  back-to-indentation
+                                  doom/backward-to-bol-or-indent
+                                  doom/forward-to-last-non-comment-or-eol
+                                  )))
+        (self-insert-command (or arg 1))
+      (cond ((looking-at "\\s\(") (sp-forward-sexp) (backward-char 1))
+            ((looking-at "\\s\)") (forward-char 1) (sp-backward-sexp))
+            (t (self-insert-command (or arg 1))))))
+  (map! "%" 'zz/goto-match-paren))
+
+;; Mass rename in code
+(use-package! iedit
+  :defer
+  :config
+  (set-face-background 'iedit-occurence "Magneta")
+  :bind
+  ("C-;" . iedit-mode))
+
+;; Mac modifier keys
+(cond (IS-MAC
+       (setq mac-command-modifier       'meta
+             mac-option-modifier        'alt
+             mac-right-option-modifier  'alt
+             mac-pass-control-to-system nil)))
+
+;; Remove whole line rather than just emptying it.
+(setq kill-whole-line t)
+
+;; Remove menu items from main menu
+(setq +doom-dashboard-menu-sections (cl-subseq +doom-dashboard-menu-sections 0 2))
+
+;; Fix missing ligatures
+(plist-put! +ligatures-extra-symbols
+            :and nil
+            :or nil
+            :for nil
+            :not nil
+            :int nil
+            :float nil
+            :str nil
+            :bool nil
+            :list nil)
+
+(let ((ligatures-to-disable '(:int :float :str :bool :list :and :or :for :not)))
+  (dolist (sym ligatures-to-disable)
+    (plist-put! +ligatures-extra-symbols sym nil))
+  )
+
+;; Setup golang
+;; source: https://nayak.io/posts/golang-development-doom-emacs/
+;; golang formatting set up
+;; use gofumpt
+(after! lsp-mode
+  (setq  lsp-go-use-gofumpt t)
+  )
+;; automatically organize imports
+(add-hook 'go-mode-hook #'lsp-deferred)
+;; Make sure you don't have other goimports hooks enabled.
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+
+;; enable all analyzers; not done by default
+(after! lsp-mode
+  (setq  lsp-go-analyses '((fieldalignment . t)
+                           (nilness . t)
+                           (shadow . t)
+                           (unusedparams . t)
+                           (unusedwrite . t)
+                           (useany . t)
+                           (unusedvariable . t)))
+  )
+
+;; Toggle comment on line
+(map! :leader
+      :desc "Comment or uncomment lines"        "TAB TAB" #'comment-line)
+
+;; Mapping move-text-up and move-text-down to OPTION + UP and OPTION + DOWN
+(map! "<M-up>" #'my-move-text-up
+      "<M-down>" #'my-move-text-down)
+
+;; Telling move-text-up and move-text-down to indent the region after moving
+(defun indent-region-advice (&rest ignored)
+  (let ((deactivate deactivate-mark))
+    (if (region-active-p)
+        (indent-region (region-beginning) (region-end))
+      (indent-region (line-beginning-position) (line-end-position)))
+    (setq deactivate-mark deactivate)))
+
+(advice-add 'move-text-up :after 'indent-region-advice)
+(advice-add 'move-text-down :after 'indent-region-advice)
