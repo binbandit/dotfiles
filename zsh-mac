@@ -1,0 +1,174 @@
+# export TYPEWRITTEN_DISABLE_RETURN_CODE=true
+
+# MARK: START OMZ
+
+# Path to your oh-my-zsh installation.
+export ZSH="/Users/brayden/.oh-my-zsh"
+
+zstyle ':omz:update' mode auto      # update automatically without asking
+plugins=(git)
+
+source $ZSH/oh-my-zsh.sh
+
+# MARK: END OMZ
+
+export PATH=/opt/homebrew/bin:$PATH
+export PATH=/usr/local/bin:$PATH
+
+# pnpm
+export PNPM_HOME="/Users/brayden/Library/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+path+="${HOME}/Library/Android/sdk/emulator"
+path+="${HOME}/Library/Android/sdk/tools"
+path+="${HOME}/Library/Android/sdk/tools/bin"
+path+="${HOME}/Library/Android/sdk/platform-tools"
+path+="${HOME}/platform-tools"
+path+="${HOME}/.local/bin"
+path+="${HOME}/.cargo/bin"
+##path+="${HOME}/Library/Python/3.9/bin/"
+path+="${HOME}/.mint/bin"
+path+="${HOME}/Developer/systems/carbon/dist"
+path+="${HOME}/Downloads/graphite-cli-main/apps/cli/dist/src"
+path+="${HOME}/Downloads/charcoal-main/apps/cli/pkg"
+path+="${HOME}/Developer/go-lang/cdx3"
+path+="${HOME}/.config/emacs/bin"
+path+="${HOME}/Developer/systems/cosmocc/bin"
+path+="${HOME}/Applications/zig"
+path+="${HOME}/Developer/zig/zig/build/stage3/bin"
+path+="${HOME}/Applications/zls/zig-out/bin"
+path+="${HOME}/Developer/zig/zls/zig-out/bin"
+path+="${HOME}/go/bin"
+
+# pnpm end
+# bun completions
+[ -s "/Users/brayden/.bun/_bun" ] && source "/Users/brayden/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+export PATH="/usr/local/opt/ruby@2.7/bin:$PATH"
+
+export LDFLAGS="-L/usr/local/opt/ruby@2.7/lib"
+export CPPFLAGS="-I/usr/local/opt/ruby@2.7/include"
+
+
+# Here are some nice little vim aliases
+alias l="eza --icons"
+alias ls="eza --icons"
+alias la="ls -al"
+alias ll="ls -l"
+alias glue="/Users/brayden/Developer/go-lang/glue/build/bin/glue"
+alias g="/Users/brayden/Developer/go-lang/glue/build/bin/glue"
+alias zz="/Users/brayden/Developer/go-lang/zing/build/bin/zing"
+
+alias rungo="~/Developer/scripts/rungo.sh"
+alias buildgo="~/Developer/scripts/buildgo.sh"
+alias makego="~/Developer/scripts/makego.sh"
+
+alias co2="/Users/brayden/Developer/go-lang/co2/carbon"
+alias c="/Users/brayden/Developer/go-lang/co3/carbon"
+alias aplay="afplay"
+alias seek="/Users/brayden/Developer/go-lang/seek/target/debug/seek"
+alias cwd="pwd | pbcopy"
+alias stack="/Users/brayden/Developer/go-lang/stack/stack"
+alias kill-port="/Users/brayden/Developer/go-lang/kill-port/kill-port"
+alias kp="/Users/brayden/Developer/go-lang/kill-port/kill-port"
+
+alias y="yarn"
+alias ya="yarn add"
+alias yad="yarn add -D"
+alias yd="yarn dev"
+alias ys="yarn start"
+alias yb="yarn build"
+alias yt="yarn test"
+
+alias p="pnpm"
+alias pa="pnpm add"
+alias pad="pnpm add -D"
+alias pd="pnpm dev"
+alias ps="pnpm start"
+alias pb="pnpm build"
+alias pt="pnpm test"
+alias pi="pnpm install"
+
+alias ppd="pnpm install;pnpm dev"
+alias ppb="pnpm install;pnpm build"
+alias ppt="pnpm install;pnpm test"
+
+# Pack and copy the cwd with the package name to clipboard using the output from the pack command.
+alias pp='pnpm pack | xargs -I {} echo "$(pwd)/{}" | pbcopy'
+
+alias combine="/Users/brayden/Developer/go-lang/co2/combine_files"
+
+alias z="/Users/brayden/Developer/go-lang/zip/zip"
+alias stacked="/Users/brayden/Developer/go-lang/stacked/stacked"
+alias s="/Users/brayden/Developer/go-lang/stacked/stacked"
+alias squish="/Users/brayden/Developer/go-lang/squish/squish"
+alias nebula="/Users/brayden/Developer/go-lang/Nebula/nebula"
+alias acextract="~/Applications/acextract"
+
+alias x="pnpm dlx"
+
+alias src="source ~/.zshrc"
+alias tap="/Users/brayden/Developer/rust/tap/target/release/tap"
+
+alias n="nvim"
+
+export OPENAI_API_KEY=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
+export OPENAI_API_MODEL="gpt-4-1106-preview"
+
+
+if [ -d "/opt/homebrew/opt/ruby/bin" ]; then
+  export PATH=/opt/homebrew/opt/ruby/bin:$PATH
+  export PATH=`gem environment gemdir`/bin:$PATH
+fi
+
+cdpp() {
+    dir="$(cdx query $@)"
+    if [ -d "$dir" ]; then
+        cd "$dir"
+    else
+        echo "$dir"
+    fi
+}
+
+# productivity corner
+declare -A pomo_options
+pomo_options["work"]="45"
+pomo_options["break"]="10"
+
+declare -A pomo_titles
+pomo_titles["work"]="Work Timer is up! Take a Break ☺️ "
+pomo_titles["break"]="Break Timer is up! Back to Work 🚀"
+
+pomodoro () {
+  if [ -n "$1" -a -n "${pomo_options["$1"]}" ]; then
+  val=$1
+  echo $val | lolcat
+  timer ${pomo_options["$val"]}m
+  terminal-notifier -message 'Pomodoro'\
+    -title ${pomo_titles["$val"]}\
+    -sound Crystal\
+    -sender com.foxycorps.pomo
+  fi
+}
+
+alias work="pomodoro 'work'"
+alias br="pomodoro 'break'"
+
+
+fpath=($fpath "/Users/brayden/.zfunctions")
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# Set typewritten ZSH as a prompt
+# autoload -U promptinit; promptinit
+# prompt typewritten
+# . "/Users/brayden/.deno/env"
+# # Initialize zsh completions (added by deno install script)
+# autoload -Uz compinit
+# compinit
+eval "$(starship init zsh)"
+export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
