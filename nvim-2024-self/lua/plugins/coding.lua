@@ -13,6 +13,11 @@ return {
     },
     opts = { snippet_engine = "luasnip" },
   },
+  {
+    "mrcjkb/rustaceanvim",
+    version = "^5", -- Recommended
+    lazy = false, -- This plugin is already lazy
+  },
 
   -- Incremental rename
   {
