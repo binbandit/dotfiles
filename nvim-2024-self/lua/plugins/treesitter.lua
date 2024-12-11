@@ -16,7 +16,7 @@ return {
         "http",
         "java",
         "php",
-        "rust",
+        -- "rust",
         "scss",
         "sql",
         "svelte",
