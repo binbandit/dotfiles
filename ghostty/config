@@ -1,0 +1,16 @@
+window-padding-color = background
+theme = vesper
+font-family = "MonoLisaVariable Nerd Font"
+font-thicken = true
+font-size = 16
+# background-opacity = 1
+background-opacity = 0.80
+background-blur = 5
+# background-blur = 2
+# custom-shader = ghostty-shaders/in-game-crt.glsl 
+custom-shader = ghostty-shaders/bettercrt.glsl 
+macos-icon = blueprint
+macos-titlebar-style = transparent
+macos-titlebar-proxy-icon = hidden
+auto-update-channel = tip
+
