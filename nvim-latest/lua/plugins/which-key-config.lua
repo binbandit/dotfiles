@@ -5,6 +5,21 @@ return {
     config = function(_, opts)
       local wk = require("which-key")
 
+      -- Register find/search group
+      wk.register({
+        f = {
+          name = "Find/Search",
+          f = { function() require("fzf-lua").files() end, "Find Files" },
+          g = { function() require("fzf-lua").live_grep() end, "Find Text (Grep)" },
+          b = { function() require("fzf-lua").buffers() end, "Find Buffers" },
+          c = { function() require("fzf-lua").commands() end, "Find Commands" },
+          h = { function() require("fzf-lua").help_tags() end, "Find Help" },
+          k = { function() require("fzf-lua").keymaps() end, "Find Keymaps" },
+          r = { function() require("fzf-lua").oldfiles() end, "Recent Files" },
+          w = { function() require("fzf-lua").grep_cword() end, "Find Word Under Cursor" },
+        },
+      }, { prefix = "<leader>" })
+
       -- Register harpoon group
       wk.register({
         h = {
@@ -45,6 +60,37 @@ return {
         },
         -- Register code action shortcut
         ["."] = { function() vim.lsp.buf.code_action() end, "Code Action (VSCode style)" },
+      }, { prefix = "<leader>" })
+
+      -- Register 'a' prefix group for AI-related commands
+      wk.register({
+        a = {
+          name = "AI",
+          i = { "<cmd>lua require('user.supermaven').toggle()<CR>", "Toggle AI Autocomplete" },
+        },
+      }, { prefix = "<leader>" })
+
+      -- Register git commands group
+      wk.register({
+        g = {
+          name = "Git",
+          g = { "<cmd>LazyGit<CR>", "LazyGit" },
+          f = { "<cmd>LazyGitCurrentFile<CR>", "LazyGit Current File" },
+          c = { "<cmd>LazyGitConfig<CR>", "LazyGit Config" },
+          s = { function() require("gitsigns").stage_hunk() end, "Stage Hunk" },
+          u = { function() require("gitsigns").undo_stage_hunk() end, "Undo Stage Hunk" },
+          r = { function() require("gitsigns").reset_hunk() end, "Reset Hunk" },
+          p = { function() require("gitsigns").preview_hunk() end, "Preview Hunk" },
+          b = { function() require("gitsigns").blame_line() end, "Blame Line" },
+          d = { function() require("gitsigns").diffthis() end, "Diff This" },
+        },
+      }, { prefix = "<leader>" })
+
+      -- Register '?' for command search (quick access)
+      wk.register({
+        ["?"] = { function() require("fzf-lua").commands() end, "Search Commands" },
+        ["C"] = { "<cmd>Commands<CR>", "List All Commands" },
+        ["L"] = { "<cmd>LazyExtras<CR>", "LazyVim Extras" },
       }, { prefix = "<leader>" })
 
       -- Register 'g' prefix group for code navigation with better organization

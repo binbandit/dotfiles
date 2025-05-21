@@ -5,6 +5,17 @@
 -- Add Ctrl+S to save files in all modes
 vim.keymap.set({ "n", "i", "v", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
 
+-- Add Cmd+S to save files in all modes (macOS)
+vim.keymap.set({ "n", "i", "v", "s" }, "<D-s>", "<cmd>w<cr><esc>", { desc = "Save file (macOS)" })
+
+-- Add a keymap to show all available commands
+vim.keymap.set("n", "<leader>fc", function() require("fzf-lua").commands() end, { desc = "Find Commands" })
+vim.keymap.set("n", "<leader>?", function() require("fzf-lua").commands() end, { desc = "Search Commands" })
+vim.keymap.set("n", "<leader>C", "<cmd>Commands<cr>", { desc = "List All Commands" })
+
+-- Add a global keymap for quick access to LazyGit
+vim.keymap.set("n", "<leader>gg", "<cmd>LazyGit<cr>", { desc = "LazyGit" })
+
 -- Add Ctrl+A to select all text
 vim.keymap.set("n", "<C-a>", "ggVG", { desc = "Select all text" })
 vim.keymap.set("i", "<C-a>", "<Esc>ggVG", { desc = "Exit insert mode and select all text" })

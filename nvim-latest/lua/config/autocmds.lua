@@ -11,6 +11,18 @@
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+-- Apply custom highlights whenever colorscheme changes
+vim.api.nvim_create_autocmd("ColorScheme", {
+  desc = "Apply custom highlights after colorscheme changes",
+  group = vim.api.nvim_create_augroup("custom_highlights", { clear = true }),
+  callback = function()
+    -- Apply custom highlights
+    vim.defer_fn(function()
+      require("config.highlights").setup()
+    end, 10)
+  end,
+})
+
 -- Force alpha to show on startup
 vim.api.nvim_create_autocmd("VimEnter", {
   desc = "Start Alpha when vim is opened with no arguments",

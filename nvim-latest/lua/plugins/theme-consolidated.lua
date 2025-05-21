@@ -1,7 +1,8 @@
 return {
-  -- Vague theme
+  -- Vague theme (disabled in favor of oldworld theme)
   {
     "vague2k/vague.nvim",
+    enabled = false,
     priority = 1000,
     lazy = false,
     dependencies = {
@@ -9,28 +10,13 @@ return {
       "rcarriga/nvim-notify",
       "nvim-tree/nvim-web-devicons",
     },
-    config = function()
-      require("vague").setup({
-        -- Adjust the theme as needed
-        transparent = vim.g.transparent_enabled, -- Use the transparent.nvim setting
-        style = "default", -- Choose style: default, warm, cold
-        style = {
-          comments = "italic",
-          strings = "italic",
-          keywords = "none",
-          functions = "none",
-          variables = "none",
-        },
-      })
-      vim.cmd.colorscheme("vague")
-    end,
   },
 
-  -- Configure LazyVim to use vague theme
+  -- Configure LazyVim to use oldworld theme
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "vague",
+      colorscheme = "oldworld",
     },
   },
 

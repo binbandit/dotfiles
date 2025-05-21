@@ -22,6 +22,30 @@ vim.api.nvim_create_user_command("ShowDashboard", function()
   require("alpha").start(true)
 end, { desc = "Force show the dashboard" })
 
+-- Create a user command to show all available commands
+vim.api.nvim_create_user_command("Commands", function()
+  -- Create the user directory if it doesn't exist
+  local user_dir = vim.fn.stdpath("config") .. "/lua/user"
+  if vim.fn.isdirectory(user_dir) == 0 then
+    vim.fn.mkdir(user_dir, "p")
+  end
+
+  -- Show the commands list
+  require("user.commands").list_commands()
+end, { desc = "Show all available commands" })
+
+-- Create a user command to search LazyVim extras
+vim.api.nvim_create_user_command("LazyExtras", function()
+  -- Create the user directory if it doesn't exist
+  local user_dir = vim.fn.stdpath("config") .. "/lua/user"
+  if vim.fn.isdirectory(user_dir) == 0 then
+    vim.fn.mkdir(user_dir, "p")
+  end
+
+  -- Show the LazyVim extras search
+  require("user.lazy-extras").search_extras()
+end, { desc = "Search and manage LazyVim extras" })
+
 -- Create autocmd to hide line numbers in alpha
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "alpha",
