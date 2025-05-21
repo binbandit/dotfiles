@@ -35,6 +35,25 @@ return {
       },
     }
 
+    -- Create a custom component for supermaven status
+    local supermaven_status = function()
+      -- Try to get the supermaven API
+      local ok, api = pcall(require, "supermaven-nvim.api")
+
+      if not ok then
+        return "AI: ?"
+      end
+
+      -- Check if supermaven is running using the API
+      local is_running = api.is_running()
+
+      if is_running then
+        return "%#String#AI: ON%*"  -- Green color for ON
+      else
+        return "%#Error#AI: OFF%*"  -- Red color for OFF
+      end
+    end
+
     require('lualine').setup {
       options = {
         theme = mydark,
@@ -51,7 +70,7 @@ return {
         lualine_a = {'mode'},
         lualine_b = {'branch'},
         lualine_c = {'filename'},
-        lualine_x = {'fileformat', 'filetype'},
+        lualine_x = {supermaven_status, 'fileformat', 'filetype'},
         lualine_y = {'progress'},
         lualine_z = {}
       }
