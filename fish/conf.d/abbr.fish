@@ -70,7 +70,6 @@ abbr glue "/Users/brayden/Developer/go-lang/glue/build/bin/glue"
 abbr squish "/Users/brayden/Developer/go-lang/squish/squish"
 
 abbr x "pnpm dlx"
-abbr tap "/Users/brayden/Developer/rust/tap/target/release/tap"
 abbr src "source ~/.config/fish/config.fish"
 
 abbr gb "go build"
