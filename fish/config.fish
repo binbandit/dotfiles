@@ -36,9 +36,12 @@ if type -q starship
     starship init fish | source
 end
 
-# oii init
-if type -q oii
-    oii init fish | source
+# zoxide init
+if type -q zoxide
+    set -gx _ZO_EXCLUDE_DIRS '**/node_modules/**:**/target/**:**/.git/**:**/tmp/**:**/temp/**:**/.cache/**'
+    zoxide init fish --cmd=cd | source
+    alias oi 'z'
+    alias oii 'zoxide'
 end
 
 # PNPM
@@ -58,7 +61,7 @@ fish_add_path $HOME/.cargo/bin
 set -gx OPENAI_API_KEY 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
 set -gx NODE_TLS_REJECT_UNAUTHORIZED 0
 set -gx SAGE_GITHUB_TOKEN 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
-set -gx HF_TOKEN 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
+set -gx HF_TOKEN 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
 
 # rbenv init
 if type -q rbenv
@@ -88,3 +91,5 @@ end
 #         $HOME/.antheia/start_daemon.sh
 #     end
 # end
+
+set -gx HUGGINGFACE_HUB_TOKEN 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

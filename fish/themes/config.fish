@@ -36,9 +36,12 @@ if type -q starship
     starship init fish | source
 end
 
-# oii init
-if type -q oii
-    oii init fish | source
+# zoxide init
+if type -q zoxide
+    set -gx _ZO_EXCLUDE_DIRS '**/node_modules/**:**/target/**:**/.git/**:**/tmp/**:**/temp/**:**/.cache/**'
+    zoxide init fish --cmd=cd | source
+    alias oi 'z'
+    alias oii 'zoxide'
 end
 
 # PNPM
@@ -88,3 +91,4 @@ end
 #         $HOME/.antheia/start_daemon.sh
 #     end
 # end
+
