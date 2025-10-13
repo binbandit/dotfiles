@@ -351,6 +351,9 @@ pull_interval_minutes = 5
 [hosts."Braydens-MacBook-Pro".fish.env]
 OPENAI_MODEL = "gpt-5-nano"
 
+[hosts."EPZ-D3YJQFV0WJ"]
+roles = ["work", "mac"]
+
 [hosts."work-mac-template"]
 roles = ["work", "mac"]
 
