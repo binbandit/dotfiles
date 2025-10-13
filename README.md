@@ -5,6 +5,7 @@ This repository is rendered and applied by [chezmoi](https://www.chezmoi.io/). T
 - **Fish shell** configuration with host-aware templating, optional corporate proxy support, and automatic `chezmoi` pull on shell startup.
 - **Neovim** configuration managed via `lazy.nvim`, while `bob` handles the runtime (see `~/.config/homebrew/Brewfile` for dependencies).
 - **Rust toolchains** provisioned through `rustup` (installed via Homebrew). The bootstrap script installs stable + nightly along with `rustfmt`, `clippy`, `rust-analyzer`, `rust-src`, docs, the `rustc-codegen-cranelift` nightly component, and the `x86_64-unknown-linux-musl` target.
+- **Python** is supplied via [uv](https://github.com/astral-sh/uv) (no `python@…` Homebrew formula). A run-once installer fetches uv and installs the pinned CPython version (default `3.12`) with `python`/`pip` symlinked into `~/.local/bin`.
 - **Tmux** theme + helper scripts with cross-platform clipboard handling.
 - **Automation** scripts:
   - `chezmoi-sync` background daemon (LaunchAgent on macOS, systemd user service on Linux) that commits & pushes changes and keeps machines in sync.
@@ -53,6 +54,7 @@ The script:
    mise install                               # language runtimes
    ~/.local/bin/chezmoi-sync pull             # first sync
    ```
+   The run-once scripts will install rustup + toolchains and uv + Python automatically; rerun them manually if you ever need to (see `~/.local/share/chezmoi/executable_run_once_after_*.sh.tmpl`).
 
 4. Enable the sync daemon:
    - **macOS**:
