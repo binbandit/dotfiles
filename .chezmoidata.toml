@@ -327,7 +327,6 @@ node = "lts"
 pnpm = "latest"
 go = "latest"
 python = "3.12"
-rust = "stable"
 bun = "latest"
 
 [[defaults.custom_tools.cargo]]

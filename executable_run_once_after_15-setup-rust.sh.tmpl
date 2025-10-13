@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Ensure rustup is available. Prefer the user's PATH, but fall back to the
+# brew-installed rustup-init if rustup isn't configured yet.
+if ! command -v rustup >/dev/null 2>&1; then
+  if ! command -v rustup-init >/dev/null 2>&1 && command -v brew >/dev/null 2>&1; then
+    brew install rustup-init >/dev/null
+  fi
+
+  if command -v rustup-init >/dev/null 2>&1; then
+    rustup-init -y --default-toolchain stable >/dev/null
+  else
+    echo "rustup not found and rustup-init missing; skipping rust toolchain bootstrap." >&2
+    exit 0
+  fi
+fi
+
+export PATH="$HOME/.cargo/bin:$PATH"
+
+toolchains=(stable nightly)
+for tc in "${toolchains[@]}"; do
+  rustup toolchain install "$tc" >/dev/null
+done
+
+# Components to install for each toolchain.
+common_components=(
+  rustfmt
+  clippy
+  rust-analyzer
+  rust-src
+  rust-docs
+)
+
+for component in "${common_components[@]}"; do
+  for tc in "${toolchains[@]}"; do
+    rustup component add --toolchain "$tc" "$component" >/dev/null || true
+  done
+done
+
+# Nightly-only component (ignore failures if unavailable).
+rustup component add --toolchain nightly rustc-codegen-cranelift >/dev/null || true
+
+# Cross targets needed for builds.
+targets=(
+  x86_64-unknown-linux-musl
+)
+for target in "${targets[@]}"; do
+  for tc in "${toolchains[@]}"; do
+    rustup target add --toolchain "$tc" "$target" >/dev/null || true
+  done
+done
+
+# Align default toolchain with prior workflow.
+rustup default nightly >/dev/null
