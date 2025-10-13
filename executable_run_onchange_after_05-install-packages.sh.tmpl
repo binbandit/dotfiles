@@ -8,17 +8,22 @@ fi
 
 case "$(uname -s)" in
   Darwin)
-    if command -v brew >/dev/null 2>&1 && [[ -f "$HOME/.config/homebrew/Brewfile" ]]; then
-      brew bundle --file "$HOME/.config/homebrew/Brewfile"
+    if command -v brew >/dev/null 2>&1; then
+      if [ -f "$HOME/.config/homebrew/Brewfile" ]; then
+        brew bundle --file "$HOME/.config/homebrew/Brewfile"
+      fi
     fi
     ;;
   Linux)
-    if command -v pacman >/dev/null 2>&1 && [[ -f "$HOME/packages-arch.txt" ]]; then
+    if command -v pacman >/dev/null 2>&1 && [ -f "$HOME/packages-arch.txt" ]; then
       sudo pacman -Syu --noconfirm
       sudo pacman -S --needed --noconfirm $(tr '\n' ' ' < "$HOME/packages-arch.txt")
     fi
     ;;
 esac
 
-# Remove this script after it runs to avoid clutter in $HOME.
+if command -v mise >/dev/null 2>&1; then
+  mise install
+fi
+
 rm -- "$0" >/dev/null 2>&1 || true

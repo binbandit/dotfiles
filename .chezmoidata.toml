@@ -267,55 +267,6 @@ expansion = "cargo build"
 name = "x"
 expansion = "pnpm dlx"
 
-[[defaults.fish.abbreviations]]
-name = "src"
-expansion = "source ~/.config/fish/config.fish"
-
-[[defaults.fish.abbreviations]]
-name = "gm"
-expansion = "go mod"
-
-[[defaults.fish.abbreviations]]
-name = "gi"
-expansion = "go install"
-
-[[defaults.fish.abbreviations]]
-name = "gt"
-expansion = "go test"
-
-[[defaults.fish.abbreviations]]
-name = "gmt"
-expansion = "go mod tidy"
-
-[[defaults.fish.abbreviations]]
-name = "l"
-expansion = "eza --icons"
-
-[[defaults.fish.optional_tools]]
-name = "g"
-expansion = "glue"
-command = "glue"
-
-[[defaults.fish.optional_tools]]
-name = "glue"
-expansion = "glue"
-command = "glue"
-
-[[defaults.fish.optional_tools]]
-name = "squish"
-expansion = "~/Developer/go-lang/squish/squish"
-path = "~/Developer/go-lang/squish/squish"
-
-[[defaults.fish.optional_tools]]
-name = "tap"
-expansion = "~/Developer/rust/tap/target/release/tap"
-path = "~/Developer/rust/tap/target/release/tap"
-
-[[defaults.fish.custom_functions]]
-name = "main"
-command = "sg"
-body = "    sg work -f main $argv\n"
-
 [defaults.packages.macos]
 brewfile = ".config/homebrew/Brewfile"
 
