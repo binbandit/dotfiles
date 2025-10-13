@@ -1,0 +1,11 @@
+{{- $data := fromToml (include ".chezmoidata.toml") -}}
+{{- $defaults := $data.defaults | default (dict) -}}
+{{- $host := (index ($data.hosts | default (dict)) .chezmoi.hostname) | default (dict) -}}
+{{- $miseDefaults := (index $defaults "mise") | default (dict) -}}
+{{- $miseHost := (index $host "mise") | default (dict) -}}
+{{- $tools := merge ((index $miseDefaults "tools") | default (dict)) ((index $miseHost "tools") | default (dict)) -}}
+
+[tools]
+{{- range $name := sortAlpha (keys $tools) }}
+{{ $name }} = "{{ index $tools $name }}"
+{{- end }}

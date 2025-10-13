@@ -1,0 +1,54 @@
+{{- $root := . -}}
+{{- $data := fromToml (include ".chezmoidata.toml") -}}
+{{- $defaults := $data.defaults | default (dict) -}}
+{{- $host := (index ($data.hosts | default (dict)) .chezmoi.hostname) | default (dict) -}}
+{{- $fishDefaults := (index $defaults "fish") | default (dict) -}}
+{{- $fishHost := (index $host "fish") | default (dict) -}}
+{{- $defaultAbbrs := (index $fishDefaults "abbreviations") | default (list) -}}
+{{- $hostAbbrs := (index $fishHost "abbreviations") | default (list) -}}
+{{- $defaultOptional := (index $fishDefaults "optional_tools") | default (list) -}}
+{{- $hostOptional := (index $fishHost "optional_tools") | default (list) -}}
+
+# Global abbreviations (defaults)
+{{- range $abbr := $defaultAbbrs }}
+abbr {{ $abbr.name }} '{{ $abbr.expansion }}'
+{{- end }}
+
+# Host-specific abbreviations
+{{- range $abbr := $hostAbbrs }}
+abbr {{ $abbr.name }} '{{ $abbr.expansion }}'
+{{- end }}
+
+# Optional tool-backed abbreviations from defaults
+{{- range $entry := $defaultOptional }}
+{{- if hasKey $entry "command" }}
+if type -q {{ $entry.command }}
+    abbr {{ $entry.name }} '{{ $entry.expansion }}'
+end
+{{- else if hasKey $entry "path" }}
+set -l __abbr_path "{{ $entry.path }}"
+if test (string match -q '~*' $__abbr_path)
+    set __abbr_path (string replace -r '^~' $HOME $__abbr_path)
+end
+if test -x "$__abbr_path"
+    abbr {{ $entry.name }} '{{ $entry.expansion }}'
+end
+{{- end }}
+{{- end }}
+
+# Optional tool-backed abbreviations from host overrides
+{{- range $entry := $hostOptional }}
+{{- if hasKey $entry "command" }}
+if type -q {{ $entry.command }}
+    abbr {{ $entry.name }} '{{ $entry.expansion }}'
+end
+{{- else if hasKey $entry "path" }}
+set -l __abbr_path "{{ $entry.path }}"
+if test (string match -q '~*' $__abbr_path)
+    set __abbr_path (string replace -r '^~' $HOME $__abbr_path)
+end
+if test -x "$__abbr_path"
+    abbr {{ $entry.name }} '{{ $entry.expansion }}'
+end
+{{- end }}
+{{- end }}

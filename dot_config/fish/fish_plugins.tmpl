@@ -1,0 +1,15 @@
+{{- $root := . -}}
+{{- $data := fromToml (include ".chezmoidata.toml") -}}
+{{- $defaults := $data.defaults | default (dict) -}}
+{{- $host := (index ($data.hosts | default (dict)) .chezmoi.hostname) | default (dict) -}}
+{{- $fishDefaults := (index $defaults "fish") | default (dict) -}}
+{{- $fishHost := (index $host "fish") | default (dict) -}}
+{{- $defaultPlugins := (index ((index $fishDefaults "plugins") | default (dict)) "fisherfile") | default (list) -}}
+{{- $hostPlugins := (index ((index $fishHost "plugins") | default (dict)) "fisherfile") | default (list) -}}
+
+{{- range $plugin := $defaultPlugins }}
+{{ $plugin }}
+{{- end -}}
+{{- range $plugin := $hostPlugins }}
+{{ $plugin }}
+{{- end -}}

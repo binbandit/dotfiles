@@ -1,0 +1,24 @@
+{{- $root := . -}}
+{{- $data := fromToml (include ".chezmoidata.toml") -}}
+{{- $defaults := $data.defaults | default (dict) -}}
+{{- $host := (index ($data.hosts | default (dict)) .chezmoi.hostname) | default (dict) -}}
+{{- $fishDefaults := (index $defaults "fish") | default (dict) -}}
+{{- $fishHost := (index $host "fish") | default (dict) -}}
+{{- $defaultFuncs := (index $fishDefaults "custom_functions") | default (list) -}}
+{{- $hostFuncs := (index $fishHost "custom_functions") | default (list) -}}
+
+{{- range $func := $defaultFuncs }}
+if type -q {{ default $func.command $func.name }}
+    function {{ $func.name }}{{ if hasKey $func "description" }} --description '{{ $func.description }}'{{ end }}
+{{ trim $func.body | indent 4 }}
+    end
+end
+{{- end }}
+
+{{- range $func := $hostFuncs }}
+if type -q {{ default $func.command $func.name }}
+    function {{ $func.name }}{{ if hasKey $func "description" }} --description '{{ $func.description }}'{{ end }}
+{{ trim $func.body | indent 4 }}
+    end
+end
+{{- end }}
