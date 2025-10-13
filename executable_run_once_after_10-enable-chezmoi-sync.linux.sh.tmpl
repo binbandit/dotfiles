@@ -12,3 +12,5 @@ fi
 systemctl --user daemon-reload
 systemctl --user enable --now chezmoi-sync.service >/dev/null 2>&1 || true
 systemctl --user enable --now chezmoi-sync-pull.timer >/dev/null 2>&1 || true
+
+rm -- "$0" >/dev/null 2>&1 || true

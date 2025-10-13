@@ -3,7 +3,7 @@
 This repository is rendered and applied by [chezmoi](https://www.chezmoi.io/). The source of truth lives under `~/.local/share/chezmoi` and is pushed to GitHub for multi-device sync. Highlights:
 
 - **Fish shell** configuration with host-aware templating, optional corporate proxy support, and automatic `chezmoi` pull on shell startup.
-- **Neovim** configuration managed via `lazy.nvim`, while `bob` handles the runtime (see `Brewfile` for dependencies).
+- **Neovim** configuration managed via `lazy.nvim`, while `bob` handles the runtime (see `~/.config/homebrew/Brewfile` for dependencies).
 - **Rust toolchains** provisioned through `rustup` (installed via Homebrew). The bootstrap script installs stable + nightly along with `rustfmt`, `clippy`, `rust-analyzer`, `rust-src`, docs, the `rustc-codegen-cranelift` nightly component, and the `x86_64-unknown-linux-musl` target.
 - **Tmux** theme + helper scripts with cross-platform clipboard handling.
 - **Automation** scripts:
@@ -49,7 +49,7 @@ The script:
 
 3. Install tools (after `chezmoi apply`):
    ```bash
-   brew bundle --file "$HOME/Brewfile"        # macOS
+   brew bundle --file "$HOME/.config/homebrew/Brewfile"  # macOS
    mise install                               # language runtimes
    ~/.local/bin/chezmoi-sync pull             # first sync
    ```

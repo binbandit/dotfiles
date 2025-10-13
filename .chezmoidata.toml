@@ -317,7 +317,7 @@ command = "sg"
 body = "    sg work -f main $argv\n"
 
 [defaults.packages.macos]
-brewfile = "Brewfile"
+brewfile = ".config/homebrew/Brewfile"
 
 [defaults.packages.arch]
 pacman_file = "packages-arch.txt"

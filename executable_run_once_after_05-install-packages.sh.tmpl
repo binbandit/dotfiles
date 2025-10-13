@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+OLD_BREWFILE="$HOME/Brewfile"
+if [ -f "$OLD_BREWFILE" ]; then
+  rm -f "$OLD_BREWFILE"
+fi
+
 case "$(uname -s)" in
   Darwin)
-    if command -v brew >/dev/null 2>&1 && [[ -f "$HOME/Brewfile" ]]; then
-      brew bundle --file "$HOME/Brewfile"
+    if command -v brew >/dev/null 2>&1 && [[ -f "$HOME/.config/homebrew/Brewfile" ]]; then
+      brew bundle --file "$HOME/.config/homebrew/Brewfile"
     fi
     ;;
   Linux)
@@ -14,3 +19,6 @@ case "$(uname -s)" in
     fi
     ;;
 esac
+
+# Remove this script after it runs to avoid clutter in $HOME.
+rm -- "$0" >/dev/null 2>&1 || true
