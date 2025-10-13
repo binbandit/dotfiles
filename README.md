@@ -66,9 +66,34 @@ The script:
      ```bash
      systemctl --user daemon-reload
      systemctl --user enable --now chezmoi-sync.service
-     systemctl --user enable --now chezmoi-sync-pull.timer
-     ```
+   systemctl --user enable --now chezmoi-sync-pull.timer
+    ```
 
 Edit templates in `~/.local/share/chezmoi`, run `chezmoi diff` to confirm changes, then commit via the sync daemon or manually with `chezmoi git` commands.
+
+## Host-specific/work-only configuration
+
+To keep corporate or machine-only settings in sync across work devices without affecting personal machines:
+
+1. Tag each host in `.chezmoidata.toml`:
+   ```toml
+   [hosts."Work-MBP"]
+   roles = ["work", "mac"]
+
+   [hosts."Work-Studio"]
+   roles = ["work", "mac"]
+   ```
+2. Gate templates or config snippets on the `work` role, e.g.:
+   ```fish
+   {{- $host := index .chezmoidata.hosts .chezmoi.hostname | default dict -}}
+   {{- if and $host (has $host.roles "work") }}
+   # Work-only Fish config
+   set -gx HTTP_PROXY "http://proxy.corp:8080"
+   {{- end }}
+   ```
+3. For entire files that should exist only on work hosts, store them in `host_Work-MBP/` etc. (`chezmoi add --template --create=host=Work-MBP …`).
+4. Use `chezmoi chattr +private …` when a file must stay local to a single machine.
+
+Follow the usual workflow—edit on the destination, `chezmoi add …`, then commit—knowing that only hosts matching the role render those sections.
 
 Edit templates in `~/.local/share/chezmoi`, run `chezmoi diff` to confirm changes, then commit via the sync daemon or manually with `chezmoi git` commands.
