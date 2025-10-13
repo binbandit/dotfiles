@@ -326,8 +326,10 @@ pacman_file = "packages-arch.txt"
 node = "lts"
 pnpm = "latest"
 go = "latest"
-python = "3.12"
 bun = "latest"
+
+[defaults.uv]
+python_version = "3.12"
 
 [[defaults.custom_tools.cargo]]
 name = "tap"
