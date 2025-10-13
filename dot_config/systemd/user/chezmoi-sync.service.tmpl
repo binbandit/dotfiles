@@ -1,0 +1,15 @@
+{{- if eq .chezmoi.os "linux" }}
+[Unit]
+Description=Chezmoi auto-sync daemon
+After=default.target network-online.target
+
+[Service]
+Type=simple
+Environment=CHEZMOI_SOURCE_DIR={{ joinPath .chezmoi.homeDir ".local/share/chezmoi" }}
+ExecStart={{ joinPath .chezmoi.homeDir ".local/bin/chezmoi-sync" }} watch
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target
+{{- end }}

@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ "$(uname -s)" != "Darwin" ]]; then
+  exit 0
+fi
+
+AGENT="$HOME/Library/LaunchAgents/com.binbandit.chezmoi-sync.plist"
+if [[ ! -f "$AGENT" ]]; then
+  exit 0
+fi
+
+launchctl bootout gui/$(id -u) com.binbandit.chezmoi-sync >/dev/null 2>&1 || true
+launchctl bootstrap gui/$(id -u) "$AGENT"
+launchctl enable gui/$(id -u)/com.binbandit.chezmoi-sync >/dev/null 2>&1 || true
+launchctl kickstart -k gui/$(id -u)/com.binbandit.chezmoi-sync >/dev/null 2>&1 || true

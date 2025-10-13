@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+case "$(uname -s)" in
+  Darwin)
+    if command -v brew >/dev/null 2>&1 && [[ -f "$HOME/Brewfile" ]]; then
+      brew bundle --file "$HOME/Brewfile"
+    fi
+    ;;
+  Linux)
+    if command -v pacman >/dev/null 2>&1 && [[ -f "$HOME/packages-arch.txt" ]]; then
+      sudo pacman -Syu --noconfirm
+      sudo pacman -S --needed --noconfirm $(tr '\n' ' ' < "$HOME/packages-arch.txt")
+    fi
+    ;;
+esac

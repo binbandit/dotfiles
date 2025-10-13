@@ -1,0 +1,19 @@
+{{- if eq .chezmoi.os "linux" }}
+{{- $data := fromToml (include ".chezmoidata.toml") -}}
+{{- $defaults := $data.defaults | default (dict) -}}
+{{- $host := (index ($data.hosts | default (dict)) .chezmoi.hostname) | default (dict) -}}
+{{- $syncDefaults := $defaults.sync | default (dict) -}}
+{{- $syncHost := $host.sync | default (dict) -}}
+{{- $pull := default 10 ($syncHost.pull_interval_minutes | default $syncDefaults.pull_interval_minutes) -}}
+[Unit]
+Description=Chezmoi periodic pull timer
+
+[Timer]
+OnBootSec=2m
+OnUnitActiveSec={{ $pull }}m
+AccuracySec=1m
+Unit=chezmoi-sync-pull.service
+
+[Install]
+WantedBy=timers.target
+{{- end }}

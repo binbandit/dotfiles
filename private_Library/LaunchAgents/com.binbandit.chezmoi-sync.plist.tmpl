@@ -1,0 +1,33 @@
+{{- if eq .chezmoi.os "darwin" }}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>com.binbandit.chezmoi-sync</string>
+    <key>ProgramArguments</key>
+    <array>
+      <string>{{ joinPath .chezmoi.homeDir ".local/bin/chezmoi-sync" }}</string>
+      <string>watch</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <dict>
+      <key>SuccessfulExit</key>
+      <false/>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>{{ joinPath .chezmoi.homeDir "Library/Logs/chezmoi-sync.log" }}</string>
+    <key>StandardErrorPath</key>
+    <string>{{ joinPath .chezmoi.homeDir "Library/Logs/chezmoi-sync.log" }}</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+      <key>PATH</key>
+      <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+      <key>CHEZMOI_SOURCE_DIR</key>
+      <string>{{ joinPath .chezmoi.homeDir ".local/share/chezmoi" }}</string>
+    </dict>
+  </dict>
+</plist>
+{{- end }}

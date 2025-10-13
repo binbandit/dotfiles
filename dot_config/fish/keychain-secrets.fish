@@ -1,0 +1,16 @@
+# Keychain-backed environment variables
+# -------------------------------------
+# Add one line per secret you want exported in every shell.
+# Format:
+#   __load_secret_from_keychain <VAR_NAME> <keychain service name>
+#
+# The defaults below cover typical API tokens. Extend as needed.
+
+__load_secret_from_keychain OPENAI_API_KEY dev.openai.api
+__load_secret_from_keychain SAGE_GITHUB_TOKEN dev.sage.github
+__load_secret_from_keychain HF_TOKEN dev.huggingface.token
+
+# Mirror HF_TOKEN for tooling that expects the alternative variable name.
+if set -q HF_TOKEN
+    set -gx HUGGINGFACE_HUB_TOKEN $HF_TOKEN
+end
