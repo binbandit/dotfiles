@@ -13,7 +13,7 @@ fi
 
 uv python install "$PY_VERSION"
 
-PY_BIN="$(uv python path --python "$PY_VERSION")"
+PY_BIN="$(uv python find "$PY_VERSION" 2>/dev/null || true)"
 if [ -z "$PY_BIN" ] || [ ! -x "$PY_BIN" ]; then
   echo "Failed to locate uv-managed python for version $PY_VERSION" >&2
   exit 1
