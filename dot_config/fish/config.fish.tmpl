@@ -33,9 +33,9 @@ end
 # skipped to keep PATH clean on fresh machines.
 {{- range $p := $defaultPaths }}
 {{- $resolved := "" -}}
-{{- if hasPrefix $p "~" -}}
+{{- if hasPrefix "~" $p -}}
     {{- $resolved = printf "%s%s" $home (trimPrefix "~" $p) -}}
-{{- else if hasPrefix $p "/" -}}
+{{- else if hasPrefix "/" $p -}}
     {{- $resolved = $p -}}
 {{- else -}}
     {{- $resolved = joinPath $home $p -}}
@@ -47,9 +47,9 @@ end
 {{- end }}
 {{- range $p := $hostPaths }}
 {{- $resolved := "" -}}
-{{- if hasPrefix $p "~" -}}
+{{- if hasPrefix "~" $p -}}
     {{- $resolved = printf "%s%s" $home (trimPrefix "~" $p) -}}
-{{- else if hasPrefix $p "/" -}}
+{{- else if hasPrefix "/" $p -}}
     {{- $resolved = $p -}}
 {{- else -}}
     {{- $resolved = joinPath $home $p -}}
@@ -63,9 +63,9 @@ end
 # Export environment variables configured in chezmoidata.
 {{- range $key, $value := $envMap }}
 {{- $val := $value -}}
-{{- if hasPrefix $value "~" -}}
+{{- if hasPrefix "~" $value -}}
     {{- $val = printf "%s%s" $home (trimPrefix "~" $value) -}}
-{{- else if hasPrefix $value "/" -}}
+{{- else if hasPrefix "/" $value -}}
     {{- $val = $value -}}
 {{- end }}
 set -gx {{ $key }} "{{ $val }}"
