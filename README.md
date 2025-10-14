@@ -2,14 +2,11 @@
 
 This repository is rendered and applied by [chezmoi](https://www.chezmoi.io/). The source of truth lives under `~/.local/share/chezmoi` and is pushed to GitHub for multi-device sync. Highlights:
 
-- **Fish shell** configuration with host-aware templating, optional corporate proxy support, and automatic `chezmoi` pull on shell startup.
-- **Neovim** configuration managed via `lazy.nvim`, while `bob` handles the runtime (see `~/.config/homebrew/Brewfile` for dependencies).
-- **Rust toolchains** provisioned through `rustup` (installed via Homebrew). The bootstrap script installs stable + nightly along with `rustfmt`, `clippy`, `rust-analyzer`, `rust-src`, docs, the `rustc-codegen-cranelift` nightly component, and the `x86_64-unknown-linux-musl` target.
-- **Python** is supplied via [uv](https://github.com/astral-sh/uv) (no `python@…` Homebrew formula). A run-once installer fetches uv and installs the pinned CPython version (default `3.12`) with `python`/`pip` symlinked into `~/.local/bin`.
-- **Tmux** theme + helper scripts with cross-platform clipboard handling.
-- **Automation** scripts:
-  - `chezmoi-sync` background daemon (LaunchAgent on macOS, systemd user service on Linux) that commits & pushes changes and keeps machines in sync.
-  - Run-once helpers to bootstrap Homebrew/Arch packages, set up rustup toolchains/components, and install custom Cargo binaries.
+- **Fish shell** configuration driven by `.chezmoidata.toml` so paths, environment variables, PNPM_HOME, and work-only proxy settings stay host-aware while keeping secrets out of the repo. Background sync uses `chezmoi update` when the local watcher is unavailable.
+- **Neovim & Helix** editors are configured (`dot_config/nvim`, `dot_config/helix`) with mise-managed runtimes, while Doom Emacs lives in `dot_doom.d`.
+- **Terminal & editors**: Ghostty shaders/config (`dot_config/ghostty`) and Zed settings (`dot_config/zed`) are now tracked so every machine renders the same UI.
+- **Language toolchains** provisioned via `rustup`, `mise`, and `uv`, with run-once scripts handling rust components, uv Python, and PNPM global packages (e.g. `@openai/codex`).
+- **Automation** lives under `.chezmoiscripts` (`run_once_before`, `run_onchange_after`, `run_after`) so scripts run at the right phase without needing executable prefixes, matching chezmoi’s scripting model. The `chezmoi-sync` LaunchAgent/systemd unit keeps repositories reconciled in the background.
 
 ## Quick bootstrap
 
@@ -54,7 +51,7 @@ The script:
    mise install                               # language runtimes
    ~/.local/bin/chezmoi-sync pull             # first sync
    ```
-   The run-once scripts will install rustup + toolchains and uv + Python automatically; rerun them manually if you ever need to (see `~/.local/share/chezmoi/executable_run_once_after_*.sh.tmpl`).
+   The run-once scripts will install rustup + toolchains and uv + Python automatically; rerun them from `~/.local/share/chezmoi/.chezmoiscripts/run_onchange_after/` and `run_after/` if you ever need to trigger them manually.
 
 4. Enable the sync daemon:
    - **macOS**:
@@ -77,25 +74,32 @@ Edit templates in `~/.local/share/chezmoi`, run `chezmoi diff` to confirm change
 
 To keep corporate or machine-only settings in sync across work devices without affecting personal machines:
 
-1. Tag each host in `.chezmoidata.toml`:
+1. Tag each host in `.chezmoidata.toml` with roles and per-host data. Environment blocks such as `fish.env` let templates inject HTTP proxies and certificate bundles without hard-coding values:
    ```toml
-   [hosts."Work-MBP"]
+   [hosts."EPZ-D3YJQFV0WJ"]
    roles = ["work", "mac"]
 
-   [hosts."Work-Studio"]
-   roles = ["work", "mac"]
+   [hosts."EPZ-D3YJQFV0WJ".fish.env]
+   HTTP_PROXY = "http://localhost:3128"
+   CUSTOM_CERT_BUNDLE_PATH = "/Users/Shared/ca_certs/bundle.pem"
    ```
-2. Gate templates or config snippets on the `work` role, e.g.:
-   ```fish
-   {{- $host := index .chezmoidata.hosts .chezmoi.hostname | default dict -}}
-   {{- if and $host (has $host.roles "work") }}
-   # Work-only Fish config
-   set -gx HTTP_PROXY "http://proxy.corp:8080"
-   {{- end }}
-   ```
-3. For entire files that should exist only on work hosts, store them in `host_Work-MBP/` etc. (`chezmoi add --template --create=host=Work-MBP …`).
-4. Use `chezmoi chattr +private …` when a file must stay local to a single machine.
+   Fish templates merge host data with defaults so machines inherit shared paths while overriding work-only variables.
+2. For entire files that should exist only on a specific host, store them under `host_<Hostname>/` via `chezmoi add --template --create=host=<Hostname> …`.
+3. Use `chezmoi chattr +private …` whenever a file must never leave a machine.
 
-Follow the usual workflow—edit on the destination, `chezmoi add …`, then commit—knowing that only hosts matching the role render those sections.
+Work locally inside `~/.local/share/chezmoi`, review with `chezmoi diff`, then let `chezmoi-sync` push changes or run `chezmoi update --keep-going` when you need to pull fresh state.
 
-Edit templates in `~/.local/share/chezmoi`, run `chezmoi diff` to confirm changes, then commit via the sync daemon or manually with `chezmoi git` commands.
+## Repository layout cheatsheet
+
+- `dot_config/fish/` – templated Fish shell config, abbreviations, and completions. Host-specific paths/env come from `.chezmoidata.toml`.
+- `dot_config/helix/` – Helix `config.toml` and `languages.toml` mirroring the local editor setup.
+- `dot_doom.d/` – Doom Emacs `config.el`, `init.el`, and `packages.el` imported from the pre-chezmoi archive.
+- `dot_config/ghostty/` – Ghostty `config` plus shader library synced from the current machine.
+- `dot_config/zed/` – Zed `settings.json` and `keymap.json`.
+- `.chezmoiscripts/` – Lifecycle scripts (`run_once_before`, `run_onchange_after`, `run_after`) including PNPM global installs and tooling bootstrap.
+
+## Keeping machines in sync
+
+- The LaunchAgent/systemd units installed via `chezmoi-sync` run `chezmoi-sync watch` so edits auto-commit and pull across hosts.
+- When you need to manually reconcile with origin, run `chezmoi update --keep-going` for an idempotent pull + apply cycle.
+- Run `chezmoi doctor` after large changes to confirm binaries and script hooks are ready before applying on another machine.

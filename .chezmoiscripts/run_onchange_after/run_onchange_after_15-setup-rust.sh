@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Ensure rustup is available. Prefer the user's PATH, but fall back to the
-# brew-installed rustup-init if rustup isn't configured yet.
 if ! command -v rustup >/dev/null 2>&1; then
   if ! command -v rustup-init >/dev/null 2>&1 && command -v brew >/dev/null 2>&1; then
     brew install rustup-init >/dev/null
@@ -23,7 +21,6 @@ for tc in "${toolchains[@]}"; do
   rustup toolchain install "$tc" >/dev/null
 done
 
-# Components to install for each toolchain.
 common_components=(
   rustfmt
   clippy
@@ -38,20 +35,12 @@ for component in "${common_components[@]}"; do
   done
 done
 
-# Nightly-only component (ignore failures if unavailable).
 rustup component add --toolchain nightly rustc-codegen-cranelift >/dev/null || true
 
-# Cross targets needed for builds.
-targets=(
-  x86_64-unknown-linux-musl
-)
-for target in "${targets[@]}"; do
+for target in x86_64-unknown-linux-musl; do
   for tc in "${toolchains[@]}"; do
     rustup target add --toolchain "$tc" "$target" >/dev/null || true
   done
 done
 
-# Align default toolchain with prior workflow.
 rustup default nightly >/dev/null
-
-rm -- "$0" >/dev/null 2>&1 || true

@@ -32,7 +32,7 @@ end
 # skipped to keep PATH clean on fresh machines.
 {{- range $p := $defaultPaths }}
 set -l __path "{{ $p }}"
-if test (string match -q '~*' $__path)
+if string match -q '~*' $__path
     set __path (string replace -r '^~' $HOME $__path)
 end
 if test -d $__path
@@ -41,7 +41,7 @@ end
 {{- end }}
 {{- range $p := $hostPaths }}
 set -l __path "{{ $p }}"
-if test (string match -q '~*' $__path)
+if string match -q '~*' $__path
     set __path (string replace -r '^~' $HOME $__path)
 end
 if test -d $__path
@@ -51,8 +51,22 @@ end
 
 # Export environment variables configured in chezmoidata.
 {{- range $key, $value := $envMap }}
-set -gx {{ $key }} "{{ $value }}"
+set -l __value {{ printf "%q" $value }}
+if string match -q '~*' $__value
+    set __value (string replace -r '^~' $HOME $__value)
+end
+set -gx {{ $key }} "$__value"
 {{- end }}
+
+# Ensure PNPM is configured globally per host.
+if not set -q PNPM_HOME
+    set -gx PNPM_HOME "$HOME/Library/pnpm"
+else
+    set -gx PNPM_HOME "$PNPM_HOME"
+end
+if not string match -q -- $PNPM_HOME $PATH
+    set -gx PATH "$PNPM_HOME" $PATH
+end
 
 # HTTP proxy configuration (only emitted when values are populated).
 {{- with $proxyConfig }}
