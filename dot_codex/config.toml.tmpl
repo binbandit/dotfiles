@@ -1,0 +1,17 @@
+{{- $data := fromToml (include ".chezmoidata.toml") -}}
+{{- $host := (index ($data.hosts | default (dict)) .chezmoi.hostname) | default (dict) -}}
+{{- $roles := (index $host "roles") | default (list) -}}
+{{- if has "work" $roles }}
+model = "aipe-gpt-5_v2025-08-07_EASTUS2"
+model_provider = "litellm"
+
+[model_providers.litellm]
+name = "LiteLLM"
+base_url = "https://api.studio.genai.cba"
+env_key = "OPENAI_API_KEY"
+# network tuning overrides
+request_max_retries = 4
+stream_max_retries = 10
+stream_idle_timeout_ms = 300000
+http_headers = { "x-tool" = "Roo Code" }
+{{- end }}

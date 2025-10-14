@@ -20,17 +20,14 @@ exclude = [
 paths = [
   "~/Applications",
   "~/Applications/bin",
-  "~/Applications/nvim/bin",
   "~/Library/Python/3.9/bin",
   "~/.local/bin",
   "~/.local/share/bob/nvim-bin",
   "~/.bin",
-  "~/.cargo/bin",
-  "~/.bun/bin"
+  "~/.cargo/bin"
 ]
 
 [defaults.fish.env]
-BUN_INSTALL = "~/.bun"
 OPENAI_MODEL = "gpt-5-nano"
 OPENAI_URL = "https://api.openai.com/v1/"
 OPENAI_TIMEOUT = "4096"
@@ -282,7 +279,6 @@ pacman_file = "packages-arch.txt"
 node = "lts"
 pnpm = "latest"
 go = "latest"
-bun = "latest"
 
 [defaults.uv]
 python_version = "3.12"
