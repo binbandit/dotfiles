@@ -1,0 +1,8 @@
+sourceDir = "{{ .chezmoi.homeDir }}/.local/share/chezmoi"
+destinationDir = "{{ .chezmoi.homeDir }}"
+workingTree = "{{ .chezmoi.homeDir }}/.local/share/chezmoi"
+stateFile = "{{ .chezmoi.homeDir }}/.config/chezmoi/chezmoistate.boltdb"
+
+[git]
+    autoCommit = false
+    autoPush = false
