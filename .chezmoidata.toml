@@ -28,7 +28,6 @@ paths = [
   "~/Developer/go-lang/stack",
   "~/Developer/go-lang/sparrow/bin",
   "~/Developer/rust/zoop/target/release",
-  "~/Developer/rust/foreach/target/release",
   "~/.bin",
   "~/.cargo/bin",
   "~/.bun/bin"
