@@ -29,7 +29,6 @@ paths = [
   "~/Developer/go-lang/sparrow/bin",
   "~/Developer/rust/zoop/target/release",
   "~/Developer/rust/foreach/target/release",
-  "~/Developer/rust/splat/target/debug",
   "~/.bin",
   "~/.cargo/bin",
   "~/.bun/bin"
