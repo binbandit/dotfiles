@@ -23,9 +23,13 @@ for entry in "${tools[@]}"; do
   fi
 
   if cargo install --list 2>/dev/null | grep -q "^${name} "; then
-    cargo "${args[@]}" --force >/dev/null
+    if ! cargo "${args[@]}" --force >/dev/null 2>&1; then
+      echo "Warning: failed to update cargo tool ${name} from ${git}" >&2
+    fi
   else
-    cargo "${args[@]}" >/dev/null
+    if ! cargo "${args[@]}" >/dev/null 2>&1; then
+      echo "Warning: failed to install cargo tool ${name} from ${git}" >&2
+    fi
   fi
 
 done
