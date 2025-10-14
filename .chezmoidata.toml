@@ -24,7 +24,6 @@ paths = [
   "~/Library/Python/3.9/bin",
   "~/.local/bin",
   "~/.local/share/bob/nvim-bin",
-  "~/.mitm_toolkit/bin",
   "~/.bin",
   "~/.cargo/bin",
   "~/.bun/bin"
