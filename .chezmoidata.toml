@@ -27,7 +27,6 @@ paths = [
   "~/.mitm_toolkit/bin",
   "~/Developer/go-lang/stack",
   "~/Developer/go-lang/sparrow/bin",
-  "~/Developer/rust/zoop/target/release",
   "~/.bin",
   "~/.cargo/bin",
   "~/.bun/bin"
