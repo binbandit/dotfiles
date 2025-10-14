@@ -9,6 +9,7 @@
 __load_secret_from_keychain OPENAI_API_KEY dev.openai.api
 __load_secret_from_keychain SAGE_GITHUB_TOKEN dev.sage.github
 __load_secret_from_keychain HF_TOKEN dev.huggingface.token
+__load_secret_from_keychain ARTIFACTORY_ENTERPRISE_NPM_AUTH_TOKEN dev.artifactory.enterprise.npm
 
 # Mirror HF_TOKEN for tooling that expects the alternative variable name.
 if set -q HF_TOKEN
