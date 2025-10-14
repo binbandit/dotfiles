@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+shopt -s nullglob globstar
 
 REPO="${CHEZMOI_SOURCE_DIR:-$HOME/.local/share/chezmoi}"
 LOCK_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/chezmoi-sync.lock"
@@ -14,8 +15,26 @@ HOSTNAME_SHORT=$(hostname -s 2>/dev/null || hostname)
 {{- $syncHost := (index $host "sync") | default (dict) -}}
 {{- $pullInterval := (index $syncHost "pull_interval_minutes") | default ((index $syncDefaults "pull_interval_minutes") | default 10) -}}
 {{- $debounceMs := (index $syncHost "watcher_debounce_ms") | default ((index $syncDefaults "watcher_debounce_ms") | default 750) -}}
+{{- $autoAddDefaults := (index $syncDefaults "auto_add") | default (dict) -}}
+{{- $autoAddHost := (index $syncHost "auto_add") | default (dict) -}}
 PULL_INTERVAL_MINUTES={{ $pullInterval }}
 WATCHER_DEBOUNCE_MS={{ $debounceMs }}
+AUTO_INCLUDE_PATTERNS=(
+{{- range ((index $autoAddDefaults "include") | default (list)) }}
+  {{ printf "%q" . }}
+{{- end }}
+{{- range ((index $autoAddHost "include") | default (list)) }}
+  {{ printf "%q" . }}
+{{- end }}
+)
+AUTO_EXCLUDE_PATTERNS=(
+{{- range ((index $autoAddDefaults "exclude") | default (list)) }}
+  {{ printf "%q" . }}
+{{- end }}
+{{- range ((index $autoAddHost "exclude") | default (list)) }}
+  {{ printf "%q" . }}
+{{- end }}
+)
 
 log() {
   mkdir -p "$(dirname "$LOG_FILE")"
@@ -93,20 +112,88 @@ _push_impl() {
   return 0
 }
 
+matches_pattern() {
+  local value="$1"
+  shift || true
+  local pattern
+  for pattern in "$@"; do
+    if [[ "$value" == $pattern ]]; then
+      return 0
+    fi
+  done
+  return 1
+}
+
+should_auto_add() {
+  local rel="$1"
+  if [ ${#AUTO_INCLUDE_PATTERNS[@]} -gt 0 ]; then
+    matches_pattern "$rel" "${AUTO_INCLUDE_PATTERNS[@]}" || return 1
+  fi
+  if [ ${#AUTO_EXCLUDE_PATTERNS[@]} -gt 0 ]; then
+    matches_pattern "$rel" "${AUTO_EXCLUDE_PATTERNS[@]}" && return 1
+  fi
+  return 0
+}
+
+handle_destination_event() {
+  local path="$1"
+  local rel="${path#$HOME/}"
+  if [[ "$rel" == "$path" ]]; then
+    rel="${path#/}"
+  fi
+
+  if ! should_auto_add "$rel"; then
+    return 0
+  fi
+
+  sleep "$DEBOUNCE_SECONDS"
+
+  if [ -e "$path" ]; then
+    if [ -d "$path" ]; then
+      if ! chezmoi add --force --recursive "$path" >/dev/null 2>&1; then
+        log "failed to add directory $path"
+      fi
+    else
+      if ! chezmoi add --force "$path" >/dev/null 2>&1; then
+        log "failed to add file $path"
+      fi
+    fi
+  else
+    if ! chezmoi forget "$path" >/dev/null 2>&1; then
+      log "failed to forget $path"
+    fi
+  fi
+
+  sync_push || true
+  return 0
+}
+
 watch_loop() {
   ensure_repo
   local debounce
   debounce=$(awk "BEGIN { printf '%.3f', ${WATCHER_DEBOUNCE_MS}/1000 }")
+  DEBOUNCE_SECONDS="$debounce"
 
   sync_pull || true
 
   if command -v fswatch >/dev/null 2>&1; then
     log "starting fswatch watcher"
-    fswatch -0 -or --event Updated --event Created --event Removed --event Renamed -e "$REPO/.git" "$REPO" | \
-      while IFS= read -r -d '' _; do
-        sleep "$debounce"
-        sync_push || true
-        sync_pull || true
+    local -a watch_targets
+    watch_targets=("$REPO")
+    if [ -d "$HOME/.config" ]; then
+      watch_targets+=("$HOME/.config")
+    fi
+
+    fswatch -0 -r --event Updated --event Created --event Removed --event Renamed -e "$REPO/.git" "${watch_targets[@]}" | \
+      while IFS= read -r -d '' changed; do
+        [ -z "${changed:-}" ] && continue
+        if [[ "$changed" == "$REPO"* ]]; then
+          sleep "$debounce"
+          sync_push || true
+          sync_pull || true
+        else
+          handle_destination_event "$changed" || true
+        fi
       done
   elif command -v inotifywait >/dev/null 2>&1; then
     log "starting inotifywait watcher"

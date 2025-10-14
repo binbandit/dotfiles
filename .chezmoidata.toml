@@ -5,6 +5,17 @@ git_remote = "git@github.com:binbandit/dotfiles.git"
 pull_interval_minutes = 10
 watcher_debounce_ms = 750
 
+[defaults.sync.auto_add]
+include = [
+  ".config/**",
+]
+exclude = [
+  ".config/**/.cache/**",
+  ".config/**/Cache/**",
+  ".config/**/node_modules/**",
+  ".config/**/logs/**",
+]
+
 [defaults.fish]
 paths = [
   "~/Applications",

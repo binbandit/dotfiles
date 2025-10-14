@@ -8,6 +8,7 @@
 {{- $hostPaths := (index $fishHost "paths") | default (list) -}}
 {{- $envMap := merge ((index $fishDefaults "env") | default (dict)) ((index $fishHost "env") | default (dict)) -}}
 {{- $proxyConfig := merge ((index $fishDefaults "proxies") | default (dict)) ((index $fishHost "proxies") | default (dict)) -}}
+{{- $home := .chezmoi.homeDir -}}
 
 if status is-interactive
     # Shell initialization only needed for interactive sessions.
@@ -31,19 +32,29 @@ end
 # Path management driven by chezmoi data. Directories that do not yet exist are
 # skipped to keep PATH clean on fresh machines.
 {{- range $p := $defaultPaths }}
-set -l __path "{{ $p }}"
-if string match -q '~*' $__path
-    set __path (string replace -r '^~' $HOME $__path)
-end
+{{- $resolved := "" -}}
+{{- if hasPrefix $p "~" -}}
+    {{- $resolved = printf "%s%s" $home (trimPrefix "~" $p) -}}
+{{- else if hasPrefix $p "/" -}}
+    {{- $resolved = $p -}}
+{{- else -}}
+    {{- $resolved = joinPath $home $p -}}
+{{- end }}
+set -l __path "{{ $resolved }}"
 if test -d $__path
     fish_add_path $__path
 end
 {{- end }}
 {{- range $p := $hostPaths }}
-set -l __path "{{ $p }}"
-if string match -q '~*' $__path
-    set __path (string replace -r '^~' $HOME $__path)
-end
+{{- $resolved := "" -}}
+{{- if hasPrefix $p "~" -}}
+    {{- $resolved = printf "%s%s" $home (trimPrefix "~" $p) -}}
+{{- else if hasPrefix $p "/" -}}
+    {{- $resolved = $p -}}
+{{- else -}}
+    {{- $resolved = joinPath $home $p -}}
+{{- end }}
+set -l __path "{{ $resolved }}"
 if test -d $__path
     fish_add_path $__path
 end
@@ -51,11 +62,13 @@ end
 
 # Export environment variables configured in chezmoidata.
 {{- range $key, $value := $envMap }}
-set -l __value {{ printf "%q" $value }}
-if string match -q '~*' $__value
-    set __value (string replace -r '^~' $HOME $__value)
-end
-set -gx {{ $key }} "$__value"
+{{- $val := $value -}}
+{{- if hasPrefix $value "~" -}}
+    {{- $val = printf "%s%s" $home (trimPrefix "~" $value) -}}
+{{- else if hasPrefix $value "/" -}}
+    {{- $val = $value -}}
+{{- end }}
+set -gx {{ $key }} "{{ $val }}"
 {{- end }}
 
 # Ensure PNPM is configured globally per host.
