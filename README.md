@@ -7,6 +7,7 @@ This repository is rendered and applied by [chezmoi](https://www.chezmoi.io/). T
 - **Terminal & editors**: Ghostty shaders/config (`dot_config/ghostty`) and Zed settings (`dot_config/zed`) are now tracked so every machine renders the same UI.
 - **Language toolchains** provisioned via `rustup`, `mise`, and `uv`, with run-once scripts handling rust components, uv Python, and PNPM global packages (e.g. `@openai/codex`).
 - **Automation** lives under `.chezmoiscripts` (`run_once_before`, `run_onchange_after`, `run_after`) so scripts run at the right phase without needing executable prefixes, matching chezmoi’s scripting model. The `chezmoi-sync` LaunchAgent/systemd unit keeps repositories reconciled in the background and now watches managed configs (e.g. `~/.config/nvim`, `~/.config/helix`, `~/.config/ghostty`) for changes, auto-running `chezmoi add`/`forget` before committing and pushing.
+- **Manual sync helper**: A Fish function `chezsync` is available for one-off syncs. It runs `chezmoi-sync pull`/`push` (or `chezmoi update` + push fallback) so you can trigger a full round-trip with a single command.
 
 ## Quick bootstrap
 
