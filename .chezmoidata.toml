@@ -25,7 +25,6 @@ paths = [
   "~/.local/bin",
   "~/.local/share/bob/nvim-bin",
   "~/.mitm_toolkit/bin",
-  "~/Developer/go-lang/stack",
   "~/.bin",
   "~/.cargo/bin",
   "~/.bun/bin"
