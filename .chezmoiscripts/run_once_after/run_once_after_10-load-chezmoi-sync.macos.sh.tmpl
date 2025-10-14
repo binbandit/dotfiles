@@ -11,8 +11,12 @@ if [[ ! -f "$AGENT" ]]; then
 fi
 
 launchctl bootout gui/$(id -u) com.binbandit.chezmoi-sync >/dev/null 2>&1 || true
-launchctl bootstrap gui/$(id -u) "$AGENT"
-launchctl enable gui/$(id -u)/com.binbandit.chezmoi-sync >/dev/null 2>&1 || true
-launchctl kickstart -k gui/$(id -u)/com.binbandit.chezmoi-sync >/dev/null 2>&1 || true
+if launchctl bootstrap gui/$(id -u) "$AGENT"; then
+  launchctl enable gui/$(id -u)/com.binbandit.chezmoi-sync >/dev/null 2>&1 || true
+  launchctl kickstart -k gui/$(id -u)/com.binbandit.chezmoi-sync >/dev/null 2>&1 || true
+  rm -- "$0" >/dev/null 2>&1 || true
+  exit 0
+fi
 
-rm -- "$0" >/dev/null 2>&1 || true
+echo "chezmoi-sync: launchctl bootstrap failed (continuing without enabling agent)" >&2
+exit 0
