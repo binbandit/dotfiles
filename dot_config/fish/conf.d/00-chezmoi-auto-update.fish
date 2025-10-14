@@ -6,9 +6,8 @@ if status is-interactive
             # Run the pull/apply step asynchronously so shell startup stays fast.
             command nohup chezmoi-sync pull >/dev/null 2>&1 &
         else if type -q chezmoi
-            # Fallback: best-effort pull/apply using chezmoi directly.
-            command nohup chezmoi git pull --rebase --autostash --quiet >/dev/null 2>&1 &
-            command nohup chezmoi apply --force --keep-going >/dev/null 2>&1 &
+            # Fallback: use chezmoi's built-in update command to pull and apply.
+            command nohup chezmoi update --keep-going --no-pager >/dev/null 2>&1 &
         end
     end
 end

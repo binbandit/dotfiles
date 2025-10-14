@@ -30,7 +30,6 @@ paths = [
 
 [defaults.fish.env]
 BUN_INSTALL = "~/.bun"
-PNPM_HOME = "~/Library/pnpm"
 OPENAI_MODEL = "gpt-5-nano"
 OPENAI_URL = "https://api.openai.com/v1/"
 OPENAI_TIMEOUT = "4096"
@@ -267,6 +266,11 @@ expansion = "cargo build"
 name = "x"
 expansion = "pnpm dlx"
 
+[defaults.pnpm]
+global_packages = [
+  "@openai/codex",
+]
+
 [defaults.packages.macos]
 brewfile = ".config/homebrew/Brewfile"
 
@@ -306,6 +310,23 @@ OPENAI_MODEL = "gpt-5-nano"
 
 [hosts."EPZ-D3YJQFV0WJ"]
 roles = ["work", "mac"]
+
+[hosts."EPZ-D3YJQFV0WJ".fish.env]
+HTTP_PROXY = "http://localhost:3128"
+HTTPS_PROXY = "http://localhost:3128"
+ALL_PROXY = "http://localhost:3128"
+http_proxy = "http://localhost:3128"
+https_proxy = "http://localhost:3128"
+all_proxy = "http://localhost:3128"
+CUSTOM_CERT_BUNDLE_PATH = "/Users/Shared/ca_certs/bundle.pem"
+AWS_CA_BUNDLE = "/Users/Shared/ca_certs/bundle.pem"
+CLOUDSDK_AUTH_CORE_CUSTOM_CA_CERTS_FILE = "/Users/Shared/ca_certs/bundle.pem"
+CURL_CA_BUNDLE = "/Users/Shared/ca_certs/bundle.pem"
+GIT_SSL_CAINFO = "/Users/Shared/ca_certs/bundle.pem"
+NODE_EXTRA_CA_CERTS = "/Users/Shared/ca_certs/bundle.pem"
+PIP_CERT = "/Users/Shared/ca_certs/bundle.pem"
+REQUESTS_CA_BUNDLE = "/Users/Shared/ca_certs/bundle.pem"
+SSL_CERT_FILE = "/Users/Shared/ca_certs/bundle.pem"
 
 [hosts."work-mac-template"]
 roles = ["work", "mac"]

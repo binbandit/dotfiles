@@ -2,9 +2,7 @@
 set -euo pipefail
 
 OLD_BREWFILE="$HOME/Brewfile"
-if [ -f "$OLD_BREWFILE" ]; then
-  rm -f "$OLD_BREWFILE"
-fi
+[ -f "$OLD_BREWFILE" ] && rm -f "$OLD_BREWFILE"
 
 case "$(uname -s)" in
   Darwin)
@@ -20,10 +18,10 @@ case "$(uname -s)" in
       sudo pacman -S --needed --noconfirm $(tr '\n' ' ' < "$HOME/packages-arch.txt")
     fi
     ;;
-esac
+  *)
+    ;;
+ esac
 
 if command -v mise >/dev/null 2>&1; then
   mise install
 fi
-
-rm -- "$0" >/dev/null 2>&1 || true
