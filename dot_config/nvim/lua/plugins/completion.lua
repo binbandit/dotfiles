@@ -1,5 +1,6 @@
 local env = require("config.env")
 local use_supermaven = env.uses_supermaven()
+local low_power = env.is_low_power()
 
 ---@type LazySpec[]
 local plugins = {
@@ -28,9 +29,9 @@ local plugins = {
         },
       },
       fuzzy = {
-        implementation = "rust",
+        implementation = low_power and "lua" or "rust",
         frecency = {
-          enabled = true,
+          enabled = not low_power,
           path = vim.fn.stdpath("state") .. "/blink-cmp/frecency/frecency.dat",
         },
       },
