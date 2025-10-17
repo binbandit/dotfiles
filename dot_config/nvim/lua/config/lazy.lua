@@ -1,3 +1,5 @@
+local env = require("config.env")
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -27,7 +29,7 @@ require("lazy").setup({
     notify = false,
   },
   checker = {
-    enabled = true,
+    enabled = not env.is_low_power(),
     notify = true,
     frequency = 60 * 60 * 24, -- daily
   },

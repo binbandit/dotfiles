@@ -90,7 +90,6 @@ return {
     dependencies = {
       {
         "OXY2DEV/markview.nvim",
-        lazy = false,
         opts = {},
       },
     },

@@ -1,3 +1,5 @@
+local env = require("config.env")
+
 ---@type LazySpec
 return {
   {
@@ -23,16 +25,18 @@ return {
     priority = 1000,
     lazy = false,
     ---@type snacks.Config
-    opts = {
-      bigfile = { enabled = true },
-      dim = { enabled = true },
-      bufdelete = { enabled = true },
-      dashboard = {
-        enabled = true,
-        width = 100,
-        sections = {
-          {
-            text = [[
+    opts = function()
+      local low_power = env.is_low_power()
+      local opts = {
+        bigfile = { enabled = true },
+        dim = { enabled = true },
+        bufdelete = { enabled = true },
+        dashboard = {
+          enabled = true,
+          width = 100,
+          sections = {
+            {
+              text = [[
          .m.                                   ,_
          ' ;M;                                ,;m `
            ;M;.           ,      ,           ;SMM;
@@ -65,7 +69,7 @@ return {
                         |. ;  ; (. ;  ;      _.-.         ;;
            .-----..__  /   ;  ;   ;' ;\  _.-" .- `.      ;;
          ;' ___      `*;   `; ';  ;  ; ;'  .-'    :      ;
-         ;     """*-.   `.  ;  ;  ;  ; ' ,'      /       |
+        ;     """*-.   `.  ;  ;  ;  ; ' ,'      /       |
          ',          `-_    (.--',`--'..'      .'        ',
            `-_          `*-._'.\;||\)     ,'
               `"*-._        "*-ll_ll'l    ,'
@@ -76,35 +80,50 @@ return {
             `+   .-/                 ".\
               `" /                    "'
 ]],
-            hl = "header",
-            padding = 1,
-            align = "left",
+              hl = "header",
+              padding = 1,
+              align = "left",
+            },
+            { section = "keys", gap = 1, padding = 1 },
           },
-          { section = "keys", gap = 1, padding = 1 },
-        },
-        keys = {
-          {
-            key = "ff",
-            desc = "Find files",
-            action = function()
-              require("fff").find_files()
-            end,
+          keys = {
+            {
+              key = "ff",
+              desc = "Find files",
+              action = function()
+                require("fff").find_files()
+              end,
+            },
           },
         },
-      },
-      indent = { enabled = true },
-      image = { enabled = true },
-      input = { enabled = true },
-      notifier = { enabled = true },
-      quickfile = { enabled = true },
-      scroll = { enabled = true },
-      statuscolumn = { enabled = true },
-      toggle = { enabled = true },
-      words = { enabled = true },
-      zen = { enabled = true },
-      terminal = { enabled = true },
-      lazygit = { enabled = true, configure = true },
-    },
+        indent = { enabled = true },
+        image = { enabled = true },
+        input = { enabled = true },
+        notifier = { enabled = true },
+        quickfile = { enabled = true },
+        scroll = { enabled = true },
+        statuscolumn = { enabled = true },
+        toggle = { enabled = true },
+        words = { enabled = true },
+        zen = { enabled = true },
+        terminal = { enabled = true },
+        lazygit = { enabled = true, configure = true },
+      }
+
+      if low_power then
+        opts.dashboard.enabled = false
+        opts.dim.enabled = false
+        opts.indent.enabled = false
+        opts.image.enabled = false
+        opts.scroll.enabled = false
+        opts.statuscolumn.enabled = false
+        opts.words.enabled = false
+        opts.zen.enabled = false
+        opts.terminal.enabled = false
+      end
+
+      return opts
+    end,
     config = function(_, opts)
       require("snacks").setup(opts)
     end,
@@ -132,6 +151,9 @@ return {
   {
     "mluders/comfy-line-numbers.nvim",
     lazy = false,
+    enabled = function()
+      return not env.is_low_power()
+    end,
     opts = {
       target_spacing = 4,
       target_clamp = true,
@@ -141,7 +163,35 @@ return {
       hidden_buffer_types = { "terminal", "nofile" },
     },
     config = function(_, opts)
-      require("comfy-line-numbers").setup(opts)
+      local comfy = require("comfy-line-numbers")
+      local original_enable = comfy.enable_line_numbers
+      local original_disable = comfy.disable_line_numbers
+
+      local function set_arrow_mappings()
+        for index, label in ipairs(comfy.config.labels) do
+          vim.keymap.set({ "n", "v", "o" }, label .. "<Up>", index .. "k", { noremap = true })
+          vim.keymap.set({ "n", "v", "o" }, label .. "<Down>", index .. "j", { noremap = true })
+        end
+      end
+
+      local function delete_arrow_mappings()
+        for _, label in ipairs(comfy.config.labels) do
+          pcall(vim.keymap.del, { "n", "v", "o" }, label .. "<Up>")
+          pcall(vim.keymap.del, { "n", "v", "o" }, label .. "<Down>")
+        end
+      end
+
+      comfy.enable_line_numbers = function()
+        original_enable()
+        set_arrow_mappings()
+      end
+
+      comfy.disable_line_numbers = function()
+        original_disable()
+        delete_arrow_mappings()
+      end
+
+      comfy.setup(opts)
     end,
   },
   {
