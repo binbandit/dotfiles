@@ -28,6 +28,7 @@ paths = [
 ]
 
 [defaults.fish.env]
+BUN_INSTALL = "~/.bun"
 OPENAI_MODEL = "gpt-5-nano"
 OPENAI_URL = "https://api.openai.com/v1/"
 OPENAI_TIMEOUT = "4096"
@@ -276,9 +277,10 @@ brewfile = ".config/homebrew/Brewfile"
 pacman_file = "packages-arch.txt"
 
 [defaults.mise.tools]
-node = "lts"
-pnpm = "latest"
+bun = "latest"
 go = "latest"
+node = "25"
+pnpm = "latest"
 
 [defaults.uv]
 python_version = "3.12"
@@ -301,6 +303,22 @@ roles = ["personal", "mac"]
 
 [hosts."Braydens-MacBook-Pro".sync]
 pull_interval_minutes = 5
+
+[hosts."Braydens-MacBook-Pro".fish]
+paths = [
+  "~/Applications/nvim/bin",
+  "~/.mitm_toolkit/bin",
+  "~/Developer/go-lang/stack",
+  "~/Developer/go-lang/sparrow/bin",
+  "~/Developer/rust/zoop/target/release",
+  "~/Developer/rust/foreach/target/release",
+  "~/Developer/zig/zig/build/stage3/bin",
+  "~/Developer/zig/zls/zig-out/bin",
+  "~/.goshed/projects/stacking/bin",
+  "~/Developer/go-lang/strata-latest",
+  "~/Developer/rust/splat/target/debug",
+  "~/.bun/bin"
+]
 
 [hosts."Braydens-MacBook-Pro".fish.env]
 OPENAI_MODEL = "gpt-5-nano"

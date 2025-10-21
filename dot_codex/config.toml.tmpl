@@ -14,4 +14,72 @@ request_max_retries = 4
 stream_max_retries = 10
 stream_idle_timeout_ms = 300000
 http_headers = { "x-tool" = "Roo Code" }
+{{- else }}
+model = "gpt-5-codex"
+model_reasoning_effort = "high"
+
+[projects."/Users/brayden/Developer/rust/sage"]
+trust_level = "trusted"
+
+[projects."/Users/brayden/Developer/ai/Perplexica"]
+trust_level = "trusted"
+
+[projects."/Users/brayden/Developer/native/Chubby Chef"]
+trust_level = "trusted"
+
+[projects."/Users/brayden/Developer/ai/gemma3n-mlcore"]
+trust_level = "trusted"
+
+[projects."/Volumes/Developer Drive/Archives/Google Photos"]
+trust_level = "trusted"
+
+[projects."/Users/brayden/Developer/rust/tap"]
+trust_level = "trusted"
+
+[projects."/Users/brayden/Developer/shooting range/dotfiles"]
+trust_level = "trusted"
+
+[projects."/Users/brayden/.config/nvim"]
+trust_level = "trusted"
+
+[projects."/Users/brayden"]
+trust_level = "trusted"
+
+[projects."/Users/brayden/Developer/rust/hush-test"]
+trust_level = "trusted"
+
+[projects."/Users/brayden/Developer/rust/playground"]
+trust_level = "trusted"
+
+[projects."/Users/brayden/Developer/shooting range/linear-work"]
+trust_level = "trusted"
+
+[projects."/Users/brayden/Developer/rust/sage-copy"]
+trust_level = "trusted"
+
+[projects."/Users/brayden/Developer/rust/ghtui"]
+trust_level = "trusted"
+
+[projects."/Users/brayden/Developer/systems/country-pr-ban"]
+trust_level = "trusted"
+
+[projects."/Users/brayden/Developer/systems/hacktober"]
+trust_level = "trusted"
+
+[projects."/Users/brayden/Developer/rust/nargo"]
+trust_level = "trusted"
+
+[projects."/Users/brayden/.config/fish"]
+trust_level = "trusted"
+
+[projects."/Users/brayden/Developer/ai/tomorow-ai-binbandit"]
+trust_level = "trusted"
+
+[mcp_servers.fetch]
+command = "uvx"
+args = ["mcp-server-fetch"]
+
+[mcp_servers.linear]
+command = "npx"
+args = ["-y", "mcp-remote", "https://mcp.linear.app/sse"]
 {{- end }}

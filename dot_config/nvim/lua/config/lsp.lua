@@ -1,6 +1,7 @@
 local M = {}
 
 local schemas = require("config.lsp.schemas")
+local python = require("config.python")
 
 local cached_capabilities
 local format_augroup = vim.api.nvim_create_augroup("LspFormatOnSave", {})
@@ -222,7 +223,13 @@ M.servers = {
   },
   -- typescript handled by typescript-tools.nvim
   gopls = {},
-  pyright = {},
+  pyright = (function()
+    return {
+      settings = python.pyright_settings(),
+      on_new_config = python.pyright_on_new_config,
+    }
+  end)(),
+  ruff_lsp = {},
   jsonls = {
     settings = schemas.json(),
   },

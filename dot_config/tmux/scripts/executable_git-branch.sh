@@ -6,6 +6,7 @@ if [ -z "$pane_path" ]; then
   exit 0
 fi
 
+# Resolve to absolute path without following symlinks aggressively
 if command -v realpath >/dev/null 2>&1; then
   pane_path=$(realpath "$pane_path" 2>/dev/null || echo "$pane_path")
 fi
@@ -21,6 +22,6 @@ while [ "$pane_path" != "/" ] && [ -n "$pane_path" ]; do
     exit 0
   fi
   pane_path=$(dirname "$pane_path")
-done
+fi
 
 exit 0
