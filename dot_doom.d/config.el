@@ -293,3 +293,4 @@
 (advice-add 'move-text-down :after 'indent-region-advice)
 
 ;; Adding custom ZLS
+(setq lsp-zig-zls-executable "~/Applications/zls/zig-out/bin/zls")
