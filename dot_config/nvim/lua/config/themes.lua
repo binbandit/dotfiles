@@ -1,12 +1,13 @@
 local M = {}
 
 local theme_registry = {
+  ["nightingale"] = { plugin = "nightingale", colorscheme = "nightingale" },
   ["jellybeans"] = { plugin = "jellybeans", colorscheme = "jellybeans" },
   ["rose-pine"] = { plugin = "rose-pine", colorscheme = "rose-pine" },
   ["backpack"] = { plugin = "backpack", colorscheme = "backpack" },
 }
 
-local order = { "jellybeans", "rose-pine", "backpack" }
+local order = { "nightingale", "jellybeans", "rose-pine", "backpack" }
 
 local function ensure_loaded(name)
   local entry = theme_registry[name]
