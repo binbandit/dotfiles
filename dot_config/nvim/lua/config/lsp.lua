@@ -229,7 +229,7 @@ M.servers = {
       on_new_config = python.pyright_on_new_config,
     }
   end)(),
-  ruff_lsp = {},
+  ruff = {},
   jsonls = {
     settings = schemas.json(),
   },

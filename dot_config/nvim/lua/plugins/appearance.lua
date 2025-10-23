@@ -190,21 +190,30 @@ return {
     },
   },
   {
-    "WTFox/jellybeans.nvim",
-    name = "jellybeans",
+    "DanilaMihailov/beacon.nvim",
+    event = "VeryLazy",
+  },
+  {
+    "xeind/nightingale.nvim",
+    name = "nightingale",
     lazy = false,
     priority = 1000,
+    dependencies = { "rktjmp/lush.nvim" },
     opts = {
       transparent = true,
-      italics = true,
-      bold = true,
-      plugins = { auto = true },
+      plugins = {
+        ["nvim-treesitter"] = true,
+        ["nvim-cmp"] = true,
+      },
     },
     config = function(_, opts)
-      require("jellybeans").setup(opts)
+      require("nightingale").setup(opts)
       local themes = require("config.themes")
-      themes.apply("jellybeans")
+      themes.apply("nightingale")
       vim.keymap.set("n", "<leader>ut", themes.cycle, { desc = "Cycle theme", silent = true })
+      vim.keymap.set("n", "<leader>un", function()
+        themes.apply("nightingale")
+      end, { desc = "Use Nightingale", silent = true })
       vim.keymap.set("n", "<leader>uj", function()
         themes.apply("jellybeans")
       end, { desc = "Use Jellybeans", silent = true })
@@ -214,6 +223,19 @@ return {
       vim.keymap.set("n", "<leader>ub", function()
         themes.apply("backpack")
       end, { desc = "Use Backpack", silent = true })
+    end,
+  },
+  {
+    "WTFox/jellybeans.nvim",
+    name = "jellybeans",
+    opts = {
+      transparent = true,
+      italics = true,
+      bold = true,
+      plugins = { auto = true },
+    },
+    config = function(_, opts)
+      require("jellybeans").setup(opts)
     end,
   },
   {

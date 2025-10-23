@@ -3,10 +3,12 @@
   // GENERAL EDITOR SETTINGS
   // =============================================================================
 
+  "helix_mode": false,
+  "disable_ai": false,
   "buffer_font_weight": 700.0,
   "ui_font_weight": 400.0,
   "features": {
-    "edit_prediction_provider": "zed"
+    "edit_prediction_provider": "supermaven"
   },
   "auto_update": true,
   "autosave": "on_focus_change",
@@ -19,8 +21,8 @@
   // VISUAL THEME & APPEARANCE
   // =============================================================================
 
-  "icon_theme": "Catppuccin Mocha",
-  "theme": "Catppuccin Espresso (Blur) [Heavy]",
+  "icon_theme": "Zed (Default)",
+  "theme": "Dracula Light (Alucard",
 
   // =============================================================================
   // FONTS & TEXT RENDERING
