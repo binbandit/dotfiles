@@ -152,6 +152,37 @@ return {
     },
   },
   {
+    "lvimuser/lsp-inlayhints.nvim",
+    event = "LspAttach",
+    opts = {
+      enabled_at_startup = true,
+      inlay_hints = {
+        highlight = "LspInlayHint",
+      },
+    },
+    config = function(_, opts)
+      local ih = require("lsp-inlayhints")
+      ih.setup(opts)
+
+      local group = vim.api.nvim_create_augroup("LspInlayHintsAttach", { clear = true })
+      vim.api.nvim_create_autocmd("LspAttach", {
+        group = group,
+        callback = function(args)
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if not client then
+            return
+          end
+
+          if vim.lsp.inlay_hint then
+            pcall(vim.lsp.inlay_hint.enable, false, { bufnr = args.buf })
+          end
+
+          ih.on_attach(client, args.buf)
+        end,
+      })
+    end,
+  },
+  {
     "pmizio/typescript-tools.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
     ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
