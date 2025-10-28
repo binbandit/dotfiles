@@ -281,6 +281,8 @@ bun = "latest"
 go = "latest"
 node = "25"
 pnpm = "latest"
+"npm:@openai/codex" = "latest"
+"npm:@anthropic-ai/claude-code" = "latest"
 
 [defaults.uv]
 python_version = "3.12"
