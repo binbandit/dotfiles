@@ -2,7 +2,6 @@ local M = {}
 
 local schemas = require("config.lsp.schemas")
 local python = require("config.python")
-require("config.inlay_hints").setup()
 
 local cached_capabilities
 local format_augroup = vim.api.nvim_create_augroup("LspFormatOnSave", {})
@@ -45,10 +44,6 @@ function M.on_attach(client, bufnr)
     client.server_capabilities.documentRangeFormattingProvider = false
   end
 
-  if client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
-    M.toggle_inlay_hints(bufnr, true)
-  end
-
   vim.api.nvim_clear_autocmds({ group = format_augroup, buffer = bufnr })
   vim.api.nvim_create_autocmd("BufWritePre", {
     group = format_augroup,
@@ -62,36 +57,23 @@ function M.on_attach(client, bufnr)
 end
 
 function M.toggle_inlay_hints(bufnr, force_state)
-  bufnr = bufnr or vim.api.nvim_get_current_buf()
-
-  local inlay_hint = vim.lsp.inlay_hint
-  if not inlay_hint then
+  local ok, inlayhints = pcall(require, "lsp-inlayhints")
+  if not ok then
     return
   end
 
-  local function current_state()
-    local ok, value = pcall(vim.api.nvim_buf_get_var, bufnr, "inlay_hints_enabled")
-    if ok then
-      return value
+  bufnr = bufnr or vim.api.nvim_get_current_buf()
+
+  if force_state ~= nil then
+    if force_state then
+      inlayhints.show(bufnr)
+    else
+      inlayhints.reset(bufnr)
     end
-    if type(inlay_hint) == "table" and type(inlay_hint.is_enabled) == "function" then
-      return inlay_hint.is_enabled({ bufnr = bufnr })
-    end
-    return false
+    return
   end
 
-  local new_state = force_state
-  if new_state == nil then
-    new_state = not current_state()
-  end
-
-  if type(inlay_hint) == "function" then
-    pcall(inlay_hint, bufnr, new_state)
-  elseif type(inlay_hint.enable) == "function" then
-    pcall(inlay_hint.enable, new_state, { bufnr = bufnr })
-  end
-
-  pcall(vim.api.nvim_buf_set_var, bufnr, "inlay_hints_enabled", new_state)
+  inlayhints.toggle()
 end
 
 local function supports_method(bufnr, method)
