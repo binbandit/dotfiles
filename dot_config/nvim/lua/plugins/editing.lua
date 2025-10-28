@@ -13,11 +13,17 @@ return {
     event = "InsertEnter",
     opts = {
       check_ts = true,
-      map_cr = false,
+      map_cr = true,
       disable_filetype = { "TelescopePrompt", "oil" },
     },
     config = function(_, opts)
-      require("nvim-autopairs").setup(opts)
+      local autopairs = require("nvim-autopairs")
+      autopairs.setup(opts)
+      local ok_lazy, lazy = pcall(require, "lazy")
+      if ok_lazy and not package.loaded["blink.cmp"] then
+        lazy.load({ plugins = { "blink.cmp" } })
+      end
+      require("config.autopairs").setup_blink()
     end,
   },
   {

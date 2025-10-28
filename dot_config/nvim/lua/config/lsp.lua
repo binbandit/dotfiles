@@ -2,6 +2,7 @@ local M = {}
 
 local schemas = require("config.lsp.schemas")
 local python = require("config.python")
+require("config.inlay_hints").setup()
 
 local cached_capabilities
 local format_augroup = vim.api.nvim_create_augroup("LspFormatOnSave", {})
@@ -104,10 +105,6 @@ local function supports_method(bufnr, method)
 end
 
 local fix_all_filetypes = {
-  javascript = true,
-  javascriptreact = true,
-  typescript = true,
-  typescriptreact = true,
   json = true,
   jsonc = true,
 }

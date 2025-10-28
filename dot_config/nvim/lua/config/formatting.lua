@@ -67,6 +67,19 @@ local function sanitize_output(output)
   return lines
 end
 
+local function is_effectively_empty(lines)
+  if not lines then
+    return true
+  end
+  if #lines == 0 then
+    return true
+  end
+  if #lines == 1 and lines[1] == "" then
+    return true
+  end
+  return false
+end
+
 function M.maybe_format_with_biome(bufnr)
   bufnr = bufnr or vim.api.nvim_get_current_buf()
 
@@ -90,6 +103,18 @@ function M.maybe_format_with_biome(bufnr)
 
   local formatted_lines = sanitize_output(output)
   if not formatted_lines then
+    return false
+  end
+
+  local current_is_empty = is_effectively_empty(current_lines)
+  local formatted_is_empty = is_effectively_empty(formatted_lines)
+
+  if formatted_is_empty and not current_is_empty then
+    vim.notify(
+      "Biome returned empty output, skipping format to avoid losing changes",
+      vim.log.levels.ERROR,
+      { title = "Biome" }
+    )
     return false
   end
 
