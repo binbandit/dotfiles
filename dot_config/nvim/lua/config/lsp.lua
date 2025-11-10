@@ -1,7 +1,6 @@
 local M = {}
 
 local schemas = require("config.lsp.schemas")
-local python = require("config.python")
 
 local cached_capabilities
 local format_augroup = vim.api.nvim_create_augroup("LspFormatOnSave", {})
@@ -56,24 +55,13 @@ function M.on_attach(client, bufnr)
   pcall(vim.api.nvim_buf_set_var, bufnr, "lsp_keymaps_set", true)
 end
 
-function M.toggle_inlay_hints(bufnr, force_state)
-  local ok, inlayhints = pcall(require, "lsp-inlayhints")
-  if not ok then
+function M.toggle_inlay_hints()
+  if not vim.lsp.inlay_hint then
+    vim.notify("Inlay hints are not available in this version of Neovim.", vim.log.levels.WARN, { title = "LSP" })
     return
   end
-
-  bufnr = bufnr or vim.api.nvim_get_current_buf()
-
-  if force_state ~= nil then
-    if force_state then
-      inlayhints.show(bufnr)
-    else
-      inlayhints.reset(bufnr)
-    end
-    return
-  end
-
-  inlayhints.toggle()
+  
+  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
 end
 
 local function supports_method(bufnr, method)
@@ -152,14 +140,8 @@ function M.format_and_fix(bufnr)
   end
 end
 
-local autocmd_registered = false
 
 function M.setup_autocmd()
-  if autocmd_registered then
-    return
-  end
-
-  autocmd_registered = true
   vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(args)
       local client = vim.lsp.get_client_by_id(args.data.client_id)
@@ -200,14 +182,10 @@ M.servers = {
       },
     },
   },
-  -- typescript handled by typescript-tools.nvim
+  -- TypeScript/JavaScript language server (formerly tsserver)
+  ts_ls = {},
   gopls = {},
-  pyright = (function()
-    return {
-      settings = python.pyright_settings(),
-      on_new_config = python.pyright_on_new_config,
-    }
-  end)(),
+  pyright = {},
   ruff = {},
   jsonls = {
     settings = schemas.json(),

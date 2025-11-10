@@ -6,6 +6,5 @@ return {
   { import = "plugins.syntax" },
   { import = "plugins.completion" },
   { import = "plugins.lsp" },
-  { import = "plugins.python" },
   { import = "plugins.editing" },
 }

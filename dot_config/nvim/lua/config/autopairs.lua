@@ -12,12 +12,6 @@ local filetype_rules = {
       handler = "*",
     },
   },
-  python = {
-    ["("] = {
-      kind = { Kind.Function, Kind.Method },
-      handler = "python",
-    },
-  },
   clojure = {
     ["("] = {
       kind = { Kind.Function, Kind.Method },

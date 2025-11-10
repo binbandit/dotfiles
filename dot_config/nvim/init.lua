@@ -14,5 +14,4 @@ vim.g.loaded_node_provider = 0
 require("config.options")
 require("config.keymaps")
 require("config.autocmds")
-require("config.python").setup()
 require("config.lazy")

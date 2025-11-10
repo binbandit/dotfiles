@@ -16,7 +16,6 @@ M.hostname = current_hostname()
 M.supermaven_hosts = {
   "braydens-macbook-pro",
 }
-M.low_power_hosts = {}
 
 local function matches_any(host, patterns)
   for _, pattern in ipairs(patterns) do
@@ -41,10 +40,7 @@ local function env_truthy(name)
 end
 
 function M.is_low_power()
-  if env_truthy("NVIM_LIGHT_MODE") or env_truthy("NVIM_LOW_POWER") then
-    return true
-  end
-  return matches_any(M.hostname, M.low_power_hosts)
+  return env_truthy("NVIM_LIGHT_MODE") or env_truthy("NVIM_LOW_POWER")
 end
 
 return M

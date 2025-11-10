@@ -6,14 +6,14 @@
 // To see the default key bindings run `zed: open default keymap`
 // from the command palette.
 [
-  {
-    "context": "Workspace",
-    "bindings": {
-      // "shift shift": "file_finder::Toggle"
-      "space f p": "projects::OpenRecent",
-      "cmd-k": ["projects::OpenRecent", { "create_new_window": false }]
-    }
-  },
+  // {
+  //   "context": "Workspace",
+  //   "bindings": {
+  //     // "shift shift": "file_finder::Toggle"
+  //     "space f p": "projects::OpenRecent",
+  //     "cmd-k": ["projects::OpenRecent", { "create_new_window": false }]
+  //   }
+  // },
   {
     "context": "Editor && vim_mode == insert",
     "bindings": {
@@ -80,6 +80,7 @@
 
       // Toggle find file
       "space f f": "file_finder::Toggle",
+      "f f": "file_finder::Toggle",
       "space space": "file_finder::Toggle",
 
       // Open file finder
@@ -120,13 +121,13 @@
     }
   },
   // Toggle Terminal
-  {
-    "context": "Workspace",
-    "bindings": {
-      "ctrl-\\": "terminal_panel::ToggleFocus",
-      "space t": "workspace::NewCenterTerminal"
-    }
-  },
+  // {
+  //   "context": "Workspace",
+  //   "bindings": {
+  //     "ctrl-\\": "terminal_panel::ToggleFocus",
+  //     "space t": "workspace::NewCenterTerminal"
+  //   }
+  // },
   {
     "context": "VimControl && !menu && vim_mode != operator",
     "bindings": {

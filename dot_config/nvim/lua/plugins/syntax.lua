@@ -16,7 +16,6 @@ return {
         "lua",
         "markdown",
         "markdown_inline",
-        "python",
         "rust",
         "toml",
         "tsx",
@@ -27,6 +26,7 @@ return {
       },
       highlight = { enable = true },
       indent = { enable = true },
+      fold = { enable = true },
     },
     config = function(_, opts)
       require("nvim-treesitter.configs").setup(opts)

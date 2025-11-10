@@ -1,9 +1,8 @@
 local env = require("config.env")
 local use_supermaven = env.uses_supermaven()
-local low_power = env.is_low_power()
 
----@type LazySpec[]
-local plugins = {
+---@type LazySpec
+return {
   {
     "saghen/blink.cmp",
     build = "cargo build --release",
@@ -29,9 +28,9 @@ local plugins = {
         },
       },
       fuzzy = {
-        implementation = low_power and "lua" or "rust",
+        implementation = "rust",
         frecency = {
-          enabled = not low_power,
+          enabled = true,
           path = vim.fn.stdpath("state") .. "/blink-cmp/frecency/frecency.dat",
         },
       },
@@ -69,14 +68,12 @@ local plugins = {
           return ""
         end
         return termcodes("<C-]>")
-      end, { expr = true, silent = true, desc = "Supermaven accept suggestion" })
+      end, { expr = true, silent = true, desc = "AI accept suggestion" })
     end,
   },
-}
-
-if not use_supermaven then
-  table.insert(plugins, {
+  {
     "zbirenbaum/copilot.lua",
+    enabled = not use_supermaven,
     cmd = "Copilot",
     event = "InsertEnter",
     opts = {
@@ -102,9 +99,7 @@ if not use_supermaven then
           return ""
         end
         return termcodes("<C-]>")
-      end, { expr = true, silent = true, desc = "Copilot accept suggestion" })
+      end, { expr = true, silent = true, desc = "AI accept suggestion" })
     end,
-  })
-end
-
-return plugins
+  },
+}
