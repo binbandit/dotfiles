@@ -75,33 +75,38 @@ local function dump_table(items)
   return table.concat(result, ",")
 end
 
-local function supermaven_state()
-  local ok, api = pcall(require, "supermaven-nvim.api")
-  if ok then
-    local status_ok, running = pcall(api.is_running)
-    if status_ok then
-      return true, running
+local function ai_state()
+  local env = require("config.env")
+  if env.uses_supermaven() then
+    local ok, api = pcall(require, "supermaven-nvim.api")
+    if ok then
+      local status_ok, running = pcall(api.is_running)
+      if status_ok then
+        return true, running, "supermaven"
+      end
+      return true, false, "supermaven"
     end
-    return true, false
+    return false, false, "supermaven"
+  else
+    local ok, suggestion = pcall(require, "copilot.suggestion")
+    if not ok then return false, false, "copilot" end
+    
+    local enabled = vim.b.copilot_suggestion_auto_trigger ~= false
+    return true, enabled, "copilot"
   end
-  if vim.g.SUPERMAVEN_DISABLED ~= nil then
-    return true, vim.g.SUPERMAVEN_DISABLED == 0
-  end
-  return false, false
 end
 
-local function supermaven_component()
-  return " AI"
-  -- local available, running = supermaven_state()
-  -- if not available then return "" end
-  -- if running then
-  --   return " AI"
-  -- end
-  -- return "AI off"
+local function ai_component()
+  local available, running, ai_type = ai_state()
+  if not available then return "" end
+  if running then
+    return " AI"
+  end
+  return "AI off"
 end
 
-local function supermaven_color()
-  local available, running = supermaven_state()
+local function ai_color()
+  local available, running, ai_type = ai_state()
   if not available then
     return { bg = colors.dim, fg = colors.bg }
   end
@@ -270,12 +275,12 @@ local function build_config()
 
   -- Active right: AI status
   active_right({
-    supermaven_component,
+    ai_component,
     cond = function()
-      local available = select(1, supermaven_state())
+      local available = select(1, ai_state())
       return available
     end,
-    color = supermaven_color,
+    color = ai_color,
     padding = { left = 1, right = 1 },
     separator = { right = separators.right, left = separators.left },
   })

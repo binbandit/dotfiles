@@ -28,7 +28,7 @@ opt.confirm = true
 opt.shortmess:append({ W = true, I = true, c = true })
 opt.fillchars:append({ eob = " ", fold = " ", foldopen = "+", foldclose = "-" })
 opt.foldmethod = "expr"
-opt.foldexpr = "nvim_treesitter#foldexpr()"
+opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 opt.foldenable = true
 opt.foldlevel = 99
 opt.foldlevelstart = 99

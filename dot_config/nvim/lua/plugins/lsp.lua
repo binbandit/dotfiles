@@ -152,73 +152,6 @@ return {
     },
   },
   {
-    "lvimuser/lsp-inlayhints.nvim",
-    event = "LspAttach",
-    opts = {
-      enabled_at_startup = true,
-      inlay_hints = {
-        highlight = "LspInlayHint",
-      },
-    },
-    config = function(_, opts)
-      local ih = require("lsp-inlayhints")
-      ih.setup(opts)
-
-      local group = vim.api.nvim_create_augroup("LspInlayHintsAttach", { clear = true })
-      vim.api.nvim_create_autocmd("LspAttach", {
-        group = group,
-        callback = function(args)
-          local client = vim.lsp.get_client_by_id(args.data.client_id)
-          if not client then
-            return
-          end
-
-          if vim.lsp.inlay_hint then
-            pcall(vim.lsp.inlay_hint.enable, false, { bufnr = args.buf })
-          end
-
-          ih.on_attach(client, args.buf)
-        end,
-      })
-    end,
-  },
-  {
-    "pmizio/typescript-tools.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
-    opts = function()
-      local lsp = require("config.lsp")
-      return {
-        on_attach = function(client, bufnr)
-          client.server_capabilities.documentFormattingProvider = false
-          client.server_capabilities.documentRangeFormattingProvider = false
-          lsp.on_attach(client, bufnr)
-        end,
-        capabilities = lsp.capabilities(),
-        settings = {
-          expose_as_code_action = "all",
-          complete_function_calls = true,
-          tsserver_file_preferences = {
-            includeCompletionsForModuleExports = true,
-            includeCompletionsWithSnippetText = true,
-            includeCompletionsWithClassMemberSnippets = true,
-            includeInlayParameterNameHints = "all",
-            includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-            includeInlayFunctionParameterTypeHints = true,
-            includeInlayVariableTypeHints = true,
-            includeInlayPropertyDeclarationTypeHints = true,
-            includeInlayFunctionLikeReturnTypeHints = true,
-            includeInlayEnumMemberValueHints = true,
-            jsxAttributeCompletionStyle = "auto",
-          },
-        },
-      }
-    end,
-    config = function(_, opts)
-      require("typescript-tools").setup(opts)
-    end,
-  },
-  {
     "saecki/crates.nvim",
     event = { "BufReadPre Cargo.toml" },
     dependencies = { "nvim-lua/plenary.nvim" },
@@ -246,6 +179,13 @@ return {
           vim.api.nvim_buf_set_var(event.buf, "crates_mapped", true)
         end,
       })
+    end,
+  },
+  {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("tiny-inline-diagnostic").setup()
     end,
   },
 }
