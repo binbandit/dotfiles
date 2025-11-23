@@ -14,7 +14,7 @@
   "autosave": "on_focus_change",
   "base_keymap": "Atom",
   "current_line_highlight": "all",
-  "relative_line_numbers": true,
+  "relative_line_numbers": "enabled",
   "soft_wrap": "editor_width",
 
   // =============================================================================
