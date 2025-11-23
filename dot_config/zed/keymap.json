@@ -1,164 +1,209 @@
-// Zed keymap
-//
-// For information on binding keys, see the Zed
-// documentation: https://zed.dev/docs/key-bindings
-//
-// To see the default key bindings run `zed: open default keymap`
-// from the command palette.
 [
-  // {
-  //   "context": "Workspace",
-  //   "bindings": {
-  //     // "shift shift": "file_finder::Toggle"
-  //     "space f p": "projects::OpenRecent",
-  //     "cmd-k": ["projects::OpenRecent", { "create_new_window": false }]
-  //   }
-  // },
+  // 1. Arrow-key-first pane and tab navigation (macOS-friendly)
   {
-    "context": "Editor && vim_mode == insert",
+    "context": "Workspace",
     "bindings": {
-      "j k": "vim::NormalBefore",
-      "j j": "vim::NormalBefore"
-    }
-  },
-
-  {
-    "context": "Editor && (vim_mode == normal || vim_mode == visual) && !VimWaiting && !menu",
-    "bindings": {
-      "space g h d": "editor::ToggleSelectedDiffHunks",
-      "space g l": "editor::CopyPermalinkToLine",
-
-      // Toggle recent projects
-      "space f p": "projects::OpenRecent",
-      "space b": "editor::ToggleGitBlame",
-      "space d": "diagnostics::Deploy",
-      "space o": "tab_switcher::Toggle",
-      "n": "search::SelectNextMatch",
-      "shift-n": "search::SelectPreviousMatch",
-      ", 1": ["pane::ActivateItem", 0],
-      ", 2": ["pane::ActivateItem", 1],
-      ", 3": ["pane::ActivateItem", 2],
-      ", 4": ["pane::ActivateItem", 3],
-      ", 5": ["pane::ActivateItem", 4],
-      ", 6": ["pane::ActivateItem", 5],
-      ", 7": ["pane::ActivateItem", 6],
-      ", 8": ["pane::ActivateItem", 7]
+      // Move focus between splits/docks with Cmd+Opt+Arrow
+      "cmd-alt-left": "workspace::ActivatePaneLeft",
+      "cmd-alt-right": "workspace::ActivatePaneRight",
+      "cmd-alt-up": "workspace::ActivatePaneUp",
+      "cmd-alt-down": "workspace::ActivatePaneDown"
     }
   },
   {
-    "context": "Editor && vim_mode == normal && !VimWaiting && !menu",
+    // Switch tabs in the current pane with Ctrl+Cmd+Arrow
+    "context": "Pane",
     "bindings": {
-      // put key-bindings here if you want them to work only in normal mode
-      // Window movement bindings
-      // Ctrl jklk to move between panes
-      "ctrl-h": "workspace::ActivatePaneLeft",
-      "ctrl-l": "workspace::ActivatePaneRight",
-      "ctrl-k": "workspace::ActivatePaneUp",
-      "ctrl-j": "workspace::ActivatePaneDown",
-
-      // Toggle inlay hints
-      "space t i": "editor::ToggleInlayHints",
-
-      // +LSP
-      "space c a": "editor::ToggleCodeActions",
-      "space .": "editor::ToggleCodeActions",
-      "space c r": "editor::Rename",
-      "g d": "editor::GoToDefinition",
-      "g D": "editor::GoToDefinitionSplit",
-      "g i": "editor::GoToImplementation",
-      "g I": "editor::GoToImplementationSplit",
-      "g t": "editor::GoToTypeDefinition",
-      "g T": "editor::GoToTypeDefinitionSplit",
-      "g r": "editor::FindAllReferences",
-      "] d": "editor::GoToDiagnostic",
-      "[ d": "editor::GoToPreviousDiagnostic",
-      "shift-k": "editor::Hover",
-      "space l f": "editor::Format",
-
-      // Project search
-      "space /": "pane::DeploySearch",
-
-      // Toggle find file
-      "space f f": "file_finder::Toggle",
-      "f f": "file_finder::Toggle",
-      "space space": "file_finder::Toggle",
-
-      // Open file finder
-      "space e": "pane::RevealInProjectPanel",
-      "space w": "workspace::Save",
-      "+ +": "workspace::Save",
-      "g b": "editor::ToggleComments",
-      "space g f": "editor::CopyPermalinkToLine"
+      "cmd-ctrl-left": "pane::ActivatePreviousItem",
+      "cmd-ctrl-right": "pane::ActivateNextItem"
     }
   },
-  // Comment Code
+
+  // 2. Arrow keys behave like a modern editor in Vim mode
   {
-    "context": "Editor && vim_mode == visual && !VimWaiting && !menu",
-    "bindings": {
-      // Visual, visual line & visual block modes
-      "g c": "editor::ToggleComments",
-      "cmd-/": "editor::ToggleComments",
-      "shift-j": "editor::MoveLineDown",
-      "shift-k": "editor::MoveLineUp",
-      "shift-s": "vim::PushAddSurrounds",
-      "shift-x": "vim::Exchange"
-    }
-  },
-  // Rename
-  {
-    "context": "Editor && vim_operator == c",
-    "bindings": {
-      "c": "vim::CurrentLine",
-      "r": "editor::Rename" // zed specific
-    }
-  },
-  // Code Action
-  {
-    "context": "Editor && vim_operator == c",
-    "bindings": {
-      "c": "vim::CurrentLine",
-      "a": "editor::ToggleCodeActions" // zed specific
-    }
-  },
-  // Toggle Terminal
-  // {
-  //   "context": "Workspace",
-  //   "bindings": {
-  //     "ctrl-\\": "terminal_panel::ToggleFocus",
-  //     "space t": "workspace::NewCenterTerminal"
-  //   }
-  // },
-  {
-    "context": "VimControl && !menu && vim_mode != operator",
-    "bindings": {
-      "w": "vim::NextSubwordStart",
-      "b": "vim::PreviousSubwordStart",
-      "e": "vim::NextSubwordEnd",
-      "g e": "vim::PreviousSubwordEnd"
-    }
-  },
-  {
+    // Let arrows wrap across lines; hjkl stay as Vim defaults
+    // (this is the same pattern Zed shows for whichwrap) :contentReference[oaicite:1]{index=1}
     "context": "VimControl && !menu",
     "bindings": {
       "left": "vim::WrappingLeft",
       "right": "vim::WrappingRight",
-      "h": "vim::WrappingLeft",
-      "l": "vim::WrappingRight"
+      "up": "vim::Up",
+      "down": "vim::Down"
+    }
+  },
+
+  // 3. Leader key (<Space>) for normal-mode commands
+  {
+    // Only in full editors, normal mode, no pending operator, and no menu
+    "context": "Editor && mode == full && vim_mode == normal && vim_operator == none && !menu",
+    "bindings": {
+      // Treat <Space> as a leader key (do nothing on its own)
+      "space": null,
+
+      // Saving
+      "space w": "workspace::Save", // <leader>w
+
+      // Fuzzy file finding
+      "space space": "file_finder::Toggle", // <leader><leader>
+      "space f": "file_finder::Toggle", // <leader>f
+
+      // Buffers / tabs
+      "space q": "pane::CloseActiveItem", // close current tab
+      "space b": "pane::AlternateFile", // jump to alternate file
+
+      // Search
+      "space /": "project_search::ToggleFocus", // project search (ripgrep)
+      "space s": "buffer_search::Deploy", // in-buffer search
+
+      // Panels & tooling
+      "space e": "project_panel::ToggleFocus", // project/file tree
+      "space g": "git_panel::ToggleFocus", // git panel
+      "space t": "terminal_panel::ToggleFocus", // terminal
+      "space a": "agent::ToggleFocus", // AI / assistant panel
+      "space d": "diagnostics::Deploy", // diagnostics view
+      "space o": "outline_panel::ToggleFocus", // outline panel
+      "space S": "project_symbols::Toggle", // project-wide symbols
+      "space l": "outline::Toggle" // inline outline toggle
+    }
+  },
+
+  // 4. Make <leader><leader> work even when no editor is open
+  {
+    "context": "EmptyPane || SharedScreen",
+    "bindings": {
+      "space": null,
+      "space space": "file_finder::Toggle"
+    }
+  },
+
+  // 5. Implement `ff` for fuzzy file find without wrecking all `f{char}` motions
+  {
+    // After pressing `f` in Vim normal mode, Vim enters 'waiting' mode.
+    // We bind a second `f` in that waiting state to open the file finder.
+    // This means:
+    //   f d  -> still "find d" on the line
+    //   f f  -> file finder (your beloved `ff`)
+    //
+    // It *does* mean combos like `t f` will now trigger the file finder
+    // (because the second key is `f` while vim_mode == waiting).
+    "context": "Editor && mode == full && vim_mode == waiting && !menu",
+    "bindings": {
+      "f": "file_finder::Toggle"
+    }
+  },
+
+  // 6. Insert-mode convenience: jk to escape
+  {
+    "context": "vim_mode == insert",
+    "bindings": {
+      "j k": "vim::NormalBefore" // jk exits to normal mode
+    }
+  },
+
+  // 7. Optional: Vim quality-of-life tweaks
+  {
+    // Make Y behave like Neovim: yank to end of line
+    "context": "vim_mode == normal && !menu",
+    "bindings": {
+      "shift-y": ["workspace::SendKeystrokes", "y $"]
     }
   },
   {
+    // Visual-mode S adds surrounds instead of substituting
+    "context": "vim_mode == visual",
+    "bindings": {
+      "shift-s": "vim::PushAddSurrounds"
+    }
+  },
+
+  // 8. "Feels like a normal editor" shortcuts that are handy even in Vim mode
+  {
+    "context": "Editor && !menu",
+    "bindings": {
+      "ctrl-f": "buffer_search::Deploy",
+      "ctrl-s": "workspace::Save",
+      "ctrl-a": "editor::SelectAll"
+    }
+  },
+
+  {
+    // Make mini.ai-style textobjects available after operators like
+    // `da`, `di`, `ca`, `ci`, and change-surround (`cs`).
+    //
+    // This does NOT affect normal-mode keys like `f`, etc. It only
+    // runs after you've already typed an operator (`d`, `c`, `y`, `cs`)
+    // and then `a` or `i`.
+    //
+    // Examples this enables:
+    //   - ciQ  / caQ : change inside/around nearest quotes (mini.ai behavior)
+    //   - ciB  / caB : change inside/around nearest brackets (mini.ai behavior)
+    //   - cia  / daa : change/delete around a function argument
+    //   - cif  / daf : change/delete a whole function/method body
+    //   - cic  / dac : change/delete a whole class
+    //   - cit  / dat : change/delete an HTML/XML tag block
     "context": "vim_operator == a || vim_operator == i || vim_operator == cs",
     "bindings": {
+      // --- mini.ai-style quotes & brackets ---
+
+      // Keep lowercase as "classic" behavior if you want:
       "q": "vim::AnyQuotes",
       "b": "vim::AnyBrackets",
+
+      // Uppercase = mini.ai-like behavior (Tree-sitter, line-first search)
+      // so you can opt into it: ciQ / caQ / diQ, etc.
       "Q": "vim::MiniQuotes",
-      "B": "vim::MiniBrackets"
+      "B": "vim::MiniBrackets",
+
+      // --- extra mini.ai-like objects (similar to common mini.ai configs) ---
+
+      // a / i + a  → function argument object (cia, daa, dia...)
+      "a": "vim::Argument",
+
+      // a / i + f  → function or method object (cif, daf...)
+      "f": "vim::Method",
+
+      // a / i + c  → class object (cic, dac...)
+      "c": "vim::Class",
+
+      // a / i + t  → HTML/XML tag object (cit, dat...)
+      "t": "vim::Tag"
     }
   },
   {
-    "context": "ProjectPanel",
+    // Structural navigation & selection on Space-based leader keys
+    "context": "VimControl && !menu",
     "bindings": {
-      "escape": "workspace::ToggleLeftDock"
+      // Grow/shrink selection by AST node (super handy with arrows)
+      "space x": "vim::SelectLargerSyntaxNode",
+      "space X": "vim::SelectSmallerSyntaxNode",
+
+      // Jump between methods
+      "space m": "vim::NextMethodStart",
+      "space M": "vim::PreviousMethodStart",
+
+      // Jump between top-level sections (classes / major defs)
+      "space ]": "vim::NextSectionStart",
+      "space [": "vim::PreviousSectionStart"
+    }
+  },
+  {
+    "context": "Editor && mode == full && vim_mode == normal && vim_operator == none && !menu",
+    "bindings": {
+      "space c s": "editor::ConvertToSnakeCase",
+      "space c C": "editor::ConvertToUpperCamelCase",
+      "space c c": "editor::ConvertToLowerCamelCase",
+      "space c k": "editor::ConvertToKebabCase",
+      "space c t": "editor::ConvertToTitleCase",
+      "space c u": "editor::ConvertToUpperCase",
+      "space c l": "editor::ConvertToLowerCase"
+    }
+  },
+  {
+    // Sneak motion: jump to a 2-char sequence with `s`
+    "context": "vim_mode == normal || vim_mode == visual",
+    "bindings": {
+      "s": "vim::PushSneak",
+      "S": "vim::PushSneakBackward"
     }
   }
 ]
