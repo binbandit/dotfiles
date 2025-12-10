@@ -1,27 +1,9 @@
-local env = require("config.env")
-
----@type LazySpec
 return {
-  {
-    "abreujp/scholar.nvim",
-    name = "scholar",
-    lazy = false,
-    priority = 1000,
-    config = function()
-      require("config.theme").setup({
-        colorscheme = "scholar",
-      })
-    end,
-  },
-  {
-    "folke/snacks.nvim",
-    priority = 1000,
-    lazy = false,
-    ---@type snacks.Config
-    opts = {
-      bigfile = { enabled = true },
-      bufdelete = { enabled = true },
-      dashboard = {
+	"folke/snacks.nvim",
+	priority = 1000,
+	lazy = false,
+	opts = {
+		dashboard = {
         enabled = true,
         width = 100,
         sections = {
@@ -66,46 +48,21 @@ return {
           },
         },
       },
-      indent = { enabled = false },
-      image = { enabled = false },
-      input = { enabled = true },
-      notifier = { enabled = true },
-      quickfile = { enabled = true },
-      scroll = { enabled = false },
-      statuscolumn = { enabled = true },
-      toggle = { enabled = true },
-      words = { enabled = false },
-      zen = { enabled = false },
-      terminal = { enabled = true },
-      lazygit = { enabled = false },
-    },
-    config = function(_, opts)
-      require("snacks").setup(opts)
+		image = { enabled = true },
+		lazygit = { enabled = true },
+		bufdelete = { enabled = true },
+		zen = { enabled = true },
+		terminal = { enabled = true },
+		input = { enabled = true },
+		toggle = { enabled = true },
+		statuscolumn = { enabled = true },
+		quickfile = { enabled = true },
+	},
+	config = function(_, opts)
+		require("snacks").setup(opts)
 
-      -- Toggle terminal with Ctrl+\
-      vim.keymap.set({ "n", "t" }, "<C-\\>", function()
-        require("snacks").terminal.toggle()
-      end, { desc = "Toggle terminal" })
-    end,
-  },
-  {
-    "danilamihailov/beacon.nvim",
-    event = "VeryLazy",
-    opts = {},
-  },
-  {
-    "nvim-lualine/lualine.nvim",
-    event = "VeryLazy",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    init = function()
-      require("config.lualine").init()
-    end,
-    opts = function()
-      return require("config.lualine").opts()
-    end,
-    config = function(_, opts)
-      require("lualine").setup(opts)
-      require("config.lualine").post_setup()
-    end,
-  },
+		vim.keymap.set({"n", "t"}, "<C-\\>", function()
+			require("snacks").terminal.toggle()
+		end, { desc = "Toggle terminal" })
+	end,
 }
