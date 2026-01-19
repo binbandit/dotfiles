@@ -6,14 +6,24 @@ This repo is now a nix-darwin + home-manager flake. It manages:
 - Dotfiles and shell/editor config via home-manager
 - Host-specific paths, env, and work-only settings
 
+Default location on disk: `~/.dots`
+
 ## Quick start (macOS)
+
+One-liner bootstrap:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/binbandit/dotfiles/main/scripts/bootstrap.sh | bash
+```
+
+Or run commands manually:
 
 1. Install Nix (multi-user install recommended).
 2. Clone the repo and switch:
 
 ```bash
-git clone git@github.com:binbandit/dotfiles.git ~/.config/dotfiles
-cd ~/.config/dotfiles
+git clone git@github.com:binbandit/dotfiles.git ~/.dots
+cd ~/.dots
 nix run github:LnL7/nix-darwin -- switch --flake .#Braydens-MacBook-Pro
 ```
 
