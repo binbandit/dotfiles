@@ -10,6 +10,9 @@
 
   services.nix-daemon.enable = true;
 
+  # security - touch id for sudo
+  security.pam.services.sudo_local.touchIdAuth = true;
+
   programs.fish.enable = true;
 
   users.users.brayden = {
