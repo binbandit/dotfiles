@@ -8,6 +8,8 @@ let
         "~/.local/bin"
         "~/.bin"
         "~/.cargo/bin"
+        "~/.bun/bin"
+        "~/.radicle/bin"
       ];
 
       env = {
@@ -88,7 +90,6 @@ let
           "~/.goshed/projects/stacking/bin"
           "~/Developer/go-lang/strata-latest"
           "~/Developer/rust/splat/target/debug"
-          "~/.bun/bin"
         ];
         env = {
           OPENAI_MODEL = "gpt-5-nano";
@@ -119,16 +120,6 @@ let
       };
     };
 
-    "work-mac-template" = {
-      roles = [ "work" "mac" ];
-      fish = {
-        proxies = {
-          http = "http://proxy.example.com:8080";
-          https = "http://proxy.example.com:8080";
-          no_proxy = "localhost,127.0.0.1,.example.com";
-        };
-      };
-    };
   };
 in
 {
