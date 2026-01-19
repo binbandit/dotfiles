@@ -46,6 +46,7 @@ let
       tools = {
         bun = "latest";
         go = "latest";
+        "asdf:neovim" = "0";
         node = "25";
         pnpm = "latest";
         "npm:@openai/codex" = "latest";
