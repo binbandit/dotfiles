@@ -1,9 +1,0 @@
-{{- if eq .chezmoi.os "linux" }}
-[Unit]
-Description=Chezmoi periodic pull
-
-[Service]
-Type=oneshot
-Environment=CHEZMOI_SOURCE_DIR={{ joinPath .chezmoi.homeDir ".local/share/chezmoi" }}
-ExecStart={{ joinPath .chezmoi.homeDir ".local/bin/chezmoi-sync" }} pull
-{{- end }}
