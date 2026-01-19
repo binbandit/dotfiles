@@ -10,6 +10,8 @@
   xdg.configFile."nvim".source = ../../files/config/nvim;
   xdg.configFile."tmux".source = ../../files/config/tmux;
   xdg.configFile."zed".source = ../../files/config/zed;
+  xdg.configFile."git/ignore".source = ../../files/config/git/ignore;
 
   home.file.".doom.d".source = ../../files/doom.d;
+  home.file.".gitconfig".source = ../../files/gitconfig;
 }

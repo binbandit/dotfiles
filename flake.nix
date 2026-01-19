@@ -54,7 +54,6 @@
       darwinConfigurations = {
         Braydens-MacBook-Pro = mkDarwin "Braydens-MacBook-Pro";
         EPZ-D3YJQFV0WJ = mkDarwin "EPZ-D3YJQFV0WJ";
-        work-mac-template = mkDarwin "work-mac-template";
       };
     };
 }

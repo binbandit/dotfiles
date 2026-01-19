@@ -1,0 +1,63 @@
+[include]
+	path = ~/.config/git/local.conf
+
+[user]
+	useConfigOnly = true
+
+[credential "https://github.com"]
+	helper =
+	helper = !gh auth git-credential
+
+[credential "https://gist.github.com"]
+	helper =
+	helper = !gh auth git-credential
+
+[pull]
+	rebase = true
+
+[init]
+	defaultBranch = main
+
+[push]
+	autoSetupRemote = true
+
+[core]
+	editor = vim
+	autocrlf = input
+	excludesfile = ~/.config/git/ignore
+
+[color]
+	ui = auto
+
+[merge]
+	conflictstyle = diff3
+
+[rerere]
+	enabled = true
+
+[branch]
+	sort = -committerdate
+
+[diff]
+	algorithm = histogram
+
+[commit]
+	verbose = true
+
+[help]
+	autocorrect = 20
+
+[rebase]
+	autosquash = true
+	autostash = true
+
+[fetch]
+	prune = true
+
+[log]
+	abbrevCommit = true
+
+[alias]
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	st = status
+	co = checkout

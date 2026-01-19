@@ -27,7 +27,7 @@ Replace the flake target with your host name (see `flake.nix`).
 
 To add a new machine:
 
-1. Copy `hosts/work-mac-template` to `hosts/<new-hostname>`.
+1. Create `hosts/<new-hostname>/darwin.nix` and `hosts/<new-hostname>/home.nix`.
 2. Add the host to `lib/hosts.nix`.
 3. Add the host to `flake.nix` under `darwinConfigurations`.
 
@@ -42,6 +42,9 @@ To add a new machine:
 ## Notes
 
 - Homebrew is managed declaratively. Do not edit a Brewfile manually.
+- Git config is shared via `.gitconfig` and includes a local file at
+  `~/.config/git/local.conf` for per-device user name/email and any private
+  overrides.
 - Post-activation tasks for mise, rustup, uv, and pnpm globals are handled by
   home-manager activation hooks.
 - Run `nix flake update` to update pinned inputs.
