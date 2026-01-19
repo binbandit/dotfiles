@@ -39,9 +39,7 @@ let
     };
 
     pnpm = {
-      globalPackages = [
-        "@openai/codex"
-      ];
+      globalPackages = [ ];
     };
 
     mise = {
@@ -81,15 +79,7 @@ let
       roles = [ "personal" "mac" ];
       fish = {
         paths = [
-          "~/Applications/nvim/bin"
           "~/.mitm_toolkit/bin"
-          "~/Developer/go-lang/stack"
-          "~/Developer/go-lang/sparrow/bin"
-          "~/Developer/zig/zig/build/stage3/bin"
-          "~/Developer/zig/zls/zig-out/bin"
-          "~/.goshed/projects/stacking/bin"
-          "~/Developer/go-lang/strata-latest"
-          "~/Developer/rust/splat/target/debug"
         ];
         env = {
           OPENAI_MODEL = "gpt-5-nano";
