@@ -8,18 +8,13 @@ log() {
   printf '[bootstrap] %s\n' "$*"
 }
 
-ensure_nix() {
+ensure_lix() {
   if command -v nix >/dev/null 2>&1; then
     return 0
   fi
 
-  if [ "$(uname -s)" != "Darwin" ]; then
-    log "Nix is not installed. Install it manually for non-macOS systems."
-    return 1
-  fi
-
-  log "Installing Nix (multi-user daemon install)..."
-  curl -fsSL https://nixos.org/nix/install | sh -s -- --daemon
+  log "Installing Lix..."
+  curl -sSf -L https://install.lix.systems/lix | sh -s -- install
 }
 
 clone_repo() {
@@ -34,7 +29,7 @@ clone_repo() {
 }
 
 main() {
-  ensure_nix
+  ensure_lix
   clone_repo
 
   log "Next: run 'rebuild' (or nix-darwin switch) from a new shell."

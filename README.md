@@ -18,7 +18,7 @@ curl -fsSL https://raw.githubusercontent.com/binbandit/dotfiles/main/scripts/boo
 
 Or run commands manually:
 
-1. Install Nix (multi-user install recommended).
+1. Install Lix (Nix-compatible, recommended).
 2. Clone the repo and switch:
 
 ```bash
