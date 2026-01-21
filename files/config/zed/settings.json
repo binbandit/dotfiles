@@ -5,9 +5,6 @@
 
   "title_bar": {
     "show_onboarding_banner": false,
-    "show_project_items": false,
-    "show_branch_name": false,
-    "show_user_menu": false,
   },
   "helix_mode": false,
   "disable_ai": false,
@@ -86,7 +83,7 @@
   // =============================================================================
 
   "tab_bar": {
-    "show": false,
+    "show": true,
   },
   "tabs": {
     "show_diagnostics": "errors",
@@ -128,6 +125,8 @@
   // Refer https://zed.dev/docs/languages/javascript and https://zed.dev/docs/languages/typescript for more info
   "languages": {
     "Rust": {
+      "format_on_save": "on",
+      "formatter": "language_server",
       "inlay_hints": {
         "show_background": true,
       },
@@ -165,6 +164,11 @@
       },
     },
     "rust-analyzer": {
+      "initialization_options": {
+        "rustfmt": {
+          "extraArgs": ["+nightly"],
+        },
+      },
       "binary": {
         "path": "/Users/brayden/.cargo/bin/lspmux",
       },
