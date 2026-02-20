@@ -1,10 +1,6 @@
-# BinBandit Dotfiles (Nix)
+# BinBandit Dotfiles
 
-This repo is now a nix-darwin + home-manager flake. It manages:
-
-- Homebrew packages via nix-darwin
-- Dotfiles and shell/editor config via home-manager
-- Host-specific paths, env, and work-only settings
+Declarative dotfile management via [mimic](https://github.com/binbandit/mimic). Manages symlinks, Homebrew packages, and host-specific config with Handlebars templates.
 
 Default location on disk: `~/.dots`
 
@@ -16,45 +12,51 @@ One-liner bootstrap:
 curl -fsSL https://raw.githubusercontent.com/binbandit/dotfiles/main/scripts/bootstrap.sh | bash
 ```
 
-Or run commands manually:
-
-1. Install Lix (Nix-compatible, recommended).
-2. Clone the repo and switch:
+Or manually:
 
 ```bash
 git clone git@github.com:binbandit/dotfiles.git ~/.dots
 cd ~/.dots
-nix run github:LnL7/nix-darwin -- switch --flake .#Braydens-MacBook-Pro
+mimic apply --config mimic.toml
+bash scripts/post-apply.sh
 ```
 
-Replace the flake target with your host name (see `flake.nix`).
+## Daily usage
+
+```bash
+rebuild   # fish function: runs mimic apply + post-apply.sh
+```
 
 ## Host-specific configuration
 
-- Defaults and per-host settings live in `lib/hosts.nix`.
-- Each host has its own overrides in `hosts/<hostname>/darwin.nix` and
-  `hosts/<hostname>/home.nix`.
+Host overrides are defined in `mimic.toml` under `[hosts.<hostname>]`. Each host has roles and variable overrides. Templates use `{{#if (includes host.roles "work")}}` for conditional blocks.
 
-To add a new machine:
+Current hosts:
+- `Braydens-MacBook-Pro` — personal
+- `EPZ-D3YJQFV0WJ` — work (proxy, certs, litellm)
 
-1. Create `hosts/<new-hostname>/darwin.nix` and `hosts/<new-hostname>/home.nix`.
-2. Add the host to `lib/hosts.nix`.
-3. Add the host to `flake.nix` under `darwinConfigurations`.
+mimic auto-detects the hostname at apply time.
 
 ## Repository layout
 
-- `flake.nix` - entrypoint for nix-darwin + home-manager
-- `modules/darwin` - system-level configuration (nix, homebrew, shell)
-- `modules/home` - home-manager modules (fish, mise, codex, activation tasks)
-- `files/` - tracked dotfiles linked into `$HOME`
-- `hosts/` - per-host overrides
+```
+mimic.toml              # Main config: variables, dotfiles, packages, hosts
+dotfiles/               # Static dotfiles (symlinked into $HOME)
+  config/               # XDG config dirs (nvim, fish, ghostty, tmux, etc.)
+  gitconfig             # ~/.gitconfig
+  doom.d/               # Emacs Doom config
+  claude/commands/      # Claude Code custom commands
+templates/              # Handlebars templates (rendered at apply time)
+  fish/                 # Shell init, host env, keychain secrets
+  mise/                 # mise tool declarations
+  codex/                # Codex config (work vs personal)
+scripts/
+  bootstrap.sh          # Fresh machine setup (brew + mimic + apply)
+  post-apply.sh         # Runtime setup (mise, uv, rustup, cargo tools, fisher)
+```
 
 ## Notes
 
-- Homebrew is managed declaratively. Do not edit a Brewfile manually.
-- Git config is shared via `.gitconfig` and includes a local file at
-  `~/.config/git/local.conf` for per-device user name/email and any private
-  overrides.
-- Post-activation tasks for mise, rustup, uv, and pnpm globals are handled by
-  home-manager activation hooks.
-- Run `nix flake update` to update pinned inputs.
+- Homebrew packages are declared in `mimic.toml` under `[packages]`.
+- Post-apply tasks (mise install, rustup, cargo tools, fisher) run via `scripts/post-apply.sh`.
+- Git config includes a local file at `~/.config/git/local.conf` for per-device overrides.
