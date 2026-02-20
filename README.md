@@ -1,6 +1,6 @@
 # BinBandit Dotfiles
 
-Declarative dotfile management via [mimic](https://github.com/binbandit/mimic). Manages symlinks, Homebrew packages, and host-specific config with Handlebars templates.
+Declarative dotfile management via [mimic](https://github.com/binbandit/mimic). Manages symlinks, Homebrew packages, host-specific config with Handlebars templates, and activation hooks for runtimes and tools.
 
 Default location on disk: `~/.dots`
 
@@ -18,13 +18,12 @@ Or manually:
 git clone git@github.com:binbandit/dotfiles.git ~/.dots
 cd ~/.dots
 mimic apply --config mimic.toml
-bash scripts/post-apply.sh
 ```
 
 ## Daily usage
 
 ```bash
-rebuild   # fish function: runs mimic apply + post-apply.sh
+rebuild   # fish function: runs mimic apply
 ```
 
 ## Host-specific configuration
@@ -40,7 +39,7 @@ mimic auto-detects the hostname at apply time.
 ## Repository layout
 
 ```
-mimic.toml              # Main config: variables, dotfiles, packages, hosts
+mimic.toml              # Main config: variables, dotfiles, packages, hosts, hooks
 dotfiles/               # Static dotfiles (symlinked into $HOME)
   config/               # XDG config dirs (nvim, fish, ghostty, tmux, etc.)
   gitconfig             # ~/.gitconfig
@@ -51,12 +50,11 @@ templates/              # Handlebars templates (rendered at apply time)
   mise/                 # mise tool declarations
   codex/                # Codex config (work vs personal)
 scripts/
-  bootstrap.sh          # Fresh machine setup (brew + mimic + apply)
-  post-apply.sh         # Runtime setup (mise, uv, rustup, cargo tools, fisher)
+  bootstrap.sh          # Fresh machine setup (brew + rust + mimic + apply)
 ```
 
 ## Notes
 
 - Homebrew packages are declared in `mimic.toml` under `[packages]`.
-- Post-apply tasks (mise install, rustup, cargo tools, fisher) run via `scripts/post-apply.sh`.
+- Runtime setup (mise, uv, rustup, cargo tools, fisher) runs via `[[hooks]]` in `mimic.toml` during `mimic apply`.
 - Git config includes a local file at `~/.config/git/local.conf` for per-device overrides.

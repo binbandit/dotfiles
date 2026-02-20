@@ -7,5 +7,4 @@ function rebuild --description 'Apply dotfiles with mimic'
     end
 
     mimic apply --yes --config "$dots/mimic.toml"
-    and bash "$dots/scripts/post-apply.sh"
 end
