@@ -43,6 +43,11 @@ if test -d $__path
     fish_add_path $__path
 end
 
+set -l __path "$HOME/.antigravity/antigravity/bin"
+if test -d $__path
+    fish_add_path $__path
+end
+
 {{#if variables.extra_fish_paths}}
 set -l __path "{{ variables.extra_fish_paths }}"
 if test -d $__path

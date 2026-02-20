@@ -63,6 +63,9 @@ if test -f '/opt/homebrew/share/google-cloud-sdk/path.fish.inc'
     source '/opt/homebrew/share/google-cloud-sdk/path.fish.inc'
 end
 
+# Disable XON/XOFF flow control (prevents Ctrl+S from freezing terminal).
+stty -ixon 2>/dev/null
+
 # Bell after every command completion.
 function fish_postexec
     echo -ne '\a'
