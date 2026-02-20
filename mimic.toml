@@ -14,6 +14,13 @@ openai_url        = "https://api.openai.com/v1/"
 openai_timeout    = "4096"
 openai_max_tokens = "272000"
 
+# Host-overrideable defaults (every host should override these)
+codex_model       = "gpt-5-codex"
+extra_fish_paths  = ""
+proxy_http        = ""
+proxy_https       = ""
+cert_bundle       = ""
+
 # Python / uv
 uv_python_version = "3.12"
 
@@ -46,11 +53,7 @@ target = "~/.config/zed"
 source = "dotfiles/config/git/ignore"
 target = "~/.config/git/ignore"
 
-# Fish — static pieces (conf.d snippets, functions, completions)
-[[dotfiles]]
-source = "dotfiles/config/fish/conf.d"
-target = "~/.config/fish/conf.d"
-
+# Fish — static pieces (functions, completions)
 [[dotfiles]]
 source = "dotfiles/config/fish/functions"
 target = "~/.config/fish/functions"
@@ -59,11 +62,24 @@ target = "~/.config/fish/functions"
 source = "dotfiles/config/fish/completions"
 target = "~/.config/fish/completions"
 
-# Fish — generated from templates
 [[dotfiles]]
 source = "dotfiles/config/fish/config.fish"
 target = "~/.config/fish/config.fish"
 
+# Fish — conf.d (individual files to avoid directory symlink conflict with templates)
+[[dotfiles]]
+source = "dotfiles/config/fish/conf.d/10-abbr.fish"
+target = "~/.config/fish/conf.d/10-abbr.fish"
+
+[[dotfiles]]
+source = "dotfiles/config/fish/conf.d/fzf.fish"
+target = "~/.config/fish/conf.d/fzf.fish"
+
+[[dotfiles]]
+source = "dotfiles/config/fish/conf.d/pisces.fish"
+target = "~/.config/fish/conf.d/pisces.fish"
+
+# Fish — generated from templates
 [[dotfiles]]
 source = "templates/fish/00-init.fish"
 target = "~/.config/fish/conf.d/00-init.fish"
@@ -149,8 +165,7 @@ brew = [
 roles = ["personal", "mac"]
 
 [hosts.Braydens-MacBook-Pro.variables]
-is_work         = "false"
-extra_fish_paths = "~/.mitm_toolkit/bin"
+extra_fish_paths = "$HOME/.mitm_toolkit/bin"
 codex_model     = "gpt-5-codex"
 proxy_http      = ""
 proxy_https     = ""
@@ -160,7 +175,6 @@ cert_bundle     = ""
 roles = ["work", "mac"]
 
 [hosts.EPZ-D3YJQFV0WJ.variables]
-is_work         = "true"
 extra_fish_paths = ""
 codex_model     = "aipe-gpt-5_v2025-08-07_EASTUS2"
 proxy_http      = "http://localhost:3128"
