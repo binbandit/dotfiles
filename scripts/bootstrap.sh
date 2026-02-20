@@ -8,13 +8,33 @@ log() {
   printf '[bootstrap] %s\n' "$*"
 }
 
-ensure_lix() {
-  if command -v nix >/dev/null 2>&1; then
+ensure_homebrew() {
+  if command -v brew >/dev/null 2>&1; then
     return 0
   fi
 
-  log "Installing Lix..."
-  curl -sSf -L https://install.lix.systems/lix | sh -s -- install
+  log "Installing Homebrew..."
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+  # Add brew to current PATH (Apple Silicon default)
+  if [ -f /opt/homebrew/bin/brew ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  fi
+}
+
+ensure_mimic() {
+  if command -v mimic >/dev/null 2>&1; then
+    return 0
+  fi
+
+  log "Installing mimic..."
+  if ! command -v cargo >/dev/null 2>&1; then
+    log "Installing Rust toolchain..."
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
+    export PATH="$HOME/.cargo/bin:$PATH"
+  fi
+
+  cargo install --git https://github.com/binbandit/mimic.git --locked
 }
 
 clone_repo() {
@@ -29,10 +49,17 @@ clone_repo() {
 }
 
 main() {
-  ensure_lix
+  ensure_homebrew
+  ensure_mimic
   clone_repo
 
-  log "Next: run 'rebuild' (or nix-darwin switch) from a new shell."
+  log "Applying dotfiles with mimic..."
+  mimic apply --yes --config "$DOTS_DIR/mimic.toml"
+
+  log "Running post-apply setup..."
+  bash "$DOTS_DIR/scripts/post-apply.sh"
+
+  log "Done! Open a new shell to pick up your configuration."
 }
 
 main "$@"

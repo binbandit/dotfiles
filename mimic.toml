@@ -1,0 +1,168 @@
+# ──────────────────────────────────────────────────────────────
+# mimic.toml — declarative dotfile management for ~/.dots
+# ──────────────────────────────────────────────────────────────
+
+[variables]
+name  = "Brayden Moon"
+email = "brayden@binbandit.dev"
+editor = "nvim"
+shell  = "fish"
+
+# Shared environment defaults
+openai_model      = "gpt-5-nano"
+openai_url        = "https://api.openai.com/v1/"
+openai_timeout    = "4096"
+openai_max_tokens = "272000"
+
+# Python / uv
+uv_python_version = "3.12"
+
+# ──────────────────────────────────────────────────────────────
+# Dotfiles — static symlinks
+# ──────────────────────────────────────────────────────────────
+
+# XDG config directories
+[[dotfiles]]
+source = "dotfiles/config/ghostty"
+target = "~/.config/ghostty"
+
+[[dotfiles]]
+source = "dotfiles/config/helix"
+target = "~/.config/helix"
+
+[[dotfiles]]
+source = "dotfiles/config/nvim"
+target = "~/.config/nvim"
+
+[[dotfiles]]
+source = "dotfiles/config/tmux"
+target = "~/.config/tmux"
+
+[[dotfiles]]
+source = "dotfiles/config/zed"
+target = "~/.config/zed"
+
+[[dotfiles]]
+source = "dotfiles/config/git/ignore"
+target = "~/.config/git/ignore"
+
+# Fish — static pieces (conf.d snippets, functions, completions)
+[[dotfiles]]
+source = "dotfiles/config/fish/conf.d"
+target = "~/.config/fish/conf.d"
+
+[[dotfiles]]
+source = "dotfiles/config/fish/functions"
+target = "~/.config/fish/functions"
+
+[[dotfiles]]
+source = "dotfiles/config/fish/completions"
+target = "~/.config/fish/completions"
+
+# Fish — generated from templates
+[[dotfiles]]
+source = "dotfiles/config/fish/config.fish"
+target = "~/.config/fish/config.fish"
+
+[[dotfiles]]
+source = "templates/fish/00-init.fish"
+target = "~/.config/fish/conf.d/00-init.fish"
+
+[[dotfiles]]
+source = "templates/fish/10-host.fish.hbs"
+target = "~/.config/fish/conf.d/10-host.fish"
+
+[[dotfiles]]
+source = "templates/fish/fish_plugins"
+target = "~/.config/fish/fish_plugins"
+
+[[dotfiles]]
+source = "templates/fish/keychain-secrets.fish.hbs"
+target = "~/.config/fish/keychain-secrets.fish"
+
+# mise — generated
+[[dotfiles]]
+source = "templates/mise/config.toml"
+target = "~/.config/mise/config.toml"
+
+# Codex — generated per-host
+[[dotfiles]]
+source = "templates/codex/config.toml.hbs"
+target = "~/.codex/config.toml"
+
+# Home directory dotfiles
+[[dotfiles]]
+source = "dotfiles/gitconfig"
+target = "~/.gitconfig"
+
+[[dotfiles]]
+source = "dotfiles/doom.d"
+target = "~/.doom.d"
+
+[[dotfiles]]
+source = "dotfiles/claude/commands"
+target = "~/.claude/commands"
+
+# ──────────────────────────────────────────────────────────────
+# Packages — Homebrew
+# ──────────────────────────────────────────────────────────────
+
+[packages]
+brew = [
+  # Shell & TUI
+  "fish",
+  "tmux",
+  "fzf",
+  "ripgrep",
+  "fd",
+  "bat",
+  "starship",
+  "zoxide",
+  "direnv",
+  "sesh",
+  "lazygit",
+  "jq",
+  "eza",
+  "git-delta",
+  "fswatch",
+
+  # Languages & runtimes
+  "node",
+  "pnpm",
+  "python@3.12",
+  "go",
+  "rustup-init",
+  "uv",
+  "mise",
+
+  # System
+  "openssl@3",
+  "gnu-sed",
+  "coreutils",
+]
+
+# ──────────────────────────────────────────────────────────────
+# Hosts — machine-specific overrides
+# ──────────────────────────────────────────────────────────────
+
+[hosts.Braydens-MacBook-Pro]
+roles = ["personal", "mac"]
+
+[hosts.Braydens-MacBook-Pro.variables]
+is_work         = "false"
+extra_fish_paths = "~/.mitm_toolkit/bin"
+codex_model     = "gpt-5-codex"
+proxy_http      = ""
+proxy_https     = ""
+cert_bundle     = ""
+
+[hosts.EPZ-D3YJQFV0WJ]
+roles = ["work", "mac"]
+
+[hosts.EPZ-D3YJQFV0WJ.variables]
+is_work         = "true"
+extra_fish_paths = ""
+codex_model     = "aipe-gpt-5_v2025-08-07_EASTUS2"
+proxy_http      = "http://localhost:3128"
+proxy_https     = "http://localhost:3128"
+cert_bundle     = "/Users/Shared/ca_certs/bundle.pem"
