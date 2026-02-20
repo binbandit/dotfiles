@@ -104,10 +104,6 @@ source = "dotfiles/gitconfig"
 target = "~/.gitconfig"
 
 [[dotfiles]]
-source = "dotfiles/doom.d"
-target = "~/.doom.d"
-
-[[dotfiles]]
 source = "dotfiles/claude/commands"
 target = "~/.claude/commands"
 
