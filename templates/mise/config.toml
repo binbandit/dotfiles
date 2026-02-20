@@ -1,7 +1,7 @@
 [tools]
 "codex" = "latest"
 "asdf:neovim" = "stable"
-"cluade" = "latest"
+"claude" = "latest"
 bun = "latest"
 go = "latest"
 node = "25"
