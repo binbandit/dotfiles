@@ -1,5 +1,4 @@
 [tools]
-"codex" = "latest"
 "asdf:neovim" = "stable"
 bun = "latest"
 go = "latest"
