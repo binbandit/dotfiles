@@ -66,7 +66,15 @@ target = "~/.config/fish/completions"
 source = "dotfiles/config/fish/config.fish"
 target = "~/.config/fish/config.fish"
 
-# Fish — conf.d (individual files to avoid directory symlink conflict with templates)
+# Fish — conf.d (template first to ensure parent dir is created on fresh machines)
+[[dotfiles]]
+source = "templates/fish/10-host.fish.hbs"
+target = "~/.config/fish/conf.d/10-host.fish"
+
+[[dotfiles]]
+source = "templates/fish/00-init.fish"
+target = "~/.config/fish/conf.d/00-init.fish"
+
 [[dotfiles]]
 source = "dotfiles/config/fish/conf.d/10-abbr.fish"
 target = "~/.config/fish/conf.d/10-abbr.fish"
@@ -78,15 +86,6 @@ target = "~/.config/fish/conf.d/fzf.fish"
 [[dotfiles]]
 source = "dotfiles/config/fish/conf.d/pisces.fish"
 target = "~/.config/fish/conf.d/pisces.fish"
-
-# Fish — generated from templates
-[[dotfiles]]
-source = "templates/fish/00-init.fish"
-target = "~/.config/fish/conf.d/00-init.fish"
-
-[[dotfiles]]
-source = "templates/fish/10-host.fish.hbs"
-target = "~/.config/fish/conf.d/10-host.fish"
 
 [[dotfiles]]
 source = "templates/fish/fish_plugins"
