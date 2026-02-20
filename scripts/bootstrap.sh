@@ -53,11 +53,8 @@ main() {
   ensure_mimic
   clone_repo
 
-  log "Applying dotfiles with mimic..."
+  log "Applying dotfiles with mimic (includes hooks for runtimes + tools)..."
   mimic apply --yes --config "$DOTS_DIR/mimic.toml"
-
-  log "Running post-apply setup..."
-  bash "$DOTS_DIR/scripts/post-apply.sh"
 
   log "Done! Open a new shell to pick up your configuration."
 }
