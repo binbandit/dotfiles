@@ -208,7 +208,7 @@ on_failure = "continue"
 [[hooks]]
 type       = "command"
 name       = "fisher-plugins"
-command    = "FISH=$(command -v fish) && $FISH -c 'type -q fisher || curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher' && $FISH -c 'fisher update'"
+command    = "FISH=$(command -v fish) && $FISH -c 'type -q fisher; or begin; curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source; and fisher install jorgebucaran/fisher; end' && $FISH -c 'fisher update'"
 on_failure = "continue"
 
 # ──────────────────────────────────────────────────────────────
