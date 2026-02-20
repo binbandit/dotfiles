@@ -8,3 +8,20 @@
 .envrc
 .direnv/
 result
+
+# Fisher-managed files (installed by `fisher update`, not tracked in git)
+dotfiles/config/fish/functions/fisher.fish
+dotfiles/config/fish/functions/_fzf_*.fish
+dotfiles/config/fish/functions/fzf_configure_bindings.fish
+dotfiles/config/fish/functions/__bass.py
+dotfiles/config/fish/functions/bass.fish
+dotfiles/config/fish/functions/_pisces_*.fish
+dotfiles/config/fish/functions/replay.fish
+dotfiles/config/fish/functions/__kill-on-port.print-usage.fish
+dotfiles/config/fish/functions/kill-on-port.fish
+dotfiles/config/fish/completions/fisher.fish
+dotfiles/config/fish/completions/fzf_configure_bindings.fish
+dotfiles/config/fish/completions/replay.fish
+dotfiles/config/fish/completions/kill-on-port.fish
+dotfiles/config/fish/conf.d/fzf.fish
+dotfiles/config/fish/conf.d/pisces.fish
