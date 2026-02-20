@@ -6,5 +6,6 @@ function rebuild --description 'Apply dotfiles with mimic'
         return 1
     end
 
-    mimic apply --yes --config "$dots/mimic.toml"
+    git -C "$dots" pull
+    and mimic apply --yes --config "$dots/mimic.toml"
 end
