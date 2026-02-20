@@ -1,7 +1,7 @@
 [tools]
 "@anthropic-ai/claude-code" = "latest"
 "@openai/codex" = "latest"
-"asdf:neovim" = "latest"
+"asdf:neovim" = "stable"
 bun = "latest"
 go = "latest"
 node = "25"
