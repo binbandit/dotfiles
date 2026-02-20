@@ -139,6 +139,9 @@ brew = [
   "uv",
   "mise",
 
+  # AI
+  "anomalyco/tap/opencode",
+
   # System
   "openssl@3",
   "gnu-sed",
