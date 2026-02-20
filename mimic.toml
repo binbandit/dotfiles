@@ -75,17 +75,10 @@ target = "~/.config/fish/conf.d/10-host.fish"
 source = "templates/fish/00-init.fish"
 target = "~/.config/fish/conf.d/00-init.fish"
 
+# Only abbreviations go here; fzf.fish and pisces.fish are managed by Fisher
 [[dotfiles]]
 source = "dotfiles/config/fish/conf.d/10-abbr.fish"
 target = "~/.config/fish/conf.d/10-abbr.fish"
-
-[[dotfiles]]
-source = "dotfiles/config/fish/conf.d/fzf.fish"
-target = "~/.config/fish/conf.d/fzf.fish"
-
-[[dotfiles]]
-source = "dotfiles/config/fish/conf.d/pisces.fish"
-target = "~/.config/fish/conf.d/pisces.fish"
 
 [[dotfiles]]
 source = "templates/fish/fish_plugins"
