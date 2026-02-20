@@ -209,10 +209,10 @@ on_failure = "continue"
 # Hosts — machine-specific overrides
 # ──────────────────────────────────────────────────────────────
 
-[hosts."Mac.localdomain"]
+[hosts.Braydens-MacBook-Pro]
 roles = ["personal", "mac"]
 
-[hosts."Mac.localdomain".variables]
+[hosts.Braydens-MacBook-Pro.variables]
 extra_fish_paths = "$HOME/.mitm_toolkit/bin"
 codex_model     = "gpt-5-codex"
 proxy_http      = ""
