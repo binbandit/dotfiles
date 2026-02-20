@@ -194,6 +194,13 @@ name       = "fish-default-shell"
 command    = "FISH=$(command -v fish) && grep -qF \"$FISH\" /etc/shells 2>/dev/null || echo \"$FISH\" | sudo tee -a /etc/shells >/dev/null; [ \"$SHELL\" != \"$FISH\" ] && chsh -s \"$FISH\" || true"
 on_failure = "continue"
 
+# Install Claude Code
+[[hooks]]
+type       = "command"
+name       = "claude-code"
+command    = "command -v claude >/dev/null 2>&1 || curl -fsSL https://claude.ai/install.sh | bash"
+on_failure = "continue"
+
 # Install Fisher + plugins
 [[hooks]]
 type       = "command"
