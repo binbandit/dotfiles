@@ -30,10 +30,6 @@ if status is-interactive
         zoxide init fish --cmd=cd | source
     end
 
-    # git-workty shell integration (wcd/wnew/wgo helpers).
-    if type -q git-workty
-        git workty init fish | source
-    end
 end
 
 # Keychain secret loader — defined inline so it's available before

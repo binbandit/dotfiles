@@ -96,3 +96,10 @@ end
 if test -d "$PNPM_HOME"
     fish_add_path $PNPM_HOME
 end
+
+# git-workty shell integration (wcd/wnew/wgo helpers).
+if status is-interactive
+    if type -q git-workty
+        git workty init fish | source
+    end
+end
