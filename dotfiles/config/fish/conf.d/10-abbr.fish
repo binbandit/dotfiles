@@ -66,6 +66,4 @@ abbr cr 'cargo run'
 abbr cb 'cargo build'
 
 abbr x 'pnpm dlx'
-abbr src 'source ~/.config/fish/config.fish'
-
 abbr l 'eza --icons'
