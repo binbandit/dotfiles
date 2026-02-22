@@ -16,6 +16,7 @@ local leader_groups = {
   { "<leader>T",        group = "Tests" },
   { "<leader>u",        group = "UI" },
   { "<leader>x",        group = "Trouble" },
+  { "<leader>9",        group = "99 AI" },
 
   -- Top-level
   { "<leader>w",        desc = "Write buffer" },
@@ -27,6 +28,12 @@ local leader_groups = {
   { "<leader>`",        desc = "Alternate Buffer" },
   { "<leader><leader>", desc = "Find files" },
   { "<leader>qq",       desc = "Quit" },
+  { "<leader>99",       desc = "99 search" },
+  { "<leader>9s",       desc = "99 search" },
+  { "<leader>9v",       desc = "99 visual edit" },
+  { "<leader>9x",       desc = "99 stop requests" },
+  { "<leader>9i",       desc = "99 session info" },
+  { "<leader>9l",       desc = "99 view logs" },
 
   -- Find
   { "<leader>fb",       desc = "Buffers" },
@@ -137,6 +144,7 @@ local leader_groups = {
   { "gri",              desc = "Implementation (native)" },
   { "gra",              desc = "Code Action (native)" },
   { "gO",               desc = "Document Symbols (native)" },
+  { "g<C-]>",           desc = "Tag jump" },
   { "gl",               desc = "Line Diagnostics" },
   { "K",                desc = "Hover" },
   { "ff",               desc = "Find files" },
