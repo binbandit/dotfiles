@@ -5,6 +5,8 @@
 [variables]
 name  = "Brayden Moon"
 email = "brayden@binbandit.dev"
+git_name  = "Brayden Moon"
+git_email = "brayden@binbandit.dev"
 editor = "nvim"
 shell  = "fish"
 
@@ -56,6 +58,10 @@ target = "~/.config/zed"
 [[dotfiles]]
 source = "dotfiles/config/git/ignore"
 target = "~/.config/git/ignore"
+
+[[dotfiles]]
+source = "templates/git/local.conf.hbs"
+target = "~/.config/git/local.conf"
 
 # Fish — static pieces (functions, completions)
 [[dotfiles]]
@@ -228,6 +234,8 @@ codex_model     = "gpt-5-codex"
 proxy_http      = ""
 proxy_https     = ""
 cert_bundle     = ""
+git_name        = "Brayden Moon"
+git_email       = "brayden@binbandit.dev"
 
 [hosts.EPZ-D3YJQFV0WJ]
 roles = ["work", "mac"]
@@ -238,3 +246,5 @@ codex_model     = "aipe-gpt-5_v2025-08-07_EASTUS2"
 proxy_http      = "http://localhost:3128"
 proxy_https     = "http://localhost:3128"
 cert_bundle     = "/Users/Shared/ca_certs/bundle.pem"
+git_name        = "brayden-moon_cba"
+git_email       = "brayden.moon@cba.com.au"
