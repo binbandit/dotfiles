@@ -1,5 +1,5 @@
 [tools]
-"asdf:neovim" = "stable"
+"vfox:mise-plugins/vfox-neovim" = "stable"
 bun = "latest"
 go = "latest"
 node = "25"
