@@ -10,8 +10,11 @@ return {
         "basedpyright",
         "ruff",
         "vtsls",
+        "eslint-lsp",
         -- Formatters
         "biome",
+        "stylua",
+        "prettier",
         -- Debug adapters
         "debugpy",
         "codelldb",

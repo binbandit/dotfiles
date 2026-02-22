@@ -64,53 +64,6 @@ local function current_mode_color()
   return mode_colors[mode] or { bg = colors.accent5, fg = colors.bg }
 end
 
-local function dump_table(items)
-  if type(items) ~= "table" then
-    return tostring(items)
-  end
-  local result = {}
-  for _, value in ipairs(items) do
-    result[#result + 1] = tostring(value)
-  end
-  return table.concat(result, ",")
-end
-
-local function ai_state()
-  local env = require("config.env")
-  if env.uses_supermaven() then
-    local ok, api = pcall(require, "supermaven-nvim.api")
-    if ok then
-      local status_ok, running = pcall(api.is_running)
-      if status_ok then
-        return true, running, "supermaven"
-      end
-      return true, false, "supermaven"
-    end
-    return false, false, "supermaven"
-  end
-  -- No AI assistant detected
-  return false, false, "none"
-end
-
-local function ai_component()
-  local available, running, ai_type = ai_state()
-  if not available then return "" end
-  if running then
-    return " AI"
-  end
-  return "AI off"
-end
-
-local function ai_color()
-  local available, running, ai_type = ai_state()
-  if not available then
-    return { bg = colors.dim, fg = colors.bg }
-  end
-  if running then
-    return { bg = colors.accent7, fg = colors.bg }
-  end
-  return { bg = colors.dim, fg = colors.bg }
-end
 
 local function gitsigns_diff()
   local dict = vim.b.gitsigns_status_dict
@@ -257,28 +210,15 @@ local function build_config()
           seen[raw_name] = true
         end
       end
-      if vim.tbl_isempty(names) then return "" end
+      if #names == 0 then return "" end
       table.sort(names)
-      local label = dump_table(names):gsub(",", ", ")
-      return label
+      return table.concat(names, ", ")
     end,
     icon = " ",
     color = { bg = colors.accent5, fg = colors.bg },
     padding = { left = 1, right = 1 },
     cond = conditions.hide_in_width_first,
     separator = { left = separators.left, right = separators.right },
-  })
-
-  -- Active right: AI status
-  active_right({
-    ai_component,
-    cond = function()
-      local available = select(1, ai_state())
-      return available
-    end,
-    color = ai_color,
-    padding = { left = 1, right = 1 },
-    separator = { right = separators.right, left = separators.left },
   })
 
   -- Active right: diagnostics
@@ -394,7 +334,6 @@ function M.post_setup()
     "DiagnosticChanged",
     "LspAttach",
     "LspDetach",
-    "BufEnter",
     "BufWritePost",
   }, {
     group = group,

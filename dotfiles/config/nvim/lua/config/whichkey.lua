@@ -81,6 +81,7 @@ local leader_groups = {
   { "<leader>h3",       desc = "Harpoon goto 3" },
   { "<leader>h4",       desc = "Harpoon goto 4" },
   { "<leader>hp",       desc = "Harpoon previous" },
+  { "<leader>hP",       desc = "Preview git hunk" },
   { "<leader>hn",       desc = "Harpoon next" },
   { "<leader>hs",       desc = "Stage git hunk" },
   { "<leader>hr",       desc = "Reset git hunk" },

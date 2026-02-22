@@ -38,13 +38,15 @@ vim.lsp.config["rust_analyzer"] = {
   enabled = false,
 }
 
--- Treesitter folding
+-- Treesitter folding (only when a parser exists for the filetype)
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "*" },
-  callback = function()
-    vim.opt_local.foldmethod = "expr"
-    vim.opt_local.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-    vim.opt_local.foldlevel = 99
+  group = vim.api.nvim_create_augroup("TreesitterFolding", { clear = true }),
+  callback = function(args)
+    if pcall(vim.treesitter.get_parser, args.buf) then
+      vim.opt_local.foldmethod = "expr"
+      vim.opt_local.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+      vim.opt_local.foldlevel = 99
+    end
   end,
 })
 
@@ -111,10 +113,10 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   callback = function(event)
     local exclude = { "gitcommit" }
     local buf = event.buf
-    if vim.tbl_contains(exclude, vim.bo[buf].filetype) or vim.b[buf].lazyvim_last_loc then
+    if vim.tbl_contains(exclude, vim.bo[buf].filetype) or vim.b[buf]._last_loc_set then
       return
     end
-    vim.b[buf].lazyvim_last_loc = true
+    vim.b[buf]._last_loc_set = true
     local mark = vim.api.nvim_buf_get_mark(buf, '"')
     local lcount = vim.api.nvim_buf_line_count(buf)
     if mark[1] > 0 and mark[1] <= lcount then

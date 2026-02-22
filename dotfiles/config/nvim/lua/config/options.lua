@@ -11,13 +11,7 @@ vim.opt.titlestring = "nvim"
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
--- Disable netrw (using snacks.explorer instead)
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-
 vim.opt.clipboard:append({ "unnamed", "unnamedplus" })
-
-vim.opt.termguicolors = true
 vim.o.background = "dark"
 
 vim.opt.cursorline = true
@@ -64,7 +58,6 @@ vim.diagnostic.config({
   },
   virtual_lines = false, -- Toggle with <leader>tl
   float = {
-    border = "rounded",
     source = true,
     header = "",
     prefix = "",
