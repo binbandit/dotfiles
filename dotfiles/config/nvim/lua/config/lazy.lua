@@ -1,28 +1,21 @@
--- Bootstrap lazier.nvim (wrapper around lazy.nvim)
-local lazier_path = vim.fn.stdpath("data") .. "/lazier/lazier.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazier_path) then
-  local repo = "https://github.com/jake-stewart/lazier.nvim.git"
-  local out = vim.fn.system({ "git", "clone", "--branch=stable-v2", repo, lazier_path })
+-- Bootstrap lazy.nvim
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local repo = "https://github.com/folke/lazy.nvim.git"
+  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", repo, lazypath })
   if vim.v.shell_error ~= 0 then
-    vim.api.nvim_echo({
-      { "Failed to clone lazier.nvim:\n", "ErrorMsg" },
-      { out,                              "WarningMsg" },
-      { "\nPress any key to exit..." },
-    }, true, {})
+    vim.api.nvim_echo({ { "Failed to clone lazy.nvim:\n", "ErrorMsg" }, { out, "WarningMsg" }, { "\nPress any key to exit..." } }, true, {})
     vim.fn.getchar()
     os.exit(1)
   end
 end
-vim.opt.rtp:prepend(lazier_path)
+vim.opt.rtp:prepend(lazypath)
 
 require("config.options")
 require("config.autocmds")
 require("config.keys")
 
-require("lazier").setup("plugins", {
-  lazier = {
-    detect_changes = true,
-  },
+require("lazy").setup("plugins", {
   checker = { enabled = true, notify = false },
   change_detection = { notify = false },
   performance = {
