@@ -34,6 +34,10 @@ source = "dotfiles/config/ghostty"
 target = "~/.config/ghostty"
 
 [[dotfiles]]
+source = "dotfiles/config/opencode/commands"
+target = "~/.config/opencode/commands"
+
+[[dotfiles]]
 source = "dotfiles/config/helix"
 target = "~/.config/helix"
 
