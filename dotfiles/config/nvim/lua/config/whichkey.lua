@@ -34,6 +34,8 @@ local leader_groups = {
   { "<leader>9x",       desc = "99 stop requests" },
   { "<leader>9i",       desc = "99 session info" },
   { "<leader>9l",       desc = "99 view logs" },
+  { "<leader>9h",       desc = "99 health check" },
+  { "<leader>9m",       desc = "99 select model" },
 
   -- Find
   { "<leader>fb",       desc = "Buffers" },

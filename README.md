@@ -57,4 +57,4 @@ scripts/
 
 - Homebrew packages are declared in `mimic.toml` under `[packages]`.
 - Runtime setup (mise, uv, rustup, cargo tools, fisher) runs via `[[hooks]]` in `mimic.toml` during `mimic apply`.
-- Git config includes a local file at `~/.config/git/local.conf` for per-device overrides.
+- Git identity is rendered to `~/.config/git/local.conf` from `templates/git/local.conf.hbs`, with per-host overrides in `mimic.toml`.
