@@ -179,7 +179,7 @@ python3 = "~/.local/bin/python3"
 # Rust toolchains, components, and cross-compile targets
 [[hooks]]
 type = "rustup"
-toolchains = ["stable", "nightly"]
+toolchains = ["nightly"]
 components = ["rustfmt", "clippy", "rust-analyzer", "rust-src", "rust-docs"]
 targets    = ["x86_64-unknown-linux-musl"]
 default    = "nightly"
@@ -200,6 +200,10 @@ bin  = "sg"
 [[hooks.packages]]
 name = "keychainctl"
 git  = "https://github.com/binbandit/keychainctl.git"
+
+[[hooks.packages]]
+name = "git-workty"
+git  = "https://github.com/binbandit/workty.git"
 
 # Set fish as default shell
 [[hooks]]
