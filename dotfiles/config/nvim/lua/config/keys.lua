@@ -31,6 +31,11 @@ map("n", "<C-h>", "<C-w>h", opts)
 map("n", "<C-j>", "<C-w>j", opts)
 map("n", "<C-k>", "<C-w>k", opts)
 map("n", "<C-l>", "<C-w>l", opts)
+map("n", "<C-[>", "<C-w>h", opts)
+map("n", "<C-]>", "<C-w>l", opts)
+
+-- Keep intuitive tag jump after remapping <C-]>
+map("n", "g<C-]>", "<C-]>", merge({ desc = "Tag jump" }))
 
 -- Select all (note: overrides <C-a> increment; use <C-x> to decrement, g<C-a> to increment)
 map("n", "<C-a>", "ggVG", merge({ desc = "Select entire file" }))
