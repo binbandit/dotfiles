@@ -16,8 +16,8 @@ if type -q direnv
 end
 
 if status is-interactive
-    # Keep command names visible/consistent across hosts.
-    set -g fish_color_command blue
+    # Keep a consistent theme across hosts.
+    fish_config theme choose ayu-mirage >/dev/null 2>&1
 
     # Prompt
     if type -q starship
