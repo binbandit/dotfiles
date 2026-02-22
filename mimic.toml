@@ -226,6 +226,20 @@ name       = "fisher-plugins"
 command    = "FISH=$(command -v fish) && $FISH -c 'type -q fisher; or begin; curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source; and fisher install jorgebucaran/fisher; end' && $FISH -c 'fisher update'"
 on_failure = "continue"
 
+# Upgrade Homebrew itself + installed formulas, then clean up
+[[hooks]]
+type       = "command"
+name       = "brew-maintenance"
+command    = "if command -v brew >/dev/null 2>&1; then brew update && brew upgrade && brew autoremove && brew cleanup --prune=all; fi"
+on_failure = "continue"
+
+# Upgrade mise-managed tools to latest allowed versions
+[[hooks]]
+type       = "command"
+name       = "mise-upgrade"
+command    = "if command -v mise >/dev/null 2>&1; then mise plugins update && mise upgrade; fi"
+on_failure = "continue"
+
 # ──────────────────────────────────────────────────────────────
 # Hosts — machine-specific overrides
 # ──────────────────────────────────────────────────────────────
