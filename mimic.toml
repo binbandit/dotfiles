@@ -5,8 +5,8 @@
 [variables]
 name  = "Brayden Moon"
 email = "brayden@binbandit.dev"
-git_name  = "Brayden Moon"
-git_email = "brayden@binbandit.dev"
+git_name  = "BinBandit"
+git_email = "crazywolf132@gmail.com"
 editor = "nvim"
 shell  = "fish"
 
@@ -234,8 +234,8 @@ codex_model     = "gpt-5-codex"
 proxy_http      = ""
 proxy_https     = ""
 cert_bundle     = ""
-git_name        = "Brayden Moon"
-git_email       = "brayden@binbandit.dev"
+git_name        = "BinBandit"
+git_email       = "crazywolf132@gmail.com"
 
 [hosts.EPZ-D3YJQFV0WJ]
 roles = ["work", "mac"]
