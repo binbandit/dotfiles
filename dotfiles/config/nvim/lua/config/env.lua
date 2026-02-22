@@ -13,22 +13,6 @@ local function current_hostname()
 end
 
 M.hostname = current_hostname()
-M.supermaven_hosts = {
-  "braydens-macbook-pro",
-}
-
-local function matches_any(host, patterns)
-  for _, pattern in ipairs(patterns) do
-    if host == pattern or host:find(pattern, 1, true) then
-      return true
-    end
-  end
-  return false
-end
-
-function M.uses_supermaven()
-  return matches_any(M.hostname, M.supermaven_hosts)
-end
 
 local function env_truthy(name)
   local value = vim.env[name]

@@ -32,8 +32,9 @@ map("n", "<C-j>", "<C-w>j", opts)
 map("n", "<C-k>", "<C-w>k", opts)
 map("n", "<C-l>", "<C-w>l", opts)
 
--- Select all
+-- Select all (note: overrides <C-a> increment; use <C-x> to decrement, g<C-a> to increment)
 map("n", "<C-a>", "ggVG", merge({ desc = "Select entire file" }))
+map("n", "g<C-a>", "<C-a>", merge({ desc = "Increment number" }))
 
 -- Diagnostics
 map("n", "gl", vim.diagnostic.open_float, merge({ desc = "Show diagnostic float" }))

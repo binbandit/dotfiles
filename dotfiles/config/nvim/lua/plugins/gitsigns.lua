@@ -30,10 +30,13 @@ return {
             map("n", "<leader>hS", gs.stage_buffer, { desc = "Stage buffer" })
             map("n", "<leader>hu", gs.undo_stage_hunk, { desc = "Undo stage hunk" })
             map("n", "<leader>hR", gs.reset_buffer, { desc = "Reset buffer" })
-            map("n", "<leader>hp", gs.preview_hunk, { desc = "Preview hunk" })
+            map("n", "<leader>hP", gs.preview_hunk, { desc = "Preview hunk" })
             map("n", "<leader>hb", function() gs.blame_line({ full = true }) end, { desc = "Blame line" })
             map("n", "<leader>hd", gs.diffthis, { desc = "Diff this" })
             map("n", "<leader>hD", function() gs.diffthis("~") end, { desc = "Diff this ~" })
+
+            -- Also expose blame under the Git group for discoverability
+            map("n", "<leader>gb", function() gs.blame_line({ full = true }) end, { desc = "Git blame line" })
         end,
     },
 }
