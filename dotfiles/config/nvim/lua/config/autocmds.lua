@@ -36,6 +36,7 @@ vim.lsp.enable({
 -- Prevent native vim.lsp from ever starting rust_analyzer (rustaceanvim owns it)
 vim.lsp.config["rust_analyzer"] = {
   enabled = false,
+  autostart = false,
 }
 
 -- Treesitter folding (only when a parser exists for the filetype)
