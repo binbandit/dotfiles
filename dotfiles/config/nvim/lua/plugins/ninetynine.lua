@@ -1,6 +1,9 @@
 return {
   "ThePrimeagen/99",
   event = "VeryLazy",
+  dependencies = {
+    "hrsh7th/nvim-cmp",
+  },
   config = function()
     local _99 = require("99")
 
@@ -15,7 +18,7 @@ return {
       },
       tmp_dir = "./tmp",
       completion = {
-        source = "blink",
+        source = "cmp",
         custom_rules = {},
         files = {
           exclude = { ".git", "node_modules", "dist", "build", ".next", "coverage" },
