@@ -64,6 +64,47 @@ vim.api.nvim_create_autocmd("VimResized", {
   end,
 })
 
+-- Quit Neovim cleanly: close Snacks explorer/dashboard/special windows
+-- so you don't need to :q multiple times
+vim.api.nvim_create_autocmd("QuitPre", {
+  group = vim.api.nvim_create_augroup("QuitCleanup", {}),
+  callback = function()
+    -- Collect all "real" windows (not floating, not special buffers)
+    local real_wins = {}
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+      if vim.api.nvim_win_get_config(win).relative == "" then
+        local buf = vim.api.nvim_win_get_buf(win)
+        local bt = vim.bo[buf].buftype
+        local ft = vim.bo[buf].filetype
+        -- Skip snacks explorer, dashboard, notify, terminal, and other special buffers
+        local dominated = bt == "nofile"
+          or bt == "nowrite"
+          or bt == "terminal"
+          or ft == "snacks_dashboard"
+          or ft == "snacks_explorer"
+          or ft == "snacks_notif"
+          or ft == "snacks_terminal"
+        if not dominated then
+          table.insert(real_wins, win)
+        end
+      end
+    end
+    -- If this is the last real window, close all other windows so :q exits cleanly
+    if #real_wins <= 1 then
+      for _, win in ipairs(vim.api.nvim_list_wins()) do
+        if vim.api.nvim_win_get_config(win).relative == "" then
+          local buf = vim.api.nvim_win_get_buf(win)
+          local bt = vim.bo[buf].buftype
+          local ft = vim.bo[buf].filetype
+          if bt == "nofile" or ft == "snacks_dashboard" or ft == "snacks_explorer" or ft == "snacks_notif" then
+            pcall(vim.api.nvim_win_close, win, true)
+          end
+        end
+      end
+    end
+  end,
+})
+
 -- Go to last cursor position when opening a buffer
 vim.api.nvim_create_autocmd("BufReadPost", {
   group = vim.api.nvim_create_augroup("LastPlace", {}),
