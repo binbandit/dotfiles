@@ -16,6 +16,9 @@ if type -q direnv
 end
 
 if status is-interactive
+    # Keep command names visible/consistent across hosts.
+    set -g fish_color_command blue
+
     # Prompt
     if type -q starship
         starship init fish | source
@@ -25,6 +28,11 @@ if status is-interactive
     if type -q zoxide
         set -gx _ZO_EXCLUDE_DIRS '**/node_modules/**:**/target/**:**/.git/**:**/tmp/**:**/temp/**:**/.cache/**'
         zoxide init fish --cmd=cd | source
+    end
+
+    # git-workty shell integration (wcd/wnew/wgo helpers).
+    if type -q git-workty
+        git workty init fish | source
     end
 end
 
