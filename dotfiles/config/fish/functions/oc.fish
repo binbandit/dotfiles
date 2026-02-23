@@ -1,3 +1,3 @@
 function oc --description 'Opencode shortcut'
-  opencode
+  opencode $argv
 end
