@@ -240,6 +240,14 @@ name       = "mise-upgrade"
 command    = "if command -v mise >/dev/null 2>&1; then mise plugins update && mise upgrade; fi"
 on_failure = "continue"
 
+# Install oh-my-opencode on work host
+[[hooks]]
+type       = "command"
+name       = "oh-my-opencode-work"
+command    = "if command -v mise >/dev/null 2>&1; then mise exec pnpm -- pnpm dlx oh-my-opencode@latest install; fi"
+only_roles = ["work"]
+on_failure = "continue"
+
 # ──────────────────────────────────────────────────────────────
 # Hosts — machine-specific overrides
 # ──────────────────────────────────────────────────────────────
