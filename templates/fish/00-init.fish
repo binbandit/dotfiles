@@ -8,6 +8,11 @@ if test -d /opt/homebrew
     fish_add_path /opt/homebrew/bin /opt/homebrew/sbin
 end
 
+# Ensure Cargo-installed tools are available very early in startup.
+if test -d "$HOME/.cargo/bin"
+    fish_add_path "$HOME/.cargo/bin"
+end
+
 # Runtime manager via mise
 if type -q mise
     mise activate fish | source
@@ -37,13 +42,21 @@ end
 # since the directory may be a symlink that fish hasn't indexed yet).
 function __load_secret_from_keychain --argument-names var service
     set -l value ""
+
     if type -q keychainctl
         set value (keychainctl get $service 2>/dev/null)
         if test $status -ne 0
             set value ""
         end
-    else if type -q security
-        set value (security find-generic-password -w -a $USER -s $service 2>/dev/null)
+    end
+
+    if test -z "$value"
+        if type -q security
+            set value (security find-generic-password -w -a "$USER" -s "$service" 2>/dev/null)
+            if test $status -ne 0; or test -z "$value"
+                set value (security find-generic-password -w -s "$service" 2>/dev/null)
+            end
+        end
     end
 
     if test -n "$value"
