@@ -13,15 +13,8 @@ if test -d "$HOME/.cargo/bin"
     fish_add_path "$HOME/.cargo/bin"
 end
 
-# Runtime manager via mise
-if type -q mise
-    mise activate fish | source
-end
-
-# Runtime manager via direnv (automatic after mise activates hook)
-if type -q direnv
-    direnv hook fish | source
-end
+# Runtime manager (mise) is auto-activated via Homebrew vendor_conf.d
+# No manual activation needed here to avoid double-activation overhead
 
 if status is-interactive
     # Set theme once (or when changed) without reapplying every shell.
@@ -42,12 +35,19 @@ if status is-interactive
 
 end
 
-# Keychain secret loader — defined inline so it's available before
-# keychain-secrets.fish is sourced (cannot rely on functions/ autoload
-# since the directory may be a symlink that fish hasn't indexed yet).
+# Keychain secret loader with caching (including negative results)
 function __load_secret_from_keychain --argument-names var service
-    set -l value ""
+    # Check if already cached in universal variable (including empty/not-found results)
+    set -l cache_var "_keychain_cache_$var"
+    if set -q $cache_var
+        # Only export if non-empty
+        if test -n "$$cache_var"
+            set -gx $var $$cache_var
+        end
+        return
+    end
 
+    set -l value ""
     if type -q keychainctl
         set value (keychainctl get $service 2>/dev/null)
         if test $status -ne 0
@@ -64,6 +64,9 @@ function __load_secret_from_keychain --argument-names var service
         end
     end
 
+    # Always cache the result (even if empty) to avoid repeated lookups
+    set -U $cache_var "$value"
+    
     if test -n "$value"
         set -gx $var $value
     end
