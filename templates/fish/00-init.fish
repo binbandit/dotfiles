@@ -24,6 +24,11 @@ if type -q direnv
 end
 
 if status is-interactive
+    # Set theme once (or when changed) without reapplying every shell.
+    if not set -q fish_theme; or test "$fish_theme" != "ayu-mirage"
+        fish_config theme choose ayu-mirage >/dev/null 2>&1
+    end
+
     # Prompt
     if type -q starship
         starship init fish | source
