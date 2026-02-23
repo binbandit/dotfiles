@@ -85,6 +85,10 @@ target = "~/.config/fish/conf.d/10-host.fish"
 source = "templates/fish/00-init.fish"
 target = "~/.config/fish/conf.d/00-init.fish"
 
+[[dotfiles]]
+source = "templates/fish/01-mise-fast.fish"
+target = "~/.config/fish/conf.d/01-mise-fast.fish"
+
 # Only abbreviations go here; fzf.fish and pisces.fish are managed by Fisher
 [[dotfiles]]
 source = "dotfiles/config/fish/conf.d/10-abbr.fish"
@@ -132,7 +136,6 @@ brew = [
   "bat",
   "starship",
   "zoxide",
-  "direnv",
   "sesh",
   "lazygit",
   "jq",
