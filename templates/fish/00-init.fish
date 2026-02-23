@@ -1,8 +1,11 @@
 # Shell init: tools + helpers
 
-# Homebrew (Apple Silicon default path)
-if test -f /opt/homebrew/bin/brew
-    eval (/opt/homebrew/bin/brew shellenv | string collect)
+# Homebrew (Apple Silicon default path) without spawning `brew shellenv`.
+if test -d /opt/homebrew
+    set -gx HOMEBREW_PREFIX /opt/homebrew
+    set -gx HOMEBREW_CELLAR /opt/homebrew/Cellar
+    set -gx HOMEBREW_REPOSITORY /opt/homebrew
+    fish_add_path /opt/homebrew/bin /opt/homebrew/sbin
 end
 
 # Runtime manager via mise
@@ -16,9 +19,6 @@ if type -q direnv
 end
 
 if status is-interactive
-    # Keep a consistent theme across hosts.
-    fish_config theme choose ayu-mirage >/dev/null 2>&1
-
     # Prompt
     if type -q starship
         starship init fish | source
@@ -51,29 +51,26 @@ function __load_secret_from_keychain --argument-names var service
     end
 end
 
-# Keychain-backed env vars
+# Keychain-backed env vars (needed for both interactive and non-interactive shells).
 if test -f $HOME/.config/fish/keychain-secrets.fish
     source $HOME/.config/fish/keychain-secrets.fish
 end
 
-if type -q keychainctl
-    function keychain-set --description 'Add or update a keychain secret'
-        keychainctl set $argv
+if status is-interactive
+    if type -q keychainctl
+        function keychain-set --description 'Add or update a keychain secret'
+            keychainctl set $argv
+        end
+        function keychain-get --description 'Print a keychain secret to stdout'
+            keychainctl get $argv
+        end
+        function keychain-rm --description 'Remove a keychain secret'
+            keychainctl delete $argv
+        end
+        function keychain-ls --description 'List keychain secrets for the current user'
+            keychainctl list $argv
+        end
     end
-    function keychain-get --description 'Print a keychain secret to stdout'
-        keychainctl get $argv
-    end
-    function keychain-rm --description 'Remove a keychain secret'
-        keychainctl delete $argv
-    end
-    function keychain-ls --description 'List keychain secrets for the current user'
-        keychainctl list $argv
-    end
-end
-
-# rbenv init
-if type -q rbenv
-    rbenv init - fish | source
 end
 
 # Kiro shell integration
