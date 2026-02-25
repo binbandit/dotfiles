@@ -28,6 +28,7 @@ Group files by logical change, not by file type. Examples:
 2. Never mix unrelated changes in a single commit
 3. Keep commits atomic - each should be independently revertable
 4. Stage files before running `sg save -a`
+5. **NEVER include co-author in commit messages** - Do not add `Co-authored-by:` trailers or any co-author attribution to commit messages under any circumstances
 
 ## Process
 
