@@ -8,18 +8,15 @@ function nuke --description 'Delete all uncommitted files and folders in git rep
     # Show what will be deleted
     echo "The following files and directories will be deleted:"
     echo ""
-    git clean -fdxn
+    git clean -fdn
     echo ""
     
     # Ask for confirmation
     read -l -P "Are you sure you want to delete all uncommitted files? (yes/no): " confirm
     
     if test "$confirm" = "yes"
-        # Remove all untracked files and directories
-        # -f: force
-        # -d: remove directories
-        # -x: remove ignored files too
-        git clean -fdx
+        # Remove all untracked files and directories (respects .gitignore)
+        git clean -fd
         
         # Reset all tracked files to their committed state
         git reset --hard HEAD
