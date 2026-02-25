@@ -42,6 +42,21 @@ function M.setup()
   map("n", "<leader>cv", function()
     require("vtsls").commands.select_ts_version(0)
   end, o("Select TS version"))
+
+  -- Restart TS Server
+  map("n", "<leader>cr", function()
+    require("vtsls").commands.restart_tsserver()
+  end, o("Restart TS Server"))
+
+  -- Go to project config (tsconfig.json)
+  map("n", "<leader>cP", function()
+    require("vtsls").commands.goto_project_config(0)
+  end, o("Go to tsconfig.json"))
+
+  -- Open TS Server log
+  map("n", "<leader>cL", function()
+    require("vtsls").commands.open_tsserver_log()
+  end, o("Open TS Server Log"))
 end
 
 return M
