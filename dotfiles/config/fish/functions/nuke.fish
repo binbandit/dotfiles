@@ -12,9 +12,9 @@ function nuke --description 'Delete all uncommitted files and folders in git rep
     echo ""
     
     # Ask for confirmation
-    read -l -P "Are you sure you want to delete all uncommitted files? (yes/no): " confirm
+    read -l -P "Are you sure you want to delete all uncommitted files? (y/n): " confirm
     
-    if test "$confirm" = "yes"
+    if test "$confirm" = "y" -o "$confirm" = "yes"
         # Remove all untracked files and directories (respects .gitignore)
         git clean -fd
         
