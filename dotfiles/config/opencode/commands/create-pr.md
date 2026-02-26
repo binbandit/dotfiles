@@ -80,7 +80,7 @@ Create a GitHub pull request with automatic stack detection and management using
    ```
    <!-- st-stack-end -->
    
-   > ⚠️ **Review Order:** Please review and approve the parent PR(s) before this one.
+   > ⚠️ **Review Order:** Child PRs are reviewed and merged first into their parent branch. The parent PR is reviewed last after all children are merged.
    > 
    > 💡 **Stack Updates:** This section is automatically updated when the stack structure changes.
    ```
@@ -144,9 +144,9 @@ Create a GitHub pull request with automatic stack detection and management using
       - <child-2> (#<pr-number>) - updated ✅
     
     🔗 Review Order:
-    1. Review parent PR #<number> first
-    2. Then review this PR #<number>
-    3. Children will need updates after merge
+    1. Review and approve child PRs first (#<child-numbers>)
+    2. Merge children into parent branch
+    3. Review parent PR #<number> last (after all children merged)
     ```
 
 ## Rules
@@ -343,9 +343,9 @@ This PR is part of a stack of dependent changes:
   - [`child-2`](https://github.com/org/repo/pull/126) - Builds on this PR
 
 ### Review Guidelines
-1. ✅ **Review parent PR first:** #123 should be reviewed and approved before this one
-2. 🔍 **Review this PR:** Focus on changes introduced in this branch only
-3. ⏳ **Child PRs pending:** #125, #126 depend on this PR
+1. 🔍 **Review this PR:** Can be reviewed independently - focus on changes in this branch only
+2. ✅ **After approval:** This will be merged into parent branch (not main/master)
+3. ⏳ **Parent review:** Parent PR is reviewed last, after all children are merged into it
 
 ### Stack Structure
 <!-- st-stack-start -->
@@ -382,9 +382,9 @@ For successful PR creation:
    ✅ #123 (parent) - stack section updated
    
 🎯 Next Steps:
-   1. Request review for parent PR #123 if not already approved
-   2. Once #123 is merged, rebase this PR: st restack
-   3. Request review for this PR
+   1. Request review for this PR
+   2. After approval, merge into parent branch
+   3. Once all sibling PRs are merged, parent PR can be reviewed and merged to main
    
 📖 View PR: gh pr view 124 --web
 ```
