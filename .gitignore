@@ -25,3 +25,4 @@ dotfiles/config/fish/completions/replay.fish
 dotfiles/config/fish/completions/kill-on-port.fish
 dotfiles/config/fish/conf.d/fzf.fish
 dotfiles/config/fish/conf.d/pisces.fish
+dotfiles/config/zed/prompts/
