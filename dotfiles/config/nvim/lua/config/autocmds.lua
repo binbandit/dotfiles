@@ -24,22 +24,28 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
--- Enable LSP servers (the 0.11 native way)
--- Config lives in lsp/<name>.lua files
--- NOTE: rust_analyzer is NOT here -- rustaceanvim manages it exclusively
-vim.lsp.enable({
-  "lua_ls",
-  "basedpyright",
-  "ruff",
-  "eslint",
-  "vtsls",
-})
+-- Enable LSP servers lazily on first real buffer
+vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile" }, {
+  group = vim.api.nvim_create_augroup("BootstrapNativeLsp", { clear = true }),
+  once = true,
+  callback = function()
+    -- Config lives in lsp/<name>.lua files
+    -- NOTE: rust_analyzer is NOT here -- rustaceanvim manages it exclusively
+    vim.lsp.enable({
+      "lua_ls",
+      "basedpyright",
+      "ruff",
+      "eslint",
+      "vtsls",
+    })
 
--- Prevent native vim.lsp from ever starting rust_analyzer (rustaceanvim owns it)
-vim.lsp.config["rust_analyzer"] = {
-  enabled = false,
-  autostart = false,
-}
+    -- Prevent native vim.lsp from ever starting rust_analyzer
+    vim.lsp.config["rust_analyzer"] = {
+      enabled = false,
+      autostart = false,
+    }
+  end,
+})
 
 -- Treesitter folding (only when a parser exists for the filetype)
 vim.api.nvim_create_autocmd("FileType", {
