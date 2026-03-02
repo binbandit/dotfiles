@@ -2,6 +2,15 @@ return {
   -- Mason: install LSP servers, formatters, linters, debug adapters
   {
     "williamboman/mason.nvim",
+    cmd = {
+      "Mason",
+      "MasonInstall",
+      "MasonUpdate",
+      "MasonUninstall",
+      "MasonUninstallAll",
+      "MasonLog",
+      "MasonInstallAll",
+    },
     build = ":MasonUpdate",
     opts = {
       ensure_installed = {
@@ -23,16 +32,17 @@ return {
     },
     config = function(_, opts)
       require("mason").setup()
-      -- Auto-install tools listed in ensure_installed
-      local mr = require("mason-registry")
-      mr.refresh(function()
-        for _, tool in ipairs(opts.ensure_installed) do
-          local ok, p = pcall(mr.get_package, tool)
-          if ok and not p:is_installed() then
-            p:install()
+      vim.api.nvim_create_user_command("MasonInstallAll", function()
+        local mr = require("mason-registry")
+        mr.refresh(function()
+          for _, tool in ipairs(opts.ensure_installed) do
+            local ok, pkg = pcall(mr.get_package, tool)
+            if ok and not pkg:is_installed() then
+              pkg:install()
+            end
           end
-        end
-      end)
+        end)
+      end, { desc = "Install configured Mason tools" })
     end,
   },
 
@@ -59,13 +69,6 @@ return {
         html = { "prettier" },
       },
     },
-  },
-
-  -- Fidget: LSP progress indicator
-  {
-    "j-hui/fidget.nvim",
-    event = "LspAttach",
-    opts = {},
   },
 
   -- lazydev: proper Lua LSP support for Neovim config/plugin development

@@ -41,9 +41,18 @@ vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.splitkeep = "screen" -- keep text on screen when splitting
 
--- 0.11 features
+-- 0.12+ defaults and features
 vim.opt.winborder = "rounded" -- default border for all floating windows
 vim.lsp.inlay_hint.enable(true)
+
+if vim.fn.has("nvim-0.12") == 1 then
+  vim.opt.pumborder = "rounded"
+  vim.opt.completeopt:append("nearest")
+else
+  vim.schedule(function()
+    vim.notify("This config is tuned for Neovim nightly (0.12+). Current version may miss optimizations.", vim.log.levels.WARN)
+  end)
+end
 
 -- Smoother experience
 vim.opt.updatetime = 200 -- faster CursorHold (default 4000ms)

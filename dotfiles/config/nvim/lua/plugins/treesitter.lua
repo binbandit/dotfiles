@@ -3,7 +3,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     branch = "master",
     build = ":TSUpdate",
-    lazy = false,
+    event = { "BufReadPost", "BufNewFile" },
     opts = {
       ensure_installed = {
         "lua", "vimdoc", "vim", "regex",
@@ -12,7 +12,7 @@ return {
         "yaml", "markdown", "markdown_inline",
         "bash", "dockerfile", "gitcommit", "diff",
       },
-      auto_install = true,
+      auto_install = false,
       highlight = { enable = true },
     },
     config = function(_, opts)

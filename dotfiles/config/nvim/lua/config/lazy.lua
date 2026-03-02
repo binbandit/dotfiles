@@ -16,7 +16,7 @@ require("config.autocmds")
 require("config.keys")
 
 require("lazy").setup("plugins", {
-  checker = { enabled = true, notify = false },
+  checker = { enabled = false, notify = false },
   change_detection = { notify = false },
   performance = {
     rtp = {

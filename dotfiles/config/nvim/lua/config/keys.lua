@@ -20,6 +20,7 @@ end
 map({ "n", "v" }, "<leader>w", write_buffer, merge({ desc = "Write buffer" }))
 map("n", "<leader>qq", "<cmd>confirm quit<CR>", merge({ desc = "Quit" }))
 map("n", "<leader>`", "<cmd>b#<CR>", merge({ desc = "Alternate buffer" }))
+map("n", "<leader>uu", "<cmd>Undotree<CR>", merge({ desc = "Toggle Undotree" }))
 
 -- Splits
 map("n", "<leader>|", "<cmd>vsplit<CR>", merge({ desc = "Vertical split" }))
