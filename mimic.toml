@@ -240,7 +240,14 @@ on_failure = "continue"
 [[hooks]]
 type       = "command"
 name       = "mise-upgrade"
-command    = "if command -v mise >/dev/null 2>&1; then mise plugins update && mise upgrade; fi"
+command    = "if command -v mise >/dev/null 2>&1; then mise plugins update && mise upgrade && mise prune -y --silent; fi"
+on_failure = "continue"
+
+# Update fish mise PATH cache after mise changes
+[[hooks]]
+type       = "command"
+name       = "mise-refresh-fish-cache"
+command    = "FISH=$(command -v fish) && $FISH -c \"set -e _mise_cached_paths; if command -v mise >/dev/null 2>&1; mise activate fish | source; set -U _mise_cached_paths (string match -r '/.*mise/installs/[^:]+' \\$PATH); end\" 2>/dev/null || true"
 on_failure = "continue"
 
 # Install oh-my-opencode on work host
