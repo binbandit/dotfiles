@@ -1,5 +1,5 @@
 {
-  "99": { "branch": "master", "commit": "23fd5532a6cda8e899c7f6dc20e522c40b17485f" },
+  "99": { "branch": "master", "commit": "cd07a91be0e67a4fcbbb3a455123849ebaa4a140" },
   "blink.cmp": { "branch": "main", "commit": "4b18c32adef2898f95cdef6192cbd5796c1a332d" },
   "comfy-line-numbers.nvim": { "branch": "main", "commit": "9adedbaf1f410cdaacf4fb2ca8eb44f3d5f6d010" },
   "conform.nvim": { "branch": "master", "commit": "40dcec5555f960b0a04340d76eabdf4efe78599d" },
@@ -9,7 +9,7 @@
   "gitsigns.nvim": { "branch": "main", "commit": "9f3c6dd7868bcc116e9c1c1929ce063b978fa519" },
   "guess-indent.nvim": { "branch": "main", "commit": "84a4987ff36798c2fc1169cbaff67960aed9776f" },
   "harpoon": { "branch": "harpoon2", "commit": "87b1a3506211538f460786c23f98ec63ad9af4e5" },
-  "koda.nvim": { "branch": "main", "commit": "4fe384484afc06140cefe046acb881119c284400" },
+  "koda.nvim": { "branch": "main", "commit": "764f5a2b8828c014f41945e96c187f9fcdde0ddc" },
   "lazy.nvim": { "branch": "main", "commit": "306a05526ada86a7b30af95c5cc81ffba93fef97" },
   "lazydev.nvim": { "branch": "main", "commit": "5231c62aa83c2f8dc8e7ba957aa77098cda1257d" },
   "lualine.nvim": { "branch": "master", "commit": "47f91c416daef12db467145e16bed5bbfe00add8" },
