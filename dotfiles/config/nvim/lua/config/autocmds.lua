@@ -29,6 +29,12 @@ vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile" }, {
   group = vim.api.nvim_create_augroup("BootstrapNativeLsp", { clear = true }),
   once = true,
   callback = function()
+    -- rust_analyzer (nvim-lspconfig name) is managed only by rustaceanvim
+    vim.lsp.config["rust_analyzer"] = {
+      enabled = false,
+      autostart = false,
+    }
+
     -- Config lives in lsp/<name>.lua files
     -- NOTE: rust_analyzer is NOT here -- rustaceanvim manages it exclusively
     vim.lsp.enable({
@@ -38,12 +44,6 @@ vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile" }, {
       "eslint",
       "vtsls",
     })
-
-    -- Prevent native vim.lsp from ever starting rust_analyzer
-    vim.lsp.config["rust_analyzer"] = {
-      enabled = false,
-      autostart = false,
-    }
   end,
 })
 
