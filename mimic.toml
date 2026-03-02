@@ -247,7 +247,7 @@ on_failure = "continue"
 [[hooks]]
 type       = "command"
 name       = "mise-refresh-fish-cache"
-command    = "FISH=$(command -v fish) && $FISH -c \"set -e _mise_cached_paths; if command -v mise >/dev/null 2>&1; mise activate fish | source; set -U _mise_cached_paths (string match -r '/.*mise/installs/[^:]+' \\$PATH); end\" 2>/dev/null || true"
+command    = "FISH=$(command -v fish) && $FISH -c \"set -eU _mise_cached_paths; if command -v mise >/dev/null 2>&1; mise activate fish | source; set -U _mise_cached_paths $HOME/.local/share/mise/shims; end\" 2>/dev/null || true"
 on_failure = "continue"
 
 # Install oh-my-opencode on work host
