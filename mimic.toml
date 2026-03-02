@@ -196,9 +196,12 @@ name = "tap"
 git  = "https://github.com/crazywolf132/tap.git"
 
 [[hooks.packages]]
+name = "kt"
+git = "https://github.com/binbandit/kite"
+
+[[hooks.packages]]
 name = "sg"
 git  = "https://github.com/sage-scm/sage.git"
-bin  = "sg"
 
 [[hooks.packages]]
 name = "keychainctl"
@@ -285,3 +288,5 @@ proxy_https     = "http://localhost:3128"
 cert_bundle     = "/Users/Shared/ca_certs/bundle.pem"
 git_name        = "brayden-moon_cba"
 git_email       = "brayden.moon@cba.com.au"
+openai_model = "aipe-gpt-5.2_v2025-12-11_EASTUS2"
+openai_url = "https://api.studio.genai.cba/openai"
