@@ -43,7 +43,6 @@ vim.opt.splitkeep = "screen" -- keep text on screen when splitting
 
 -- 0.12+ defaults and features
 vim.opt.winborder = "rounded" -- default border for all floating windows
-vim.lsp.inlay_hint.enable(true)
 
 if vim.fn.has("nvim-0.12") == 1 then
   vim.opt.pumborder = "rounded"

@@ -6,6 +6,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("UserLspConfig", {}),
   callback = function(ev)
     local opts = { buffer = ev.buf }
+    pcall(vim.lsp.inlay_hint.enable, true, { bufnr = ev.buf })
+
     -- gd = go to definition (not a 0.11 default, still useful)
     vim.keymap.set("n", "gd", vim.lsp.buf.definition, vim.tbl_extend("keep", { desc = "Goto definition" }, opts))
 
