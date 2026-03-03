@@ -29,14 +29,25 @@ vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile" }, {
   group = vim.api.nvim_create_augroup("BootstrapNativeLsp", { clear = true }),
   once = true,
   callback = function()
-    -- rust_analyzer (nvim-lspconfig name) is managed only by rustaceanvim
+    local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
+    if vim.fn.isdirectory(mason_bin) == 1 then
+      vim.env.PATH = mason_bin .. ":" .. vim.env.PATH
+    end
+
     vim.lsp.config["rust_analyzer"] = {
       enabled = false,
       autostart = false,
     }
 
-    -- Config lives in lsp/<name>.lua files
-    -- NOTE: rust_analyzer is NOT here -- rustaceanvim manages it exclusively
+    local lsp_config_dir = vim.fn.stdpath("config") .. "/lsp"
+    for _, server in ipairs({ "lua_ls", "basedpyright", "ruff", "eslint", "vtsls" }) do
+      local config_path = lsp_config_dir .. "/" .. server .. ".lua"
+      if vim.fn.filereadable(config_path) == 1 then
+        local config = dofile(config_path)
+        vim.lsp.config[server] = config
+      end
+    end
+
     vim.lsp.enable({
       "lua_ls",
       "basedpyright",
@@ -161,5 +172,14 @@ vim.api.nvim_create_autocmd("BufReadPost", {
     if mark[1] > 0 and mark[1] <= lcount then
       pcall(vim.api.nvim_win_set_cursor, 0, mark)
     end
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "neo-tree",
+  callback = function(event)
+    vim.keymap.set("n", "ff", function()
+      require("fff").find_files()
+    end, { buffer = event.buf, desc = "Find files" })
   end,
 })

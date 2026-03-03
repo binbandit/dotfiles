@@ -21,10 +21,14 @@ return {
       {
         "<leader>e",
         function()
+          local root = vim.fn.finddir(".git/..", vim.fn.expand("%:p:h") .. ";")
+          if root == "" then
+            root = vim.fn.getcwd()
+          end
           require("neo-tree.command").execute({
             source = "filesystem",
             toggle = true,
-            dir = vim.fn.getcwd(),
+            dir = root,
           })
         end,
         desc = "File explorer",
