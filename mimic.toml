@@ -155,6 +155,7 @@ brew = [
 
   # AI
   "anomalyco/tap/opencode",
+  "agent-browser",
 
   # System
   "openssl@3",
