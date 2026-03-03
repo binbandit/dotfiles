@@ -28,27 +28,6 @@ return {
     end,
     keys = {
       {
-        "<leader><leader>",
-        function()
-          MiniPick.builtin.files()
-        end,
-        desc = "Find files",
-      },
-      {
-        "ff",
-        function()
-          MiniPick.builtin.files()
-        end,
-        desc = "Find files",
-      },
-      {
-        "<leader>/",
-        function()
-          MiniPick.builtin.grep_live()
-        end,
-        desc = "Live grep",
-      },
-      {
         "<leader>?",
         function()
           MiniExtra.pickers.commands()
@@ -105,32 +84,11 @@ return {
         desc = "LSP symbols",
       },
       {
-        "<leader>fw",
-        function()
-          MiniPick.builtin.grep({ pattern = vim.fn.expand("<cword>") })
-        end,
-        desc = "Grep word under cursor",
-      },
-      {
         "<leader>fc",
         function()
           MiniExtra.pickers.git_commits()
         end,
         desc = "Git commits",
-      },
-      {
-        "<leader>e",
-        function()
-          MiniExtra.pickers.explorer({ cwd = vim.uv.cwd() })
-        end,
-        desc = "File explorer",
-      },
-      {
-        "-",
-        function()
-          MiniExtra.pickers.explorer({ cwd = vim.fn.expand("%:p:h") })
-        end,
-        desc = "File explorer",
       },
     },
   },
