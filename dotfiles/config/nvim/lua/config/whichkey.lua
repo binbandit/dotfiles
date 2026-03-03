@@ -23,6 +23,7 @@ local leader_groups = {
   { "<leader>e",        desc = "Explorer" },
   { "<leader>z",        desc = "Zen mode" },
   { "<leader>/",        desc = "Live Grep" },
+  { "<leader>ff",       desc = "Find files" },
   { "<leader>?",        desc = "Commands" },
   { "<leader>|",        desc = "Vertical Split" },
   { "<leader>`",        desc = "Alternate Buffer" },
