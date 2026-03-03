@@ -1,8 +1,51 @@
 return {
   "folke/snacks.nvim",
-  event = "VeryLazy",
+  priority = 1000,
+  lazy = false,
   opts = {
-    dashboard = { enabled = false },
+    dashboard = {
+      enabled = true,
+      width = 100,
+      sections = {
+        {
+          text = [[
+                             .m.                                   ,_
+                             ' ;M;                                ,;m `
+                               ;M;.           ,      ,           ;SMM;
+                              ;;Mm;         ,;  ____  ;,         ;SMM;
+                             ;;;MM;        ; (.MMMMMM.) ;       ,SSMM;;
+                           ,;;;mMp'        l  ';mmmm;/  j       SSSMM;;
+                         .;;;;;MM;         .\,.mmSSSm,,/,      ,SSSMM;;;
+                        ;;;;;;mMM;        .;MMmSSSSSSSmMm;     ;MSSMM;;;;
+                       ;;;;;;mMSM;     ,_ ;MMmS;;;;;;mmmM;  -,;MMMMMMm;;;;
+                      ;;;;;;;MMSMM;     "*;M;( ( '') );m;*"/ ;MMMMMM;;;;;,
+                     .;;;;;;mMMSMM;      \(@;! _     _ !;@)/ ;MMMMMMMM;;;;;,
+                     ;;;;;;;MMSSSM;       ;,;.*o*> <*o*.;m; ;MMMMMMMMM;;;;;;,
+                    .;;;;;;;MMSSSMM;     ;Mm;           ;M;,MMMMMMMMMMm;;;;;;.
+                    ;;;;;;;mmMSSSMMMM,   ;Mm;,   '-    ,;M;MMMMMMMSMMMMm;;;;;;;
+                    ;;;;;;;MMMSSSMMMMMMMm;Mm;;,  ___  ,;SmM;MMMMMMSSMMMM;;;;;;;;
+                    ;;'";;;MMMSSSSMMMMMM;MMmS;;,  "  ,;SmMM;MMMMMMSSMMMM;;;;;;;;.
+                    !   ;;;MMMSSSSSMMMMM;MMMmSS;;._.;;SSmMM;MMMMMSSSSMMM;;;;;;;;;
+                        ;;;;*MSSSSSSMMMP;Mm*"'q;'   `;p*"*M;MMMMMSSSSMMM;;;;;;;;;
+                        ';;;  ;SS*SSM*M;M;'     `-.        ;;MMMMSSSSSMM;;;;;;;;;,
+                         ;;;. ;P  `q; qMM.                 ';MMMMSSSSSMp' ';;;;;;;
+                         ';;;       ' mmS';     \.   `.   /  ;MMM' `qSS'    ';;;;;
+]],
+          hl = "header",
+          padding = 1,
+          align = "left",
+        },
+        { section = "keys", gap = 1, padding = 1 },
+        { section = "recent_files", limit = 5, padding = 1 },
+        { section = "projects", limit = 5, padding = 1 },
+      },
+      keys = {
+        { key = "f", desc = "Find files", action = ":lua require('fff').find_files()" },
+        { key = "g", desc = "Live grep", action = ":lua require('fff').live_grep()" },
+        { key = "e", desc = "Explorer", action = ":Neotree toggle current reveal_force_cwd" },
+        { key = "q", desc = "Quit", action = ":qa" },
+      },
+    },
     picker = { enabled = false },
     explorer = { enabled = false },
     image = { enabled = false },
