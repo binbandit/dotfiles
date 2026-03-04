@@ -16,6 +16,9 @@ end
 # Runtime manager (mise) is auto-activated via Homebrew vendor_conf.d
 # No manual activation needed here to avoid double-activation overhead
 
+# Agent Browser native mode
+set -gx AGENT_BROWSER_NATIVE 1
+
 if status is-interactive
     # Set theme once (or when changed) without reapplying every shell.
     if not set -q fish_theme; or test "$fish_theme" != "ayu-mirage"
