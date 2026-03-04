@@ -62,15 +62,30 @@ Create new Jira tickets under epics or update existing ticket descriptions and a
        - Fetch current branch: `git branch --show-current`
        - Get PR info: `gh pr view --json title,body,url,number`
        - Use PR title as default summary
-       - Use PR body as default description
+       - Use PR body as default description (but NOT acceptance criteria - see below)
        - Include PR URL in ticket description
+   - **Acceptance Criteria**: Optional - separate from description
+     - If user provides success criteria/acceptance criteria, store separately
+     - Will be added as a field after ticket creation (see step 8)
    - **Issue Type**: Optional - defaults to `defaultIssueType` from config
      - Ask: "Issue type? (Story/Task/Bug) [default: {defaultIssueType}]"
-   - **Assignee**: Optional - defaults to current user (from config's `accountId`)
+   - **Assignee**: Always defaults to current user (from config's `accountId`)
+     - Only prompt if user explicitly specifies a different assignee
      - If user wants different assignee: 
        ```
        Use: atlassian_lookupJiraAccountId(cloudId, searchString)
        ```
+   - **Sprint**: Always assign to current sprint
+     - Fetch active sprint:
+       ```
+       Use: atlassian_searchJiraIssuesUsingJql(
+         cloudId,
+         jql: "project = {projectKey} AND sprint in openSprints()",
+         fields: ["sprint"]
+       )
+       ```
+     - Extract sprint ID from any returned issue's sprint field
+     - If no active sprint found, skip sprint assignment
 
 5. **Select epic (if available):**
    - Load epics from `~/.config/jira/epics.json`
@@ -116,10 +131,11 @@ Create new Jira tickets under epics or update existing ticket descriptions and a
      projectKey,
      issueTypeName,
      summary,
-     description (Markdown),
-     assignee_account_id (optional - pass as string, e.g., "5f8b..."),
+     description (Markdown - NO acceptance criteria here),
+     assignee_account_id (from config's accountId - always assign to current user),
      additional_fields: {
-       parent: { id: "10100" }  // If epic selected - use numeric ID from step 6
+       parent: { id: "10100" },  // If epic selected - use numeric ID from step 6
+       sprint: sprintId  // If active sprint found in step 4
      }
    )
    ```
@@ -128,33 +144,36 @@ Create new Jira tickets under epics or update existing ticket descriptions and a
    - `parent.id` must be the numeric issue ID, not the issue key
    - `assignee_account_id` is passed as a string parameter, not in additional_fields
    - If epic not selected, omit `parent` field entirely (don't pass null)
+   - If no active sprint found, omit `sprint` field
+   - Description should NOT contain acceptance criteria (those go in step 8)
 
-8. **Handle acceptance criteria (optional):**
-   - If user provided acceptance criteria or wants to add it:
-     - Fetch ticket to get current description:
+8. **Handle acceptance criteria:**
+   - If user provided acceptance criteria in step 4:
+     - ALWAYS use Jira's "Acceptance Criteria" field (NEVER put in description)
+     - First, get the field metadata to find the acceptance criteria field ID:
        ```
-       Use: atlassian_getJiraIssue(cloudId, issueIdOrKey)
+       Use: atlassian_getJiraIssueTypeMetaWithFields(
+         cloudId,
+         projectIdOrKey,
+         issueTypeId
+       )
        ```
-     - Append acceptance criteria to description:
-       ```markdown
-       {original description}
-       
-       ## Acceptance Criteria
-       
-       - [ ] {criterion 1}
-       - [ ] {criterion 2}
-       - [ ] {criterion 3}
-       ```
-     - Update ticket:
+     - Search response for field with name "Acceptance Criteria" or similar (case-insensitive)
+     - Extract the field key (e.g., "customfield_10100")
+     - Update the ticket with acceptance criteria:
        ```
        Use: atlassian_editJiraIssue(
          cloudId,
          issueIdOrKey,
-         fields: { description: {updated description with AC} }
+         fields: {
+           "customfield_XXXXX": "- [ ] {criterion 1}\n- [ ] {criterion 2}\n- [ ] {criterion 3}"
+         }
        )
        ```
+     - Format as checklist items (one per line with `- [ ]` prefix)
+     - **NEVER append acceptance criteria to description field**
 
-#### 2C: Report Success
+#### 2C: Report Success and Ask About Status
 
 9. **Display created ticket:**
    ```
@@ -163,22 +182,59 @@ Create new Jira tickets under epics or update existing ticket descriptions and a
    {issueKey}: {summary}
    URL: {workspaceUrl}/browse/{issueKey}
    Epic: {epicKey} - {epicSummary}
-   Assignee: {assigneeName}
+   Assignee: {currentUserName} (you)
+   Sprint: {sprintName} (current sprint)
    Type: {issueType}
+   Status: Open
    
    📋 Description:
    {truncated description preview}
    
-   🎯 Next Steps:
-   - Use skill("move", issueKey) to transition ticket status
-   - Use skill("attach-ticket") to link this ticket to a PR
+   {If acceptance criteria added:}
+   ✅ Acceptance Criteria:
+   - [ ] {criterion 1}
+   - [ ] {criterion 2}
    ```
+
+10. **Ask about status transition:**
+    - Present user with question:
+      ```
+      Should I move this ticket to In Progress now, or do you want to set a different status?
+      
+      Options:
+      1. Keep as "Open" (default)
+      2. Move to "In Progress"
+      3. Choose another status
+      ```
+    - If user selects option 2 or 3:
+      - Fetch available transitions:
+        ```
+        Use: atlassian_getTransitionsForJiraIssue(cloudId, issueIdOrKey)
+        ```
+      - For option 2: Find "In Progress" transition and apply it
+      - For option 3: Show list of available transitions and let user choose
+      - Apply transition:
+        ```
+        Use: atlassian_transitionJiraIssue(
+          cloudId,
+          issueIdOrKey,
+          transition: { id: transitionId }
+        )
+        ```
+      - Confirm: "✅ Ticket moved to {newStatus}"
+    
+11. **Show next steps:**
+    ```
+    🎯 Next Steps:
+    - Use skill("move", issueKey) to change ticket status later
+    - Use skill("attach-ticket") to link this ticket to a PR
+    ```
 
 ### Phase 3: Update Mode
 
 #### 3A: Fetch Existing Ticket
 
-10. **Get ticket details:**
+12. **Get ticket details:**
     ```
     Use: atlassian_getJiraIssue(
       cloudId,
@@ -193,62 +249,77 @@ Create new Jira tickets under epics or update existing ticket descriptions and a
     - If API returns 500: Jira service issue
     - Always validate response has expected structure before accessing fields
 
-11. **Display current state:**
-    ```
-    📋 Current Ticket: {issueKey}
-    
-    Summary: {summary}
-    Status: {status}
-    Type: {issueType}
-    Epic: {parent.key if exists}
-    
-    Description:
-    {current description}
-    
-    What would you like to update?
-    1. Description
-    2. Acceptance Criteria
-    3. Both
-    ```
+13. **Display current state:**
+     ```
+     📋 Current Ticket: {issueKey}
+     
+     Summary: {summary}
+     Status: {status}
+     Type: {issueType}
+     Epic: {parent.key if exists}
+     
+     Description:
+     {current description}
+     
+     What would you like to update?
+     1. Description
+     2. Acceptance Criteria
+     3. Both
+     ```
 
 #### 3B: Update Description and/or Acceptance Criteria
 
-12. **Gather updates:**
+14. **Gather updates:**
     - If user wants to update description:
       - Ask: "New description (Markdown supported):"
       - Or if updating "for this PR":
         - Get PR info: `gh pr view --json title,body,url`
         - Use PR body as new description
         - Include PR URL
-    - If user wants to update/add acceptance criteria:
-      - Ask: "Acceptance criteria (one per line, will be formatted as checkboxes):"
-      - Format as:
-        ```markdown
-        ## Acceptance Criteria
-        
-        - [ ] {criterion 1}
-        - [ ] {criterion 2}
-        ```
+     - If user wants to update/add acceptance criteria:
+       - Ask: "Acceptance criteria (one per line, will be formatted as checkboxes):"
+       - Will be added to Acceptance Criteria field (not description) - see step 15
 
-13. **Update the ticket:**
-    - Build new description:
-      - If updating description only: Use new description
-      - If updating AC only: Append/replace AC section in existing description
-      - If both: Combine new description + new AC section
-    
-    ```
-    Use: atlassian_editJiraIssue(
-      cloudId,
-      issueIdOrKey,
-      fields: {
-        description: {updated description}
-      }
-    )
-    ```
+15. **Update the ticket:**
+     - Build new description:
+       - If updating description only: Use new description (NO acceptance criteria in description)
+       - If updating AC only: Use Acceptance Criteria field (see below)
+       - If both: Update description field + Acceptance Criteria field separately
+     
+     - For description updates:
+       ```
+       Use: atlassian_editJiraIssue(
+         cloudId,
+         issueIdOrKey,
+         fields: {
+           description: {updated description}
+         }
+       )
+       ```
+     
+     - For acceptance criteria updates:
+       - ALWAYS use the "Acceptance Criteria" field (NEVER append to description)
+       - Get field metadata to find the acceptance criteria field ID:
+         ```
+         Use: atlassian_getJiraIssueTypeMetaWithFields(cloudId, projectIdOrKey, issueTypeId)
+         ```
+       - Search for field with name "Acceptance Criteria" (case-insensitive)
+       - Extract field key (e.g., "customfield_10100")
+       - Update with formatted criteria:
+         ```
+         Use: atlassian_editJiraIssue(
+           cloudId,
+           issueIdOrKey,
+           fields: {
+             "customfield_XXXXX": "- [ ] {criterion 1}\n- [ ] {criterion 2}"
+           }
+         )
+         ```
+       - **NEVER append acceptance criteria to description field**
 
 #### 3C: Report Success
 
-14. **Display updated ticket:**
+16. **Display updated ticket:**
     ```
     ✅ Ticket Updated
     
@@ -319,16 +390,19 @@ Fix:
 3. **Validate ticket keys** - Format: `{PROJECT}-{NUMBER}` (e.g., "HSP-123"), regex: `^[A-Z][A-Z0-9]*-\d+$`
 4. **Handle PR context smartly** - If user mentions "this PR" or "current PR", fetch PR details automatically
 5. **Preserve existing content** - When updating, don't overwrite unrelated fields
-6. **Format acceptance criteria** - Always use checkbox format: `- [ ] {criterion}`
-7. **Include PR URLs** - When creating tickets for existing PRs, include PR URL in description
-8. **Epic selection is optional** - Don't require epic if none exist or user declines
-9. **Default to current user** - Use `accountId` from config for assignee unless specified otherwise
-10. **Show full URLs** - Always display clickable Jira URLs in output
-11. **Epic linking requires issue ID** - Use numeric issue ID (from getJiraIssue), not issue key
-12. **Handle stale epics gracefully** - If epic deleted, remove from cache and prompt user
-13. **Validate API responses** - Check for null/undefined fields before accessing
-14. **Distinguish auth errors** - 401/403 = auth issue, 404 = not found, 500 = API issue
-15. **Escape Markdown** - Escape special characters in user-provided text displayed in Markdown contexts
+6. **Acceptance Criteria ONLY in dedicated field** - ALWAYS use the "Acceptance Criteria" custom field. NEVER put acceptance criteria in description field under any circumstances
+7. **Format acceptance criteria** - Always use checkbox format: `- [ ] {criterion}`
+8. **Include PR URLs** - When creating tickets for existing PRs, include PR URL in description
+9. **Epic selection is optional** - Don't require epic if none exist or user declines
+10. **Always assign to current user** - Use `accountId` from config for assignee, unless user explicitly specifies otherwise
+11. **Always assign to current sprint** - Find active sprint and assign ticket to it automatically
+12. **Always ask about status** - After creating ticket, ask if user wants to move it to "In Progress" or another status
+13. **Show full URLs** - Always display clickable Jira URLs in output
+14. **Epic linking requires issue ID** - Use numeric issue ID (from getJiraIssue), not issue key
+15. **Handle stale epics gracefully** - If epic deleted, remove from cache and prompt user
+16. **Validate API responses** - Check for null/undefined fields before accessing
+17. **Distinguish auth errors** - 401/403 = auth issue, 404 = not found, 500 = API issue
+18. **Escape Markdown** - Escape special characters in user-provided text displayed in Markdown contexts
 
 ## Examples
 
@@ -361,11 +435,22 @@ Creating ticket...
 HSP-567: Implement OAuth2 authentication
 URL: https://commbank.atlassian.net/browse/HSP-567
 Epic: HSP-100 - Q1 2026 Authentication
-Assignee: Brayden Moon
+Assignee: Brayden Moon (you)
+Sprint: Sprint 42 (current sprint)
 Type: Story
+Status: Open
 
 📋 Description:
 Add OAuth2 authentication flow with token refresh support
+
+Should I move this ticket to In Progress now, or do you want to set a different status?
+
+Options:
+1. Keep as "Open" (default)
+2. Move to "In Progress"
+3. Choose another status
+
+User: 1
 
 🎯 Next Steps:
 - Use skill("move", "HSP-567") to transition ticket status
@@ -400,14 +485,27 @@ Creating ticket...
 HSP-568: Add OAuth2 token refresh
 URL: https://commbank.atlassian.net/browse/HSP-568
 Epic: HSP-100 - Q1 2026 Authentication
-Assignee: Brayden Moon
+Assignee: Brayden Moon (you)
+Sprint: Sprint 42 (current sprint)
 Type: Story
+Status: Open
 
 📋 Description:
 {PR body content}
 
 ---
 Pull Request: https://github.com/org/repo/pull/123
+
+Should I move this ticket to In Progress now, or do you want to set a different status?
+
+Options:
+1. Keep as "Open" (default)
+2. Move to "In Progress"
+3. Choose another status
+
+User: 2
+
+✅ Ticket moved to In Progress
 
 🎯 Next Steps:
 - Use skill("move", "HSP-568") to transition ticket status
