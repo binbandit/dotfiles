@@ -2,6 +2,13 @@
 # mimic.toml — declarative dotfile management for ~/.dots
 # ──────────────────────────────────────────────────────────────
 
+# ──────────────────────────────────────────────────────────────
+# Extends — compose config from external repos
+# ──────────────────────────────────────────────────────────────
+
+[[extends]]
+repo = "https://github.com/binbandit/fonts.git"
+
 [variables]
 name  = "Brayden Moon"
 email = "brayden@binbandit.dev"
@@ -284,3 +291,25 @@ git_name        = "brayden-moon_cba"
 git_email       = "brayden.moon@cba.com.au"
 openai_model = "aipe-gpt-5.2_v2025-12-11_EASTUS2"
 openai_url = "https://api.studio.genai.cba/openai"
+
+[[hosts.EPZ-D3YJQFV0WJ.packages.homebrew]]
+name = "google-chrome"
+type = "cask"
+
+[hosts.EPZ-J3QVJYPDXH]
+roles = ["work", "mac"]
+
+[hosts.EPZ-J3QVJYPDXH.variables]
+extra_fish_paths = ""
+codex_model     = "aipe-gpt-5_v2025-08-07_EASTUS2"
+proxy_http      = "http://localhost:3128"
+proxy_https     = "http://localhost:3128"
+cert_bundle     = "/Users/Shared/ca_certs/bundle.pem"
+git_name        = "brayden-moon_cba"
+git_email       = "brayden.moon@cba.com.au"
+openai_model = "aipe-gpt-5.2_v2025-12-11_EASTUS2"
+openai_url = "https://api.studio.genai.cba/openai"
+
+[[hosts.EPZ-J3QVJYPDXH.packages.homebrew]]
+name = "google-chrome"
+type = "cask"

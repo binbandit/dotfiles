@@ -33,6 +33,7 @@ Host overrides are defined in `mimic.toml` under `[hosts.<hostname>]`. Each host
 Current hosts:
 - `Braydens-MacBook-Pro` — personal
 - `EPZ-D3YJQFV0WJ` — work (proxy, certs, litellm)
+- `EPZ-J3QVJYPDXH` — work (proxy, certs, litellm)
 
 mimic auto-detects the hostname at apply time.
 
