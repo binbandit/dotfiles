@@ -12,6 +12,12 @@ One-liner bootstrap:
 curl -fsSL https://raw.githubusercontent.com/binbandit/dotfiles/main/scripts/bootstrap.sh | bash
 ```
 
+To bootstrap from a specific branch:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/binbandit/dotfiles/main/scripts/bootstrap.sh | bash -s -- --branch next-gen
+```
+
 Or manually:
 
 ```bash
