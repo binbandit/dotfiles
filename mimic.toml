@@ -153,7 +153,6 @@ brew = [
 
   # Languages & runtimes
   "node",
-  "pnpm",
   "python@3.12",
   "go",
   "rustup-init",
