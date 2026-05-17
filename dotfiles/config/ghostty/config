@@ -1,0 +1,52 @@
+# ─── Eventide ───────────────────────────────────────────
+theme = eventide
+window-colorspace = display-p3
+minimum-contrast = 3.5
+
+# ─── Typography ─────────────────────────────────────────
+font-family = "MonoLisaVariable Nerd Font"
+font-size = 14
+font-thicken = true
+font-thicken-strength = 100
+font-variation = wght=420
+font-feature = +calt
+font-feature = +zero
+# font-feature = +ss01   # single-story a
+# font-feature = +ss02   # single-story g
+
+# ─── Spacing ────────────────────────────────────────────
+adjust-cell-height = 10%
+
+# ─── Cursor ─────────────────────────────────────────────
+cursor-style = bar
+cursor-style-blink = false
+adjust-cursor-thickness = 2
+
+# ─── Window ─────────────────────────────────────────────
+window-padding-x = 14
+window-padding-y = 10,8
+window-padding-balance = true
+window-padding-color = background
+background-opacity = 0.92
+background-blur = 20
+unfocused-split-opacity = 0.85
+split-divider-color = #1b1f28
+
+# ─── macOS ──────────────────────────────────────────────
+macos-titlebar-style = transparent
+macos-titlebar-proxy-icon = hidden
+macos-icon = custom-style
+macos-icon-frame = chrome
+macos-icon-ghost-color = #e8a862
+macos-icon-screen-color = #0d0f14,#1b1f28
+
+# ─── Shader ─────────────────────────────────────────────
+custom-shader = ghostty-shaders/afterglow.glsl
+custom-shader-animation = false
+
+# ─── Behavior ───────────────────────────────────────────
+mouse-hide-while-typing = true
+auto-update-channel = tip
+
+# ─── Keybinds ───────────────────────────────────────────
+keybind = shift+enter=text:\x1b\r

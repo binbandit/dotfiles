@@ -1,0 +1,80 @@
+# Shell init: tools + helpers
+
+# Homebrew (Apple Silicon default path) without spawning `brew shellenv`.
+if test -d /opt/homebrew
+    set -gx HOMEBREW_PREFIX /opt/homebrew
+    set -gx HOMEBREW_CELLAR /opt/homebrew/Cellar
+    set -gx HOMEBREW_REPOSITORY /opt/homebrew
+    fish_add_path /opt/homebrew/bin /opt/homebrew/sbin
+end
+
+# Ensure Cargo-installed tools are available very early in startup.
+if test -d "$HOME/.cargo/bin"
+    fish_add_path "$HOME/.cargo/bin"
+end
+
+# Runtime manager (mise) is auto-activated via Homebrew vendor_conf.d
+# No manual activation needed here to avoid double-activation overhead
+
+# Agent Browser native mode
+set -gx AGENT_BROWSER_NATIVE 1
+
+if status is-interactive
+    # Set theme once (or when changed) without reapplying every shell.
+    if not set -q fish_theme; or test "$fish_theme" != "ayu-mirage"
+        fish_config theme choose ayu-mirage >/dev/null 2>&1
+    end
+
+    # Prompt
+    if type -q starship
+        starship init fish | source
+    end
+
+    # zoxide improves directory navigation.
+    if type -q zoxide
+        set -gx _ZO_EXCLUDE_DIRS '**/node_modules/**:**/target/**:**/.git/**:**/tmp/**:**/temp/**:**/.cache/**'
+        zoxide init fish --cmd=cd | source
+    end
+
+end
+
+# Keychain-backed env vars (needed for both interactive and non-interactive shells).
+# __load_secret_from_keychain lives in functions/ and is autoloaded by fish.
+if test -f $HOME/.config/fish/keychain-secrets.fish
+    source $HOME/.config/fish/keychain-secrets.fish
+end
+
+if status is-interactive
+    if type -q keychainctl
+        function keychain-set --description 'Add or update a keychain secret'
+            keychainctl set $argv
+        end
+        function keychain-get --description 'Print a keychain secret to stdout'
+            keychainctl get $argv
+        end
+        function keychain-rm --description 'Remove a keychain secret'
+            keychainctl delete $argv
+        end
+        function keychain-ls --description 'List keychain secrets for the current user'
+            keychainctl list $argv
+        end
+    end
+end
+
+# Kiro shell integration
+if test "$TERM_PROGRAM" = "kiro"
+    source (kiro --locate-shell-integration-path fish)
+end
+
+# Google Cloud SDK
+if test -f '/opt/homebrew/share/google-cloud-sdk/path.fish.inc'
+    source '/opt/homebrew/share/google-cloud-sdk/path.fish.inc'
+end
+
+# Disable XON/XOFF flow control (prevents Ctrl+S from freezing terminal).
+stty -ixon 2>/dev/null
+
+# Bell after every command completion.
+function fish_postexec
+    echo -ne '\a'
+end

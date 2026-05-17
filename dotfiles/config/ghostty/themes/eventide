@@ -1,0 +1,42 @@
+# Eventide — coding by ember-light at twilight
+#
+# A warm, muted palette built from natural tones:
+# terracotta, sage, amber, steel, wisteria, and teal
+# against a deep blue-charcoal sky.
+#
+# Every color sits at a similar saturation so nothing
+# screams; the brights are gentle lifts, not shouts.
+
+background = #0d0f14
+foreground = #d4cdc2
+
+cursor-color = #e8a862
+cursor-text = #0d0f14
+
+selection-background = #2d3750
+selection-foreground = #e4ddd4
+
+search-background = #d4a84e
+search-foreground = #0d0f14
+search-selected-background = #e0c07a
+search-selected-foreground = #0d0f14
+
+# Normal
+palette = 0=#1b1f28
+palette = 1=#cc7b7b
+palette = 2=#89ad72
+palette = 3=#d4a84e
+palette = 4=#7294ba
+palette = 5=#ab80b8
+palette = 6=#6aadad
+palette = 7=#afa89e
+
+# Bright
+palette = 8=#3d4455
+palette = 9=#d9958e
+palette = 10=#a3c68e
+palette = 11=#e0c07a
+palette = 12=#8aadcf
+palette = 13=#c09dd0
+palette = 14=#86c4bc
+palette = 15=#ddd7ce

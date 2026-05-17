@@ -1,0 +1,144 @@
+[
+  // --- 1. MACOS WINDOW & TAB MANAGEMENT ---
+  {
+    "context": "Workspace",
+    "bindings": {
+      "cmd-alt-left": "workspace::ActivatePaneLeft",
+      "cmd-alt-right": "workspace::ActivatePaneRight",
+      "cmd-alt-up": "workspace::ActivatePaneUp",
+      "cmd-alt-down": "workspace::ActivatePaneDown",
+      "cmd-shift-]": "pane::ActivateNextItem",
+      "cmd-shift-[": "pane::ActivatePreviousItem",
+    },
+  },
+
+  // --- 2. THE "SHIFT+ARROW" JUMP (Updated) ---
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      "shift-left": "vim::PreviousWordStart",
+      "shift-right": "vim::NextWordStart",
+      "shift-up": "vim::PageUp", // Page Jump Up
+      "shift-down": "vim::PageDown", // Page Jump Down
+    },
+  },
+
+  // --- 3. MACOS NATIVE OVERRIDES ---
+  {
+    "context": "Editor && !menu",
+    "bindings": {
+      "cmd-s": "workspace::Save",
+      "cmd-w": "pane::CloseActiveItem",
+      "cmd-f": "buffer_search::Deploy",
+      "cmd-p": "file_finder::Toggle",
+      "cmd-b": "workspace::ToggleLeftDock",
+    },
+  },
+
+  // --- 4. VIM BEHAVIOR TWEAKS ---
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      "left": "vim::WrappingLeft",
+      "right": "vim::WrappingRight",
+      "up": "vim::Up",
+      "down": "vim::Down",
+    },
+  },
+  {
+    "context": "vim_mode == insert",
+    "bindings": {
+      "j k": "vim::NormalBefore",
+    },
+  },
+  {
+    "context": "vim_mode == normal && !menu",
+    "bindings": {
+      "shift-y": ["workspace::SendKeystrokes", "y $"],
+    },
+  },
+
+  // --- 5. LEADER KEY (Space) ---
+  {
+    "context": "Editor && vim_mode == normal && !menu",
+    "bindings": {
+      "space": null,
+      "space w": "workspace::Save",
+      "space space": "file_finder::Toggle",
+      "space f": "file_finder::Toggle",
+      "space /": "project_search::ToggleFocus",
+      "space s": "buffer_search::Deploy",
+      "space e": "project_panel::ToggleFocus",
+      "space g": "git_panel::ToggleFocus",
+      "space t": "terminal_panel::ToggleFocus",
+      "space o": "outline_panel::ToggleFocus",
+      "space a": "agent::ToggleFocus",
+      "space q": "pane::CloseActiveItem",
+      "space b": "pane::AlternateFile",
+      "space d": "diagnostics::Deploy",
+      "space l": "outline::Toggle",
+      "space S": "project_symbols::Toggle",
+      "space x": "vim::SelectLargerSyntaxNode",
+      "space X": "vim::SelectSmallerSyntaxNode",
+      "space c s": "editor::ConvertToSnakeCase",
+      "space c C": "editor::ConvertToUpperCamelCase",
+      "space c c": "editor::ConvertToLowerCamelCase",
+    },
+  },
+
+  // -- Empty Pane Support --
+  {
+    "context": "EmptyPane || SharedScreen",
+    "bindings": {
+      "space": null,
+      "space space": "file_finder::Toggle",
+    },
+  },
+
+  // --- 6. THE "FF" HACK ---
+  {
+    "context": "vim_mode == waiting && !menu",
+    "bindings": {
+      "f": "file_finder::Toggle",
+    },
+  },
+
+  // --- 7. TEXT OBJECTS (Mini.ai style) ---
+  {
+    "context": "vim_mode == visual",
+    "bindings": {
+      "shift-s": "vim::PushAddSurrounds",
+    },
+  },
+  {
+    "context": "vim_mode == normal",
+    "bindings": {
+      "s": "vim::PushSneak",
+      "shift-s": "vim::PushSneakBackward",
+    },
+  },
+  {
+    "context": "vim_operator == a || vim_operator == i || vim_operator == cs",
+    "bindings": {
+      "a": "vim::Argument",
+      "f": "vim::Method",
+      "c": "vim::Class",
+      "Q": "vim::MiniQuotes",
+      "B": "vim::MiniBrackets",
+    },
+  },
+
+  {
+    "context": "Editor && vim_mode == normal && !menu",
+    "bindings": {
+      // This now only triggers when you are in Normal mode (not typing)
+      "space g c": ["task::Spawn", { "task_name": "AI Commit" }],
+    },
+  },
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      "space g c": ["task::Spawn", { "task_name": "AI Commit" }],
+    },
+  },
+]

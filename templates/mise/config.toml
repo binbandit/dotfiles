@@ -1,0 +1,11 @@
+[tools]
+"vfox:mise-plugins/vfox-neovim" = "nightly"
+bun = "latest"
+go = "latest"
+node = "26"
+"npm:pnpm" = "latest"
+"npm:snpm" = "latest"
+"npm:tree-sitter-cli" = "latest"
+"npm:@typescript/native-preview" = "latest"
+"npm:@vtsls/language-server" = "latest"
+aube = "latest"
