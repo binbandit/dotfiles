@@ -152,9 +152,7 @@ brew = [
   "fswatch",
 
   # Languages & runtimes
-  "node",
   "python@3.12",
-  "go",
   "rustup-init",
   "uv",
   "mise",
