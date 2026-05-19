@@ -65,5 +65,7 @@ abbr ca 'cargo add'
 abbr cr 'cargo run'
 abbr cb 'cargo build'
 
+abbr cpr 'opencode run "/create-pull-request"'
+
 abbr x 'pnpm dlx'
 abbr l 'eza --icons'
