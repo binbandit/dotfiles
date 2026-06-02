@@ -10,25 +10,25 @@
 repo = "https://github.com/binbandit/fonts.git"
 
 [variables]
-name  = "Brayden Moon"
+name = "Brayden Moon"
 email = "brayden@binbandit.dev"
-git_name  = "BinBandit"
+git_name = "BinBandit"
 git_email = "crazywolf132@gmail.com"
 editor = "nvim"
-shell  = "fish"
+shell = "fish"
 
 # Shared environment defaults
-openai_model      = "gpt-5.4-mini"
-openai_url        = "https://api.openai.com/v1/"
-openai_timeout    = "4096"
+openai_model = "gpt-5.4-mini"
+openai_url = "https://api.openai.com/v1/"
+openai_timeout = "4096"
 openai_max_tokens = "272000"
 
 # Host-overrideable defaults (every host should override these)
-codex_model       = "gpt-5.4"
-extra_fish_paths  = ""
-proxy_http        = ""
-proxy_https       = ""
-cert_bundle       = ""
+codex_model = "gpt-5.4"
+extra_fish_paths = ""
+proxy_http = ""
+proxy_https = ""
+cert_bundle = ""
 
 # Python / uv
 uv_python_version = "3.12"
@@ -124,10 +124,6 @@ target = "~/.codex/config.toml"
 source = "dotfiles/gitconfig"
 target = "~/.gitconfig"
 
-[[dotfiles]]
-source = "dotfiles/claude/commands"
-target = "~/.claude/commands"
-
 # ──────────────────────────────────────────────────────────────
 # Packages — Homebrew
 # ──────────────────────────────────────────────────────────────
@@ -181,7 +177,7 @@ type = "uv-python"
 version = "3.12"
 
 [hooks.symlinks]
-python  = "~/.local/bin/python"
+python = "~/.local/bin/python"
 python3 = "~/.local/bin/python3"
 
 # Rust toolchains, components, and cross-compile targets
@@ -189,8 +185,8 @@ python3 = "~/.local/bin/python3"
 type = "rustup"
 toolchains = ["nightly"]
 components = ["rustfmt", "clippy", "rust-analyzer", "rust-src", "rust-docs"]
-targets    = ["x86_64-unknown-linux-musl"]
-default    = "nightly"
+targets = ["x86_64-unknown-linux-musl"]
+default = "nightly"
 
 # Cargo tools from git
 [[hooks]]
@@ -198,7 +194,7 @@ type = "cargo-install"
 
 [[hooks.packages]]
 name = "tap"
-git  = "https://github.com/crazywolf132/tap.git"
+git = "https://github.com/crazywolf132/tap.git"
 
 [[hooks.packages]]
 name = "kt"
@@ -206,56 +202,56 @@ git = "https://github.com/binbandit/kite"
 
 [[hooks.packages]]
 name = "sg"
-git  = "https://github.com/sage-scm/sage.git"
+git = "https://github.com/sage-scm/sage.git"
 
 [[hooks.packages]]
 name = "keychainctl"
-git  = "https://github.com/binbandit/keychainctl.git"
+git = "https://github.com/binbandit/keychainctl.git"
 
 [[hooks.packages]]
 name = "git-workty"
-git  = "https://github.com/binbandit/workty.git"
+git = "https://github.com/binbandit/workty.git"
 
 # Set fish as default shell
 [[hooks]]
-type       = "command"
-name       = "fish-default-shell"
-command    = "FISH=$(command -v fish) && grep -qF \"$FISH\" /etc/shells 2>/dev/null || echo \"$FISH\" | sudo tee -a /etc/shells >/dev/null; [ \"$SHELL\" != \"$FISH\" ] && chsh -s \"$FISH\" || true"
+type = "command"
+name = "fish-default-shell"
+command = "FISH=$(command -v fish) && grep -qF \"$FISH\" /etc/shells 2>/dev/null || echo \"$FISH\" | sudo tee -a /etc/shells >/dev/null; [ \"$SHELL\" != \"$FISH\" ] && chsh -s \"$FISH\" || true"
 on_failure = "continue"
 
 # Install Claude Code
 [[hooks]]
-type       = "command"
-name       = "claude-code"
-command    = "command -v claude >/dev/null 2>&1 || curl -fsSL https://claude.ai/install.sh | bash"
+type = "command"
+name = "claude-code"
+command = "command -v claude >/dev/null 2>&1 || curl -fsSL https://claude.ai/install.sh | bash"
 on_failure = "continue"
 
 # Install Fisher + plugins
 [[hooks]]
-type       = "command"
-name       = "fisher-plugins"
-command    = "FISH=$(command -v fish) && $FISH -c 'type -q fisher; or begin; curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source; and fisher install jorgebucaran/fisher; end' && $FISH -c 'fisher update'"
+type = "command"
+name = "fisher-plugins"
+command = "FISH=$(command -v fish) && $FISH -c 'type -q fisher; or begin; curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source; and fisher install jorgebucaran/fisher; end' && $FISH -c 'fisher update'"
 on_failure = "continue"
 
 # Upgrade Homebrew itself + installed formulas, then clean up
 [[hooks]]
-type       = "command"
-name       = "brew-maintenance"
-command    = "if command -v brew >/dev/null 2>&1; then brew update && brew upgrade && brew autoremove && brew cleanup --prune=all; fi"
+type = "command"
+name = "brew-maintenance"
+command = "if command -v brew >/dev/null 2>&1; then brew update && brew upgrade && brew autoremove && brew cleanup --prune=all; fi"
 on_failure = "continue"
 
 # Upgrade mise-managed tools to latest allowed versions
 [[hooks]]
-type       = "command"
-name       = "mise-upgrade"
-command    = "if command -v mise >/dev/null 2>&1; then mise plugins update && mise upgrade && mise prune -y --silent; fi"
+type = "command"
+name = "mise-upgrade"
+command = "if command -v mise >/dev/null 2>&1; then mise plugins update && mise upgrade && mise prune -y --silent; fi"
 on_failure = "continue"
 
 # Update fish mise PATH cache after mise changes
 [[hooks]]
-type       = "command"
-name       = "mise-refresh-fish-cache"
-command    = "FISH=$(command -v fish) && $FISH -c \"set -eU _mise_cached_paths; if command -v mise >/dev/null 2>&1; mise activate fish | source; set -U _mise_cached_paths $HOME/.local/share/mise/shims; end\" 2>/dev/null || true"
+type = "command"
+name = "mise-refresh-fish-cache"
+command = "FISH=$(command -v fish) && $FISH -c \"set -eU _mise_cached_paths; if command -v mise >/dev/null 2>&1; mise activate fish | source; set -U _mise_cached_paths $HOME/.local/share/mise/shims; end\" 2>/dev/null || true"
 on_failure = "continue"
 
 
@@ -268,24 +264,24 @@ roles = ["personal", "mac"]
 
 [hosts.Braydens-MacBook-Pro.variables]
 extra_fish_paths = "$HOME/.mitm_toolkit/bin"
-codex_model     = "gpt-5-codex"
-proxy_http      = ""
-proxy_https     = ""
-cert_bundle     = ""
-git_name        = "BinBandit"
-git_email       = "crazywolf132@gmail.com"
+codex_model = "gpt-5-codex"
+proxy_http = ""
+proxy_https = ""
+cert_bundle = ""
+git_name = "BinBandit"
+git_email = "crazywolf132@gmail.com"
 
 [hosts.EPZ-D3YJQFV0WJ]
 roles = ["work", "mac"]
 
 [hosts.EPZ-D3YJQFV0WJ.variables]
 extra_fish_paths = ""
-codex_model     = "aipe-gpt-5_v2025-08-07_EASTUS2"
-proxy_http      = "http://localhost:3128"
-proxy_https     = "http://localhost:3128"
-cert_bundle     = "/Users/Shared/ca_certs/bundle.pem"
-git_name        = "Brayden-Moon_cba"
-git_email       = "brayden@cba.com.au"
+codex_model = "aipe-gpt-5_v2025-08-07_EASTUS2"
+proxy_http = "http://localhost:3128"
+proxy_https = "http://localhost:3128"
+cert_bundle = "/Users/Shared/ca_certs/bundle.pem"
+git_name = "Brayden-Moon_cba"
+git_email = "brayden@cba.com.au"
 openai_model = "aipe-gpt-5.2_v2025-12-11_EASTUS2"
 openai_url = "https://api.studio.genai.cba/openai"
 
@@ -298,12 +294,12 @@ roles = ["work", "mac"]
 
 [hosts.EPZ-J3QVJYPDXH.variables]
 extra_fish_paths = ""
-codex_model     = "aipe-gpt-5_v2025-08-07_EASTUS2"
-proxy_http      = "http://localhost:3128"
-proxy_https     = "http://localhost:3128"
-cert_bundle     = "/Users/Shared/ca_certs/bundle.pem"
-git_name        = "Brayden-Moon_cba"
-git_email       = "brayden@cba.com.au"
+codex_model = "aipe-gpt-5_v2025-08-07_EASTUS2"
+proxy_http = "http://localhost:3128"
+proxy_https = "http://localhost:3128"
+cert_bundle = "/Users/Shared/ca_certs/bundle.pem"
+git_name = "Brayden-Moon_cba"
+git_email = "brayden@cba.com.au"
 openai_model = "aipe-gpt-5.2_v2025-12-11_EASTUS2"
 openai_url = "https://api.studio.genai.cba/openai"
 
