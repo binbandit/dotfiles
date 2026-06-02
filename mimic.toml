@@ -148,7 +148,6 @@ brew = [
   "fswatch",
 
   # Languages & runtimes
-  "python@3.12",
   "rustup-init",
   "uv",
   "mise",
