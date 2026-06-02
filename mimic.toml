@@ -43,14 +43,6 @@ source = "dotfiles/config/ghostty"
 target = "~/.config/ghostty"
 
 [[dotfiles]]
-source = "dotfiles/agents/skills"
-target = "~/.agents/skills"
-
-[[dotfiles]]
-source = "dotfiles/config/helix"
-target = "~/.config/helix"
-
-[[dotfiles]]
 source = "dotfiles/config/nvim"
 target = "~/.config/nvim"
 
