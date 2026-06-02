@@ -14,7 +14,6 @@ abbr pb 'pnpm build'
 abbr pd 'pnpm dev'
 abbr ps 'pnpm start'
 abbr pt 'pnpm test'
-abbr pi 'pnpm install'
 abbr pp 'pnpm pack | xargs -I {} echo "$(pwd)/{}" | pbcopy'
 abbr po 'pnpm orchestrator'
 
