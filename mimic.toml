@@ -200,10 +200,6 @@ name = "kt"
 git = "https://github.com/binbandit/kite"
 
 [[hooks.packages]]
-name = "sg"
-git = "https://github.com/sage-scm/sage.git"
-
-[[hooks.packages]]
 name = "keychainctl"
 git = "https://github.com/binbandit/keychainctl.git"
 
