@@ -1,144 +1,364 @@
 [
-  // --- 1. MACOS WINDOW & TAB MANAGEMENT ---
+  // ---------------------------------------------------------------------------
+  // 0. PICKERS / MENUS
+  //
+  // Keep picker movement home-row friendly without touching normal editors.
+  // This only applies inside picker/editor hybrids, not your actual files.
+  // ---------------------------------------------------------------------------
   {
-    "context": "Workspace",
+    "context": "Picker > Editor",
+    "bindings": {
+      "ctrl-j": "menu::SelectNext",
+      "ctrl-k": "menu::SelectPrevious"
+    }
+  },
+
+  // ---------------------------------------------------------------------------
+  // 1. MACOS PANE + TAB MUSCLE MEMORY
+  //
+  // These live on Pane, not Workspace. Zed gives lower UI nodes precedence, so
+  // Workspace-level pane bindings can lose to Pane defaults.
+  //
+  // Note: Cmd+Shift+[ and Cmd+Shift+] produce the characters { and }.
+  // Zed's key syntax treats shifted punctuation as the produced character,
+  // not as "shift-[".
+  // ---------------------------------------------------------------------------
+  {
+    "context": "Pane",
     "bindings": {
       "cmd-alt-left": "workspace::ActivatePaneLeft",
       "cmd-alt-right": "workspace::ActivatePaneRight",
       "cmd-alt-up": "workspace::ActivatePaneUp",
       "cmd-alt-down": "workspace::ActivatePaneDown",
-      "cmd-shift-]": "pane::ActivateNextItem",
-      "cmd-shift-[": "pane::ActivatePreviousItem",
-    },
+
+      "cmd-{": "pane::ActivatePreviousItem",
+      "cmd-}": "pane::ActivateNextItem"
+    }
   },
 
-  // --- 2. THE "SHIFT+ARROW" JUMP (Updated) ---
+  // Same spatial movement while a dock/panel has focus.
+  // Deliberately not using Space leader here, because terminal panels need Space.
   {
-    "context": "VimControl && !menu",
+    "context": "Dock",
     "bindings": {
-      "shift-left": "vim::PreviousWordStart",
-      "shift-right": "vim::NextWordStart",
-      "shift-up": "vim::PageUp", // Page Jump Up
-      "shift-down": "vim::PageDown", // Page Jump Down
-    },
+      "cmd-alt-left": "workspace::ActivatePaneLeft",
+      "cmd-alt-right": "workspace::ActivatePaneRight",
+      "cmd-alt-up": "workspace::ActivatePaneUp",
+      "cmd-alt-down": "workspace::ActivatePaneDown"
+    }
   },
 
-  // --- 3. MACOS NATIVE OVERRIDES ---
+  // ---------------------------------------------------------------------------
+  // 2. NATIVE MACOS / ZED BASICS
+  //
+  // Mostly explicit reassertions of the muscle memory you already wanted.
+  // ---------------------------------------------------------------------------
   {
-    "context": "Editor && !menu",
+    "context": "Workspace",
     "bindings": {
       "cmd-s": "workspace::Save",
-      "cmd-w": "pane::CloseActiveItem",
-      "cmd-f": "buffer_search::Deploy",
+      "cmd-alt-s": "workspace::SaveAll",
       "cmd-p": "file_finder::Toggle",
+      "cmd-shift-p": "command_palette::Toggle",
+
       "cmd-b": "workspace::ToggleLeftDock",
-    },
+      "cmd-j": "workspace::ToggleBottomDock",
+      "cmd-alt-b": "workspace::ToggleRightDock",
+
+      "cmd-shift-m": "diagnostics::Deploy",
+
+      "cmd-k cmd-s": "zed::OpenKeymap",
+      "cmd-k cmd-,": "zed::OpenSettingsFile"
+    }
   },
 
-  // --- 4. VIM BEHAVIOR TWEAKS ---
   {
-    "context": "VimControl && !menu",
+    "context": "Editor && mode == full && !menu",
+    "bindings": {
+      "cmd-f": "buffer_search::Deploy",
+      "cmd-alt-f": "buffer_search::DeployReplace",
+      "cmd-.": "editor::ToggleCodeActions"
+    }
+  },
+
+  // ---------------------------------------------------------------------------
+  // 3. VIM BEHAVIOR THAT IS SAFE
+  //
+  // Important:
+  // - No broad shift-g remap.
+  // - No operator-state word remaps.
+  // - No "ff hack"; that breaks real Vim f<char> behavior.
+  // - No default Sneak on s; Zed docs note that overriding s replaces substitute.
+  // ---------------------------------------------------------------------------
+  {
+    "context": "Editor && mode == full && (vim_mode == normal || vim_mode == visual) && !menu",
     "bindings": {
       "left": "vim::WrappingLeft",
       "right": "vim::WrappingRight",
-      "up": "vim::Up",
-      "down": "vim::Down",
-    },
-  },
-  {
-    "context": "vim_mode == insert",
-    "bindings": {
-      "j k": "vim::NormalBefore",
-    },
-  },
-  {
-    "context": "vim_mode == normal && !menu",
-    "bindings": {
-      "shift-y": ["workspace::SendKeystrokes", "y $"],
-    },
+
+      "shift-left": "vim::PreviousWordStart",
+      "shift-right": "vim::NextWordStart",
+      "shift-up": "vim::PageUp",
+      "shift-down": "vim::PageDown"
+    }
   },
 
-  // --- 5. LEADER KEY (Space) ---
   {
-    "context": "Editor && vim_mode == normal && !menu",
+    "context": "Editor && mode == full && vim_mode == insert && !menu",
     "bindings": {
-      "space": null,
-      "space w": "workspace::Save",
-      "space space": "file_finder::Toggle",
-      "space f": "file_finder::Toggle",
-      "space /": "project_search::ToggleFocus",
-      "space s": "buffer_search::Deploy",
-      "space e": "project_panel::ToggleFocus",
-      "space g": "git_panel::ToggleFocus",
-      "space t": "terminal_panel::ToggleFocus",
-      "space o": "outline_panel::ToggleFocus",
-      "space a": "agent::ToggleFocus",
-      "space q": "pane::CloseActiveItem",
-      "space b": "pane::AlternateFile",
-      "space d": "diagnostics::Deploy",
-      "space l": "outline::Toggle",
-      "space S": "project_symbols::Toggle",
-      "space x": "vim::SelectLargerSyntaxNode",
-      "space X": "vim::SelectSmallerSyntaxNode",
-      "space c s": "editor::ConvertToSnakeCase",
-      "space c C": "editor::ConvertToUpperCamelCase",
-      "space c c": "editor::ConvertToLowerCamelCase",
-    },
+      "j k": "vim::NormalBefore"
+    }
   },
 
-  // -- Empty Pane Support --
   {
-    "context": "EmptyPane || SharedScreen",
+    "context": "Editor && mode == full && vim_mode == normal && !menu",
     "bindings": {
-      "space": null,
-      "space space": "file_finder::Toggle",
-    },
+      "shift-y": ["workspace::SendKeystrokes", "y $"]
+    }
   },
 
-  // --- 6. THE "FF" HACK ---
+  // Visual surround, matching Zed's own optional Vim recommendation.
   {
-    "context": "vim_mode == waiting && !menu",
+    "context": "Editor && mode == full && vim_mode == visual && !menu",
     "bindings": {
-      "f": "file_finder::Toggle",
-    },
+      "shift-s": "vim::PushAddSurrounds"
+    }
   },
 
-  // --- 7. TEXT OBJECTS (Mini.ai style) ---
+  // ---------------------------------------------------------------------------
+  // 4. BETTER TEXT OBJECTS
+  //
+  // These extend operator targets only after a/i/cs, so they do not steal normal
+  // editing keys. Examples: daq, cib, csqb, yaf.
+  // ---------------------------------------------------------------------------
   {
-    "context": "vim_mode == visual",
-    "bindings": {
-      "shift-s": "vim::PushAddSurrounds",
-    },
-  },
-  {
-    "context": "vim_mode == normal",
-    "bindings": {
-      "s": "vim::PushSneak",
-      "shift-s": "vim::PushSneakBackward",
-    },
-  },
-  {
-    "context": "vim_operator == a || vim_operator == i || vim_operator == cs",
+    "context": "Editor && (vim_operator == a || vim_operator == i || vim_operator == cs)",
     "bindings": {
       "a": "vim::Argument",
       "f": "vim::Method",
       "c": "vim::Class",
+
+      "q": "vim::AnyQuotes",
+      "b": "vim::AnyBrackets",
       "Q": "vim::MiniQuotes",
-      "B": "vim::MiniBrackets",
-    },
+      "B": "vim::MiniBrackets"
+    }
   },
 
+  // ---------------------------------------------------------------------------
+  // 5. MAIN LEADER
+  //
+  // Scope:
+  // - Full editor only.
+  // - Normal/visual only.
+  // - No menu open.
+  //
+  // This avoids stealing Space from insert mode, terminal panels, picker search
+  // boxes, rename fields, and completion menus.
+  // ---------------------------------------------------------------------------
   {
-    "context": "Editor && vim_mode == normal && !menu",
+    "context": "Editor && mode == full && (vim_mode == normal || vim_mode == visual) && !menu",
     "bindings": {
-      // This now only triggers when you are in Normal mode (not typing)
-      "space g c": ["task::Spawn", { "task_name": "AI Commit" }],
-    },
+      "space": null,
+
+      // ----- fast path -----
+      "space space": "file_finder::Toggle",
+      "space /": "pane::DeploySearch",
+      "space ,": "tab_switcher::Toggle",
+      "space .": "editor::ToggleCodeActions",
+      "space e": "project_panel::ToggleFocus",
+      "space o": "outline::Toggle",
+      "space d": "diagnostics::DeployCurrentFile",
+      "space shift-d": "diagnostics::Deploy",
+      "space j": "vim::HelixJumpToWord",
+
+      // ----- files / projects -----
+      "space f f": "file_finder::Toggle",
+      "space f r": "projects::OpenRecent",
+      "space f o": "workspace::Open",
+      "space f n": "workspace::NewFile",
+      "space f s": "workspace::Save",
+      "space f shift-s": "workspace::SaveAll",
+      "space f e": "pane::RevealInProjectPanel",
+
+      // ----- buffers / tabs -----
+      "space b b": "tab_switcher::Toggle",
+      "space b a": "pane::AlternateFile",
+      "space b n": "pane::ActivateNextItem",
+      "space b p": "pane::ActivatePreviousItem",
+      "space b d": "pane::CloseActiveItem",
+      "space b o": "pane::CloseOtherItems",
+      "space b c": "pane::CloseCleanItems",
+      "space b r": "pane::ReopenClosedItem",
+
+      "space 1": ["pane::ActivateItem", 0],
+      "space 2": ["pane::ActivateItem", 1],
+      "space 3": ["pane::ActivateItem", 2],
+      "space 4": ["pane::ActivateItem", 3],
+      "space 5": ["pane::ActivateItem", 4],
+      "space 6": ["pane::ActivateItem", 5],
+      "space 7": ["pane::ActivateItem", 6],
+      "space 8": ["pane::ActivateItem", 7],
+      "space 9": ["pane::ActivateItem", 8],
+      "space 0": "pane::ActivateLastItem",
+
+      // ----- windows / panes -----
+      "space w h": "workspace::ActivatePaneLeft",
+      "space w j": "workspace::ActivatePaneDown",
+      "space w k": "workspace::ActivatePaneUp",
+      "space w l": "workspace::ActivatePaneRight",
+
+      "space w s": "pane::SplitDown",
+      "space w v": "pane::SplitRight",
+      "space w -": "pane::SplitDown",
+      "space w |": "pane::SplitRight",
+
+      "space w q": "pane::CloseActiveItem",
+      "space w o": "workspace::CloseInactiveTabsAndPanes",
+      "space w m": "workspace::ToggleZoom",
+
+      // ----- search / symbols -----
+      "space s s": "outline::Toggle",
+      "space s shift-s": "project_symbols::Toggle",
+      "space s b": "buffer_search::Deploy",
+      "space s g": "pane::DeploySearch",
+      "space s r": ["pane::DeploySearch", { "replace_enabled": true }],
+      "space s d": "diagnostics::DeployCurrentFile",
+      "space s shift-d": "diagnostics::Deploy",
+
+      // ----- code / LSP -----
+      // Zed already gives you gd, gD, gy, gI, gr, gh, ]d, [d, ]c, [c, etc.
+      // This group is for command-style actions, not motions.
+      "space c a": "editor::ToggleCodeActions",
+      "space c r": "editor::Rename",
+      "space c f": "editor::Format",
+      "space c shift-f": "editor::FormatSelections",
+      "space c i": "editor::OrganizeImports",
+      "space c h": "editor::Hover",
+
+      // ----- text transforms -----
+      "space x s": "editor::ConvertToSnakeCase",
+      "space x k": "editor::ConvertToKebabCase",
+      "space x c": "editor::ConvertToLowerCamelCase",
+      "space x shift-c": "editor::ConvertToUpperCamelCase",
+      "space x u": "editor::ConvertToUpperCase",
+      "space x l": "editor::ConvertToLowerCase",
+
+      // Tree-sitter syntax node selection.
+      "space v": "vim::SelectLargerSyntaxNode",
+      "space shift-v": "vim::SelectSmallerSyntaxNode",
+
+      // ----- Git -----
+      "space g g": "git_panel::ToggleFocus",
+      "space g s": "git_panel::ToggleFocus",
+      "space g d": "git::Diff",
+      "space g shift-d": "git::ReviewDiff",
+      "space g b": "git::Blame",
+      "space g shift-b": "editor::ToggleGitBlameInline",
+      "space g m": "git::OpenModifiedFiles",
+      "space g shift-g": "git_graph::Open",
+      "space g c": "git::Commit",
+      "space g a": "git::StageAll",
+      "space g u": "git::UnstageAll",
+      "space g r": "git::Restore",
+
+      // Optional task-backed Git workflows.
+      // Uncomment only after defining matching labels in tasks.json.
+      // "space g l": ["task::Spawn", { "task_name": "lazygit" }],
+      // "space g shift-c": ["task::Spawn", { "task_name": "AI Commit" }],
+
+      // ----- project / docks -----
+      "space p p": "project_panel::ToggleFocus",
+      "space p r": "pane::RevealInProjectPanel",
+      "space p g": "git_panel::ToggleFocus",
+      "space p o": "outline_panel::ToggleFocus",
+      "space p d": "diagnostics::Deploy",
+
+      // ----- terminal / tasks -----
+      "space t t": "terminal_panel::ToggleFocus",
+      "space t n": "workspace::NewTerminal",
+      "space t c": "workspace::NewCenterTerminal",
+
+      "space r r": "task::Rerun",
+      "space r t": "task::Spawn",
+
+      // ----- AI / Agent -----
+      "space a a": "agent::Toggle",
+      "space a d": "agent::OpenAgentDiff",
+
+      // ----- UI toggles -----
+      "space u h": "editor::ToggleInlayHints",
+      "space u l": "editor::ToggleLineNumbers",
+      "space u r": "editor::ToggleRelativeLineNumbers",
+      "space u w": "editor::ToggleSoftWrap",
+      "space u b": "editor::ToggleBreadcrumb",
+      "space u m": "editor::ToggleMinimap",
+
+      // ----- help / config -----
+      "space h k": "zed::OpenKeymap",
+      "space h s": "zed::OpenSettingsFile",
+      "space h t": "theme_selector::Toggle",
+
+      // ----- quitting / cleanup -----
+      "space q b": "pane::CloseActiveItem",
+      "space q o": "workspace::CloseInactiveTabsAndPanes",
+      "space q q": "zed::Quit"
+    }
   },
+
+  // ---------------------------------------------------------------------------
+  // 6. EMPTY PANE / SHARED SCREEN SUPPORT
+  //
+  // The editor leader above does not exist when no editor is focused.
+  // Keep this minimal and non-textual.
+  // ---------------------------------------------------------------------------
+  {
+    "context": "EmptyPane || SharedScreen",
+    "bindings": {
+      "space": null,
+
+      "space space": "file_finder::Toggle",
+      "space f f": "file_finder::Toggle",
+      "space f r": "projects::OpenRecent",
+      "space f o": "workspace::Open",
+
+      "space /": "workspace::NewSearch",
+      "space e": "project_panel::ToggleFocus",
+      "space p p": "project_panel::ToggleFocus",
+      "space g g": "git_panel::ToggleFocus",
+      "space t t": "terminal_panel::ToggleFocus",
+      "space a a": "agent::Toggle",
+      "space h k": "zed::OpenKeymap",
+      "space h s": "zed::OpenSettingsFile"
+    }
+  },
+
+  // ---------------------------------------------------------------------------
+  // 7. PROJECT PANEL LEADER
+  //
+  // not_editing is critical. Without it, Space leader can interfere while
+  // renaming files or creating new paths in the project panel.
+  // ---------------------------------------------------------------------------
   {
     "context": "ProjectPanel && not_editing",
     "bindings": {
-      "space g c": ["task::Spawn", { "task_name": "AI Commit" }],
-    },
-  },
+      "space": null,
+
+      "space space": "file_finder::Toggle",
+      "space f f": "file_finder::Toggle",
+      "space f r": "projects::OpenRecent",
+      "space /": "workspace::NewSearch",
+
+      "space e": "editor::ToggleFocus",
+      "space p p": "editor::ToggleFocus",
+      "space g g": "git_panel::ToggleFocus",
+      "space t t": "terminal_panel::ToggleFocus",
+      "space a a": "agent::Toggle",
+
+      "cmd-alt-left": "workspace::ActivatePaneLeft",
+      "cmd-alt-right": "workspace::ActivatePaneRight",
+      "cmd-alt-up": "workspace::ActivatePaneUp",
+      "cmd-alt-down": "workspace::ActivatePaneDown"
+    }
+  }
 ]
