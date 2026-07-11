@@ -8,4 +8,7 @@ node = "26"
 "npm:tree-sitter-cli" = "latest"
 "npm:@typescript/native-preview" = "latest"
 "npm:@vtsls/language-server" = "latest"
+{{#if (includes host.roles "personal")}}
+"npm:@earendil-works/pi-coding-agent" = "latest"
+{{/if}}
 aube = "latest"
