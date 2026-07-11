@@ -38,8 +38,9 @@ Host overrides are defined in `mimic.toml` under `[hosts.<hostname>]`. Each host
 
 Current hosts:
 - `Braydens-MacBook-Pro` — personal
-- `EPZ-D3YJQFV0WJ` — work (proxy, certs, litellm)
-- `EPZ-J3QVJYPDXH` — work (proxy, certs, litellm)
+- `elara.local` — personal (mac mini; aliases `elara`, `elara.localdomain`)
+- `EPZ-D3YJQFV0WJ` — work (inherits `work-base`: proxy, certs, litellm)
+- `EPZ-J3QVJYPDXH` — work (inherits `work-base`: proxy, certs, litellm)
 
 mimic auto-detects the hostname at apply time.
 
@@ -64,4 +65,5 @@ scripts/
 
 - Homebrew packages are declared in `mimic.toml` under `[packages]`.
 - Runtime setup (mise, uv, rustup, cargo tools, fisher) runs via `[[hooks]]` in `mimic.toml` during `mimic apply`.
+- Personal hosts install `pi` via the rendered mise config (`npm:@earendil-works/pi-coding-agent`).
 - Git identity is rendered to `~/.config/git/local.conf` from `templates/git/local.conf.hbs`, with per-host overrides in `mimic.toml`.

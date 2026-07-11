@@ -11,7 +11,7 @@ repo = "https://github.com/binbandit/fonts.git"
 
 [variables]
 name = "Brayden Moon"
-email = "brayden@binbandit.dev"
+email = "crazywolf132@gmail.com"
 git_name = "BinBandit"
 git_email = "crazywolf132@gmail.com"
 editor = "nvim"
@@ -24,7 +24,7 @@ openai_timeout = "4096"
 openai_max_tokens = "272000"
 
 # Host-overrideable defaults (every host should override these)
-codex_model = "gpt-5.4"
+codex_model = "gpt-5.5"
 extra_fish_paths = ""
 proxy_http = ""
 proxy_https = ""
@@ -103,7 +103,7 @@ target = "~/.config/fish/keychain-secrets.fish"
 
 # mise — generated
 [[dotfiles]]
-source = "templates/mise/config.toml"
+source = "templates/mise/config.toml.hbs"
 target = "~/.config/mise/config.toml"
 
 # Codex — generated per-host
@@ -246,50 +246,33 @@ on_failure = "continue"
 # Hosts — machine-specific overrides
 # ──────────────────────────────────────────────────────────────
 
+# Personal machines — top-level [variables] already provide the defaults
 [hosts.Braydens-MacBook-Pro]
 roles = ["personal", "mac"]
 
 [hosts.Braydens-MacBook-Pro.variables]
 extra_fish_paths = "$HOME/.mitm_toolkit/bin"
-codex_model = "gpt-5-codex"
-proxy_http = ""
-proxy_https = ""
-cert_bundle = ""
-git_name = "BinBandit"
-git_email = "crazywolf132@gmail.com"
+
+[hosts."elara.local"]
+roles = ["personal", "mac"]
+aliases = ["elara", "elara.localdomain"]
+
+# Work machines — shared base inherited by each EPZ host
+[hosts.work-base]
+roles = ["work", "mac"]
+
+[hosts.work-base.variables]
+codex_model = "aipe-gpt-5_v2025-08-07_EASTUS2"
+proxy_http = "http://localhost:3128"
+proxy_https = "http://localhost:3128"
+cert_bundle = "/Users/Shared/ca_certs/bundle.pem"
+git_name = "Brayden-Moon_cba"
+git_email = "brayden@cba.com.au"
+openai_model = "aipe-gpt-5.2_v2025-12-11_EASTUS2"
+openai_url = "https://api.studio.genai.cba/openai"
 
 [hosts.EPZ-D3YJQFV0WJ]
-roles = ["work", "mac"]
-
-[hosts.EPZ-D3YJQFV0WJ.variables]
-extra_fish_paths = ""
-codex_model = "aipe-gpt-5_v2025-08-07_EASTUS2"
-proxy_http = "http://localhost:3128"
-proxy_https = "http://localhost:3128"
-cert_bundle = "/Users/Shared/ca_certs/bundle.pem"
-git_name = "Brayden-Moon_cba"
-git_email = "brayden@cba.com.au"
-openai_model = "aipe-gpt-5.2_v2025-12-11_EASTUS2"
-openai_url = "https://api.studio.genai.cba/openai"
-
-[[hosts.EPZ-D3YJQFV0WJ.packages.homebrew]]
-name = "google-chrome"
-type = "cask"
+inherits = "work-base"
 
 [hosts.EPZ-J3QVJYPDXH]
-roles = ["work", "mac"]
-
-[hosts.EPZ-J3QVJYPDXH.variables]
-extra_fish_paths = ""
-codex_model = "aipe-gpt-5_v2025-08-07_EASTUS2"
-proxy_http = "http://localhost:3128"
-proxy_https = "http://localhost:3128"
-cert_bundle = "/Users/Shared/ca_certs/bundle.pem"
-git_name = "Brayden-Moon_cba"
-git_email = "brayden@cba.com.au"
-openai_model = "aipe-gpt-5.2_v2025-12-11_EASTUS2"
-openai_url = "https://api.studio.genai.cba/openai"
-
-[[hosts.EPZ-J3QVJYPDXH.packages.homebrew]]
-name = "google-chrome"
-type = "cask"
+inherits = "work-base"

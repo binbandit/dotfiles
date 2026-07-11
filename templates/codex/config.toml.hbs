@@ -13,13 +13,5 @@ stream_idle_timeout_ms = 300000
 http_headers = { "x-tool" = "Roo Code" }
 {{else}}
 model = "{{ variables.codex_model }}"
-model_reasoning_effort = "high"
-
-[mcp_servers.fetch]
-command = "uvx"
-args = ["mcp-server-fetch"]
-
-[mcp_servers.linear]
-command = "npx"
-args = ["-y", "mcp-remote", "https://mcp.linear.app/sse"]
+model_reasoning_effort = "xhigh"
 {{/if}}

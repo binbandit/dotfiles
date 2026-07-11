@@ -1,4 +1,6 @@
 function upgrade --description 'Run daily package/runtime upgrades'
+    set -l failed 0
+
     set -l tasks \
         'brew update' \
         'brew upgrade' \
@@ -12,9 +14,11 @@ function upgrade --description 'Run daily package/runtime upgrades'
         echo ""
         echo ">>> $task"
         eval $task
-        if test $status -ne 0
-            echo "upgrade: \"$task\" failed; aborting." >&2
-            return $status
+        or begin
+            echo "upgrade: \"$task\" failed; continuing." >&2
+            set failed 1
         end
     end
+
+    return $failed
 end

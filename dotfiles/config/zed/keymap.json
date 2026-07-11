@@ -9,8 +9,8 @@
     "context": "Picker > Editor",
     "bindings": {
       "ctrl-j": "menu::SelectNext",
-      "ctrl-k": "menu::SelectPrevious"
-    }
+      "ctrl-k": "menu::SelectPrevious",
+    },
   },
 
   // ---------------------------------------------------------------------------
@@ -32,8 +32,8 @@
       "cmd-alt-down": "workspace::ActivatePaneDown",
 
       "cmd-{": "pane::ActivatePreviousItem",
-      "cmd-}": "pane::ActivateNextItem"
-    }
+      "cmd-}": "pane::ActivateNextItem",
+    },
   },
 
   // Same spatial movement while a dock/panel has focus.
@@ -44,8 +44,8 @@
       "cmd-alt-left": "workspace::ActivatePaneLeft",
       "cmd-alt-right": "workspace::ActivatePaneRight",
       "cmd-alt-up": "workspace::ActivatePaneUp",
-      "cmd-alt-down": "workspace::ActivatePaneDown"
-    }
+      "cmd-alt-down": "workspace::ActivatePaneDown",
+    },
   },
 
   // ---------------------------------------------------------------------------
@@ -68,8 +68,8 @@
       "cmd-shift-m": "diagnostics::Deploy",
 
       "cmd-k cmd-s": "zed::OpenKeymap",
-      "cmd-k cmd-,": "zed::OpenSettingsFile"
-    }
+      "cmd-k cmd-,": "zed::OpenSettingsFile",
+    },
   },
 
   {
@@ -77,8 +77,8 @@
     "bindings": {
       "cmd-f": "buffer_search::Deploy",
       "cmd-alt-f": "buffer_search::DeployReplace",
-      "cmd-.": "editor::ToggleCodeActions"
-    }
+      "cmd-.": "editor::ToggleCodeActions",
+    },
   },
 
   // ---------------------------------------------------------------------------
@@ -99,30 +99,30 @@
       "shift-left": "vim::PreviousWordStart",
       "shift-right": "vim::NextWordStart",
       "shift-up": "vim::PageUp",
-      "shift-down": "vim::PageDown"
-    }
+      "shift-down": "vim::PageDown",
+    },
   },
 
   {
     "context": "Editor && mode == full && vim_mode == insert && !menu",
     "bindings": {
-      "j k": "vim::NormalBefore"
-    }
+      "j k": "vim::NormalBefore",
+    },
   },
 
   {
     "context": "Editor && mode == full && vim_mode == normal && !menu",
     "bindings": {
-      "shift-y": ["workspace::SendKeystrokes", "y $"]
-    }
+      "shift-y": ["workspace::SendKeystrokes", "y $"],
+    },
   },
 
   // Visual surround, matching Zed's own optional Vim recommendation.
   {
     "context": "Editor && mode == full && vim_mode == visual && !menu",
     "bindings": {
-      "shift-s": "vim::PushAddSurrounds"
-    }
+      "shift-s": "vim::PushAddSurrounds",
+    },
   },
 
   // ---------------------------------------------------------------------------
@@ -141,8 +141,8 @@
       "q": "vim::AnyQuotes",
       "b": "vim::AnyBrackets",
       "Q": "vim::MiniQuotes",
-      "B": "vim::MiniBrackets"
-    }
+      "B": "vim::MiniBrackets",
+    },
   },
 
   // ---------------------------------------------------------------------------
@@ -302,8 +302,8 @@
       // ----- quitting / cleanup -----
       "space q b": "pane::CloseActiveItem",
       "space q o": "workspace::CloseInactiveTabsAndPanes",
-      "space q q": "zed::Quit"
-    }
+      "space q q": "zed::Quit",
+    },
   },
 
   // ---------------------------------------------------------------------------
@@ -329,8 +329,8 @@
       "space t t": "terminal_panel::ToggleFocus",
       "space a a": "agent::Toggle",
       "space h k": "zed::OpenKeymap",
-      "space h s": "zed::OpenSettingsFile"
-    }
+      "space h s": "zed::OpenSettingsFile",
+    },
   },
 
   // ---------------------------------------------------------------------------
@@ -358,7 +358,7 @@
       "cmd-alt-left": "workspace::ActivatePaneLeft",
       "cmd-alt-right": "workspace::ActivatePaneRight",
       "cmd-alt-up": "workspace::ActivatePaneUp",
-      "cmd-alt-down": "workspace::ActivatePaneDown"
-    }
-  }
+      "cmd-alt-down": "workspace::ActivatePaneDown",
+    },
+  },
 ]
