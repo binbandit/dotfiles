@@ -252,10 +252,14 @@ roles = ["personal", "mac"]
 
 [hosts.Braydens-MacBook-Pro.variables]
 extra_fish_paths = "$HOME/.mitm_toolkit/bin"
+openai_model = "gpt-5.6-luna"
 
 [hosts."elara.local"]
 roles = ["personal", "mac"]
 aliases = ["elara", "elara.localdomain"]
+
+[hosts."elara.local".variables]
+openai_model = "gpt-5.6-luna"
 
 # Work machines — shared base inherited by each EPZ host
 [hosts.work-base]
