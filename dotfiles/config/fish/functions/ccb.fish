@@ -1,3 +1,3 @@
 function ccb --description 'Clear and cargo nightly build'
-    clear; cargo +nightly build $argv
+    clear; cargo build $argv
 end

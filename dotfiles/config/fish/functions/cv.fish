@@ -1,3 +1,3 @@
 function cv --description 'Cargo nightly vendor'
-    cargo +nightly vendor $argv
+    cargo vendor $argv
 end

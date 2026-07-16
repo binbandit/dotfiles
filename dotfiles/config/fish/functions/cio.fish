@@ -1,3 +1,3 @@
 function cio --description 'Cargo nightly install offline'
-    cargo +nightly install --path . --offline $argv
+    cargo install --path . --offline $argv
 end
