@@ -1,3 +1,3 @@
 function c --description 'Cargo nightly'
-    cargo +nightly $argv
+    cargo $argv
 end

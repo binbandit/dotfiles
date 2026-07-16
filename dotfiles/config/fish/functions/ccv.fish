@@ -1,3 +1,3 @@
 function ccv --description 'Clear and cargo nightly vendor'
-    clear; cargo +nightly vendor $argv
+    clear; cargo vendor $argv
 end
