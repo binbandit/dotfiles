@@ -184,14 +184,6 @@ default = "nightly"
 type = "cargo-install"
 
 [[hooks.packages]]
-name = "tap"
-git = "https://github.com/crazywolf132/tap.git"
-
-[[hooks.packages]]
-name = "kt"
-git = "https://github.com/binbandit/kite"
-
-[[hooks.packages]]
 name = "keychainctl"
 git = "https://github.com/binbandit/keychainctl.git"
 
