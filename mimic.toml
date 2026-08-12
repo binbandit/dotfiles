@@ -258,14 +258,14 @@ openai_model = "gpt-5.6-luna"
 roles = ["work", "mac"]
 
 [hosts.work-base.variables]
-codex_model = "aipe-gpt-5_v2025-08-07_EASTUS2"
+codex_model = "@az-eus2-ci018274955/prod-syd-gai-emergingte-east-gpt-55-2026-04-24-dz-federated"
 proxy_http = "http://localhost:3128"
 proxy_https = "http://localhost:3128"
 cert_bundle = "/Users/Shared/ca_certs/bundle.pem"
-git_name = "Brayden-Moon_cba"
+git_name = "Brayden_cba"
 git_email = "brayden@cba.com.au"
-openai_model = "aipe-gpt-5.2_v2025-12-11_EASTUS2"
-openai_url = "https://api.studio.genai.cba/openai"
+openai_model = "@az-eus2-ci018274955/prod-syd-gai-emergingte-east-gpt-55-2026-04-24-dz-federated"
+openai_url = "https://portkey.aipe.cba/v1"
 
 [hosts.EPZ-D3YJQFV0WJ]
 inherits = "work-base"
