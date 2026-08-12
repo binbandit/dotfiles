@@ -216,7 +216,7 @@ on_failure = "continue"
 [[hooks]]
 type = "command"
 name = "brew-maintenance"
-command = "if command -v brew >/dev/null 2>&1; then brew update && brew upgrade && brew autoremove && brew cleanup --prune=all; fi"
+command = "if command -v brew >/dev/null 2>&1; then brew update && brew upgrade -y && brew autoremove && brew cleanup --prune=all; fi"
 on_failure = "continue"
 
 # Upgrade mise-managed tools to latest allowed versions
