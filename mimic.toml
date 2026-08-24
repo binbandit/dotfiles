@@ -134,7 +134,6 @@ brew = [
   "sesh",
   "lazygit",
   "jq",
-  "eza",
   "gh",
   "git-delta",
   "fswatch",
