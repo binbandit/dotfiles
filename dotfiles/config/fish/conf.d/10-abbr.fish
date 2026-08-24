@@ -56,7 +56,6 @@ abbr gmt 'go mod tidy'
 
 abbr cwd 'pwd | pbcopy'
 
-abbr z 'emacsclient -c'
 abbr n 'nvim'
 
 abbr c 'cargo'
@@ -67,4 +66,3 @@ abbr cb 'cargo build'
 abbr cpr 'opencode run "/create-pull-request"'
 
 abbr x 'pnpm dlx'
-abbr l 'eza --icons'
