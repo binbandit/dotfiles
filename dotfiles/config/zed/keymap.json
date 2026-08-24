@@ -267,6 +267,13 @@
       // "space g l": ["task::Spawn", { "task_name": "lazygit" }],
       // "space g shift-c": ["task::Spawn", { "task_name": "AI Commit" }],
 
+      // ----- kite -----
+      // Task-backed; labels live in tasks.json.
+      "space k k": ["task::Spawn", { "task_name": "kite" }],
+      "space k l": ["task::Spawn", { "task_name": "kite land" }],
+      "space k p": ["task::Spawn", { "task_name": "kite push" }],
+      "space k r": ["task::Spawn", { "task_name": "kite pr" }],
+
       // ----- project / docks -----
       "space p p": "project_panel::ToggleFocus",
       "space p r": "pane::RevealInProjectPanel",

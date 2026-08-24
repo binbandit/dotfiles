@@ -62,4 +62,46 @@
     // Optional: Prevents "Terminal will be reused" prompt
     "use_new_terminal": false,
   },
+  // ----- kite -----
+  // The binary is `kt`. `land` opens a review and `pr` prompts for a title, so
+  // keep the terminal open and reuse one tab. Bound to `space k` in keymap.json.
+  {
+    "label": "kite",
+    "command": "kt",
+    "reveal": "always",
+    "reveal_target": "dock",
+    "hide": "never",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+  },
+  {
+    "label": "kite land",
+    "command": "kt",
+    "args": ["land"],
+    "reveal": "always",
+    "reveal_target": "dock",
+    "hide": "never",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+  },
+  {
+    "label": "kite push",
+    "command": "kt",
+    "args": ["push"],
+    "reveal": "always",
+    "reveal_target": "dock",
+    "hide": "never",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+  },
+  {
+    "label": "kite pr",
+    "command": "kt",
+    "args": ["pr"],
+    "reveal": "always",
+    "reveal_target": "dock",
+    "hide": "never",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+  },
 ]
