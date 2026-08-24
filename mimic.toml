@@ -116,6 +116,20 @@ target = "~/.codex/config.toml"
 source = "dotfiles/gitconfig"
 target = "~/.gitconfig"
 
+[[dotfiles]]
+source = "dotfiles/AGENTS.md"
+target = "~/AGENTS.md"
+
+# Codex - shared global instructions
+[[dotfiles]]
+source = "dotfiles/AGENTS.md"
+target = "~/.codex/AGENTS.md"
+
+# Claude Code - shared user instructions
+[[dotfiles]]
+source = "dotfiles/claude/CLAUDE.md"
+target = "~/.claude/CLAUDE.md"
+
 # ──────────────────────────────────────────────────────────────
 # Packages — Homebrew
 # ──────────────────────────────────────────────────────────────

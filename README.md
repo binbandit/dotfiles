@@ -49,9 +49,10 @@ mimic auto-detects the hostname at apply time.
 ```
 mimic.toml              # Main config: variables, dotfiles, packages, hosts, hooks
 dotfiles/               # Static dotfiles (symlinked into $HOME)
+  AGENTS.md              # Shared instructions for ~/ and ~/.codex
   config/               # XDG config dirs (nvim, fish, ghostty, tmux, etc.)
   gitconfig             # ~/.gitconfig
-  claude/commands/      # Claude Code custom commands
+  claude/CLAUDE.md      # Claude Code user memory (imports ~/AGENTS.md)
 templates/              # Handlebars templates (rendered at apply time)
   fish/                 # Shell init, host env, keychain secrets
   mise/                 # mise tool declarations
