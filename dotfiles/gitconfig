@@ -61,3 +61,9 @@
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 	st = status
 	co = checkout
+[credential "https://origin.cursor.com/git"]
+	helper = 
+	helper = !/Users/brayden/.local/bin/origin credential-helper
+[credential "https://origin.cursor.com"]
+	helper = 
+	helper = !/Users/brayden/.local/bin/origin credential-helper
