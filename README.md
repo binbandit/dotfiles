@@ -51,7 +51,6 @@ mimic.toml              # Main config: variables, dotfiles, packages, hosts, hoo
 dotfiles/               # Static dotfiles (symlinked into $HOME)
   config/               # XDG config dirs (nvim, fish, ghostty, tmux, etc.)
   gitconfig             # ~/.gitconfig
-  doom.d/               # Emacs Doom config
   claude/commands/      # Claude Code custom commands
 templates/              # Handlebars templates (rendered at apply time)
   fish/                 # Shell init, host env, keychain secrets
