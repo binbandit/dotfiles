@@ -50,7 +50,7 @@ function pls --description 'Open repository pull request page from git remote'
         set weburl "$weburl/$suffix"
     end
 
-    set pullquery "pulls?q=is%3Apr+state%3Apr+state%3Aopen+author%3A%40me"
+    set pullquery "pulls/@me"
     set weburl "$weburl/$pullquery"
 
     # Open in default browser, or print URL if no opener
