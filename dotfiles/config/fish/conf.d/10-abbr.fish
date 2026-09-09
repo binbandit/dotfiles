@@ -54,8 +54,6 @@ abbr gi 'go install'
 abbr gt 'go test'
 abbr gmt 'go mod tidy'
 
-abbr cwd 'pwd | pbcopy'
-
 abbr n 'nvim'
 
 abbr c 'cargo'
