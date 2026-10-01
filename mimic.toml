@@ -200,10 +200,6 @@ type = "cargo-install"
 name = "keychainctl"
 git = "https://github.com/binbandit/keychainctl.git"
 
-[[hooks.packages]]
-name = "git-workty"
-git = "https://github.com/binbandit/workty.git"
-
 # Set fish as default shell
 [[hooks]]
 type = "command"
@@ -271,13 +267,13 @@ openai_model = "gpt-5.6-luna"
 roles = ["work", "mac"]
 
 [hosts.work-base.variables]
-codex_model = "@az-eus2-ci018274955/prod-gai-emergingte-eus2-gpt-56-sol-2026-07-09-dz-federated"
+codex_model = "@bedrock-wus2/us.openai.gpt-6-sol"
 proxy_http = "http://localhost:3128"
 proxy_https = "http://localhost:3128"
 cert_bundle = "/Users/Shared/ca_certs/bundle.pem"
 git_name = "Brayden_cba"
 git_email = "brayden@cba.com.au"
-openai_model = "@az-eus2-ci018274955/prod-gai-emergingte-eus2-gpt-56-sol-2026-07-09-dz-federated"
+openai_model = "@bedrock-wus2/us.openai.gpt-6-sol"
 openai_url = "https://portkey.aipe.cba/v1"
 
 [hosts.EPZ-D3YJQFV0WJ]
