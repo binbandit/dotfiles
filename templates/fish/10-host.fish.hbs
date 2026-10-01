@@ -96,6 +96,10 @@ end
 if test -d "$PNPM_HOME"
     fish_add_path $PNPM_HOME
 end
+# pnpm 11 moved global binaries to $PNPM_HOME/bin; the root now only holds pnpm itself.
+if test -d "$PNPM_HOME/bin"
+    fish_add_path "$PNPM_HOME/bin"
+end
 
 # git-workty shell integration (wcd/wnew/wgo helpers).
 if status is-interactive
